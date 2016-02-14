@@ -17,6 +17,7 @@ int main(int argc, char** argv){
 	struct mf_socket s3 = mf_socket_create(THIRD_SOCKET_FD);
 	struct mf_socket_array_node* n3 = mf_socket_array_node_init(s3);
 	insert_mf_socket_array(n3,q);
+	delete_socket_array_node(FIRST_SOCKET_FD, q);
 	return 0;
 
 

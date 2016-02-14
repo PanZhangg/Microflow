@@ -1,4 +1,5 @@
 #include "mf_socket.h"
+//#include "mf_socket_array.h"
 
 #include <stdio.h>  
 #include <stdlib.h>  
@@ -81,6 +82,7 @@ void mf_socket_bind(struct mf_socket s){
 	printf("\nsocket binded, IP:%u, Port:%d\n",ntohl(controller_addr.sin_addr.s_addr), ntohs(controller_addr.sin_port));
 }
 
+
 void handle_connection(struct mf_socket s){
 	int i, connfd;
 	socklen_t clilen;
@@ -128,6 +130,6 @@ void handle_connection(struct mf_socket s){
 }
 
 
-void destroy_mf_socket(struct mf_socket s){
+void destory_mf_socket(struct mf_socket s){
 	destory_queue(s.rx_queue);
 }

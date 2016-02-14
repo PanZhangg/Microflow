@@ -32,8 +32,9 @@ uint8_t insert_mf_socket_array (struct mf_socket_array_node* n, struct mf_socket
 		n->previous_node = q->tail;
 		q->tail = n;
 		n->next_node = NULL;
-		q-> array_length++;
+		q->array_length++;
 	}
+	return 1;
 }
 
 uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){
@@ -42,10 +43,24 @@ uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){
 	struct mf_socket_array_node * tmp = q->head;
 	while(tmp){
 		if(tmp->s.socket_fd == socket_fd){
-			tmp->previous_node->next_node = tmp->next_node;
-			tmp->next_node->previous_node = tmp->previous_node;
-			//destory_mf_socket(tmp->s);
-			free(tmp);
+			if(q->array_length == 1){
+				q->array_length = 0;
+				q->head = NULL;
+				q->tail = NULL;
+				break;
+			}else if(tmp == q->head){
+				tmp->next_node->previous_node = NULL;
+				q->head = tmp->next_node;
+				break;
+			}else if(tmp == q->tail){
+				tmp->previous_node->next_node = NULL;
+				q->tail = tmp->previous_node;
+				break;
+			}else{
+				tmp->previous_node->next_node = tmp->next_node;
+				tmp->next_node->previous_node = tmp->previous_node;
+				break;
+			}
 		}else{
 			if(tmp == q->tail) //No matched socket_fd
 				return 0;
@@ -53,6 +68,8 @@ uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){
 				tmp = tmp->next_node;
 		}
 	}
+	q->array_length--;
+	destory_mf_socket(tmp->s);
 	return 1;
 }
 
