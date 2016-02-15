@@ -1,5 +1,6 @@
 #include "mf_socket.h"
 #include "mf_socket_array.h"
+#include "mf_msg_parser.h"
 
 #include <stdio.h>  
 #include <stdlib.h>  
@@ -88,6 +89,7 @@ void handle_connection(struct mf_socket s){
 	socklen_t clilen;
 	epoll_init(s);
 	mf_socket_array = mf_socket_array_init();
+	parser_thread_start();
 	while(1){
 		nfds = epoll_wait(epfd, events, 20, 500);
 		for(i = 0; i < nfds; i++){
