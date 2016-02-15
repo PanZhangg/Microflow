@@ -15,6 +15,7 @@
 
 
 int main(int argc, char** argv){
+	extern struct mf_socket_array* mf_socket_array;
 	struct mf_socket s = mf_listen_socket_create();
 	mf_socket_bind(s);
 	handle_connection(s);

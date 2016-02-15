@@ -1,5 +1,5 @@
 #include "mf_socket.h"
-//#include "mf_socket_array.h"
+#include "mf_socket_array.h"
 
 #include <stdio.h>  
 #include <stdlib.h>  
@@ -13,8 +13,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-struct mf_socket mf_socket_array[4096];
-
+//struct mf_socket mf_socket_array[4096];
+struct mf_socket_array * mf_socket_array;
 struct sockaddr_in controller_addr, switch_addr;
 //memset(&controller_addr, 0, sizeof(controller_addr));
 struct epoll_event ev, events[EPOLL_EVENTS_NUM];
@@ -87,6 +87,7 @@ void handle_connection(struct mf_socket s){
 	int i, connfd;
 	socklen_t clilen;
 	epoll_init(s);
+	mf_socket_array = mf_socket_array_init();
 	while(1){
 		nfds = epoll_wait(epfd, events, 20, 500);
 		for(i = 0; i < nfds; i++){
@@ -98,7 +99,13 @@ void handle_connection(struct mf_socket s){
                     perror("connfd<0");
                     exit(1);
 			}
-			mf_socket_array[connfd] = mf_socket_create(connfd);
+			//mf_socket_array[connfd] = mf_socket_create(connfd);
+			struct mf_socket sk = mf_socket_create(connfd);
+			struct mf_socket_array_node* san = mf_socket_array_node_init(sk);
+			if(insert_mf_socket_array(san,mf_socket_array) != 1){
+				perror("insert socket error");
+				exit(1);
+			}
 			ev.data.fd = connfd;
 			ev.events = EPOLLIN | EPOLLET;
 			epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
@@ -112,12 +119,15 @@ void handle_connection(struct mf_socket s){
 				int length = read(sockfd, rx_buffer, 4096);
 				char* node_rx_buffer = (char*)malloc(length);
 				memcpy(node_rx_buffer,rx_buffer, length);
-				if(length == 0)
+				if(length == 0){
+					delete_socket_array_node(sockfd, mf_socket_array);
 					close(sockfd);
+				}
 				struct q_node* qn = q_node_init(node_rx_buffer, length);
 				//printf("\nqn addr: %lu",(unsigned long)qn);
 				//printf("\nqueue addr: %lu",(unsigned long)mf_socket_array[sockfd].rx_queue);
-				if(push_q_node(qn, mf_socket_array[sockfd].rx_queue) == 0)
+				struct mf_rx_queue* rxq = get_rx_queue(sockfd, mf_socket_array);
+				if(push_q_node(qn, rxq) == 0)
 					continue;
 				//printf("\nqueue head addr: %lu",(unsigned long)mf_socket_array[sockfd].rx_queue->head);
 				//printf("\nqueue tail addr: %lu",(unsigned long)mf_socket_array[sockfd].rx_queue->tail);

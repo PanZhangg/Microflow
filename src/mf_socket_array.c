@@ -73,6 +73,18 @@ uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){
 	return 1;
 }
 
+struct mf_rx_queue* get_rx_queue(int socket_fd, struct mf_socket_array* q){
+	struct mf_socket_array_node* tmp;
+	tmp = q->head;
+	while(tmp){
+		if(tmp->s.socket_fd == socket_fd)
+			return tmp->s.rx_queue;
+		else
+			tmp = tmp->next_node;
+	}
+	return NULL;
+}
+
 /*struct mf_socket_array_node* pop_mf_socket_array(struct mf_socket_array* q){
 	if(!q->array_length)
 		return NULL;

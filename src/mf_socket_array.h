@@ -32,6 +32,6 @@ struct mf_socket_array* mf_socket_array_init();
 uint8_t insert_mf_socket_array (struct mf_socket_array_node*, struct mf_socket_array*);
 //struct mf_socket_array_node* pop_mf_socket_array(struct mf_socket_array*);
 uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q);
-
+struct mf_rx_queue* get_rx_queue(int socket_fd, struct mf_socket_array* q);
 
 #endif
