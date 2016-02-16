@@ -61,7 +61,7 @@ static void epoll_init(struct mf_socket s){
 	//printf("\nepoll inited for socket%d\n",s.socket_fd);
 	set_nonblocking(s.socket_fd);
 	listen(s.socket_fd, SOMAXCONN);
-	printf("\nlistening at socket %d\n",s.socket_fd);
+	//printf("\nlistening at socket %d\n",s.socket_fd);
 }
 
 struct mf_socket mf_socket_create(uint32_t fd){
@@ -80,7 +80,7 @@ void mf_socket_bind(struct mf_socket s){
 		perror("socket bind failed");
 		exit(0);
 	}
-	printf("\nsocket binded, IP:%u, Port:%d\n",ntohl(controller_addr.sin_addr.s_addr), ntohs(controller_addr.sin_port));
+	//printf("\nsocket binded, IP:%u, Port:%d\n",ntohl(controller_addr.sin_addr.s_addr), ntohs(controller_addr.sin_port));
 }
 
 
@@ -94,9 +94,9 @@ void handle_connection(struct mf_socket s){
 		nfds = epoll_wait(epfd, events, 20, 500);
 		for(i = 0; i < nfds; i++){
 			if(events[i].data.fd == s.socket_fd){
-				//printf("\nincoming connection\n");
+				printf("\nincoming connection\n");
 				connfd = accept(s.socket_fd, (struct sockaddr*)&switch_addr, &clilen);
-				printf("\nconnfd: %d", connfd);
+				//printf("\nconnfd: %d", connfd);
 				if(connfd<0){
                     perror("connfd<0");
                     exit(1);
@@ -126,16 +126,9 @@ void handle_connection(struct mf_socket s){
 					close(sockfd);
 				}
 				struct q_node* qn = q_node_init(node_rx_buffer, length);
-				//printf("\nqn addr: %lu",(unsigned long)qn);
-				//printf("\nqueue addr: %lu",(unsigned long)mf_socket_array[sockfd].rx_queue);
 				struct mf_rx_queue* rxq = get_rx_queue(sockfd, mf_socket_array);
 				if(push_q_node(qn, rxq) == 0)
 					continue;
-				//printf("\nqueue head addr: %lu",(unsigned long)mf_socket_array[sockfd].rx_queue->head);
-				//printf("\nqueue tail addr: %lu",(unsigned long)mf_socket_array[sockfd].rx_queue->tail);
-				//printf("\nqueue head rx_packet: %s", (char*)mf_socket_array[sockfd].rx_queue->head->rx_packet);
-				//print_queue(mf_socket_array[sockfd].rx_queue);
-
 			}
 		}
 	}

@@ -46,12 +46,21 @@ uint8_t push_q_node(struct q_node* n, struct mf_rx_queue* q){
 struct q_node* pop_q_node(struct mf_rx_queue* q){
 	if(!q->queue_length)
 		return NULL;
-	else{
+	else
+	{
 		struct q_node* tmp = NULL;
 		tmp = q->head;
-		q->head = tmp->next_node;
-		q->head->previous_node = NULL;
-		tmp->next_node = NULL;
+		if(q->queue_length == 1)
+		{
+			q->head = NULL;
+			q->tail = NULL;
+		}
+		else
+		{	
+			q->head = tmp->next_node;
+			q->head->previous_node = NULL;
+			tmp->next_node = NULL;
+		}
 		q->queue_length--;
 		return tmp;
 	}
