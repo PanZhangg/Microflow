@@ -6,6 +6,7 @@
 struct q_node{
 	void* rx_packet;
 	uint16_t packet_length;
+	uint32_t socket_fd;
 	uint8_t priority;
 	struct q_node* next_node;
 	struct q_node* previous_node;
@@ -17,7 +18,7 @@ struct mf_rx_queue{
 	struct q_node* tail;
 };
 
-struct q_node* q_node_init(void* packet_buffer, uint16_t length);
+struct q_node* q_node_init(void* packet_buffer, uint16_t length, uint32_t socket_fd);
 struct mf_rx_queue* mf_rx_queue_init();
 uint8_t push_q_node(struct q_node* n, struct mf_rx_queue* q);
 struct q_node* pop_q_node(struct mf_rx_queue*q );

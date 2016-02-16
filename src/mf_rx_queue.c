@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct q_node* q_node_init(void* packet_buffer, uint16_t length){
+struct q_node* q_node_init(void* packet_buffer, uint16_t length, uint32_t socket_fd){
 	struct q_node* q = (struct q_node*)malloc(sizeof(struct q_node));
 	q->rx_packet = packet_buffer;
 	q->packet_length = length;
+	q->socket_fd = socket_fd;
 	q->priority = 0;
 	q->next_node = NULL;
 	q->previous_node = NULL;

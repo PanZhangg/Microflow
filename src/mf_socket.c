@@ -125,7 +125,7 @@ void handle_connection(struct mf_socket s){
 					delete_socket_array_node(sockfd, mf_socket_array);
 					close(sockfd);
 				}
-				struct q_node* qn = q_node_init(node_rx_buffer, length);
+				struct q_node* qn = q_node_init(node_rx_buffer, length, sockfd);
 				struct mf_rx_queue* rxq = get_rx_queue(sockfd, mf_socket_array);
 				if(push_q_node(qn, rxq) == 0)
 					continue;
