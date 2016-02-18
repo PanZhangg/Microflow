@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "mf_msg_parser.h"
 #include "mf_socket_array.h"
+#include "mf_msg_handler.h"
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 
@@ -17,11 +18,12 @@ static void msg_queue_init()
 
 static uint8_t parser_msg_type(struct q_node* qn)
 {
-	char* content = (char*)(qn->rx_packet);
-	printf("\nparser_msg_type:Packet content:%s\n", content);
-	uint8_t type;
+	//char* content = (char*)(qn->rx_packet);
+	//printf("\nparser_msg_type:Packet content:%s\n", content);
+	uint8_t type = 1;
+	//printf("\nruning here\n");
 	memcpy(&type, qn->rx_packet + 1, 1);
-	printf("\ntype:%d", type);
+	//printf("\ntype:%d\n", type);
 	return type;
 }
 
@@ -32,8 +34,8 @@ static struct q_node* get_q_node(struct mf_socket_array_node* san)
 	else
 	{
 		struct q_node* tmp = pop_q_node(san->s.rx_queue);
-		char* content = (char*)(tmp->rx_packet);
-		printf("\nPacket content:%s\n", content);
+		//char* content = (char*)(tmp->rx_packet);
+		//printf("\nPacket content:%s\n", content);
 		//return pop_q_node(san->s.rx_queue);
 		return tmp;
 	}
@@ -46,11 +48,16 @@ static struct q_node* get_q_node(struct mf_socket_array_node* san)
 */
 static void push_msg_queue(struct q_node* qn)
 {
-	char* content = (char*)(qn->rx_packet);
-	printf("\npush_msg_:Packet content:%s\n", content);
+	//char* content = (char*)(qn->rx_packet);
+	//printf("\npush_msg_:Packet content:%s\n", content);
 	uint8_t type = parser_msg_type(qn);
-	type++;
-	printf("Got msg");
+	//printf("\nstep out of parser_msg_type_func");
+	printf("\ntype:%d", type);
+	//type++;
+	if(!push_q_node(qn, Hello_rx_message_queue))
+		printf("push queue failed");
+	//print_queue(Hello_rx_message_queue);
+	//printf("Got msg");
 	/*switch(type)
 	{
 		case HELLO :
@@ -103,5 +110,6 @@ void parser_thread_start()
       //fprintf(stderr, "error: pthread_create, rc: %d\n", rc);
       //return EXIT_FAILURE;
     }
-	//Msg_handler_thread_start();
+    pthread_detach(parser_thread);
+	Msg_handler_thread_start();
 }
