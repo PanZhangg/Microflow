@@ -22,6 +22,7 @@ struct mf_rx_queue* mf_rx_queue_init(){
 	q->queue_length = 0;
 	q->head = NULL;
 	q->tail = NULL;
+	pthread_mutex_init(&(q->q_mutex), NULL);
 	return q;
 	}
 }
@@ -29,10 +30,14 @@ struct mf_rx_queue* mf_rx_queue_init(){
 uint8_t push_q_node(struct q_node* n, struct mf_rx_queue* q){
 	if(n == NULL || q == NULL)
 		return 0;
+	//printf("\nqueue locked");
+	pthread_mutex_lock(&(q->q_mutex));
 	if(!q->queue_length){
 		q->head = n;
 		q->tail = n;
 		q->queue_length = 1;
+		//printf("\nqueue unlocked");
+		pthread_mutex_unlock(&(q->q_mutex));
 		return 1;
 	}else{
 		q->tail->next_node = n;
@@ -40,6 +45,8 @@ uint8_t push_q_node(struct q_node* n, struct mf_rx_queue* q){
 		n->next_node = NULL;
 		q->tail = n;
 		q->queue_length++;
+		//printf("\nqueue unlocked");
+		pthread_mutex_unlock(&(q->q_mutex));
 		return 1;
 	}
 }
@@ -51,6 +58,8 @@ struct q_node* pop_q_node(struct mf_rx_queue* q){
 	{
 		struct q_node* tmp = NULL;
 		tmp = q->head;
+		//printf("\nqueue locked");
+		pthread_mutex_lock(&(q->q_mutex));
 		if(q->queue_length == 1)
 		{
 			q->head = NULL;
@@ -63,6 +72,8 @@ struct q_node* pop_q_node(struct mf_rx_queue* q){
 			tmp->next_node = NULL;
 		}
 		q->queue_length--;
+		//printf("\nqueue unlocked");
+		pthread_mutex_unlock(&(q->q_mutex));
 		return tmp;
 	}
 }

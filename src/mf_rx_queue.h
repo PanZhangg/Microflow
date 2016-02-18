@@ -2,6 +2,7 @@
 #define __MF_RX_QUEUE_H__
 
 #include "./Openflow/types.h"
+#include <pthread.h>
 
 struct q_node{
 	void* rx_packet;
@@ -14,6 +15,7 @@ struct q_node{
 
 struct mf_rx_queue{
 	uint32_t queue_length;
+	pthread_mutex_t q_mutex;
 	struct q_node* head;
 	struct q_node* tail;
 };
