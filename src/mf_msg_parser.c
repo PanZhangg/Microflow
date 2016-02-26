@@ -14,13 +14,14 @@ static void msg_queue_init()
 {
 	Hello_rx_message_queue = mf_rx_queue_init();
 	Echo_rx_message_queue = mf_rx_queue_init();
+	Packet_in_rx_message_queue = mf_rx_queue_init();
 }
 
-static uint8_t parser_msg_type(struct q_node* qn)
+static inline uint8_t parser_msg_type(struct q_node* qn)
 {
 	//char* content = (char*)(qn->rx_packet);
 	//printf("\nparser_msg_type:Packet content:%s\n", content);
-	uint8_t type = 1;
+	uint8_t type;
 	//printf("\nruning here\n");
 	memcpy(&type, qn->rx_packet + 1, 1);
 	//printf("\ntype:%d\n", type);
