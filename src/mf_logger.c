@@ -1,5 +1,5 @@
 #include "mf_logger.h"
-#include <string.h>
+#include "mf_timer.h"
 
 void mf_logger_open(const char* path)
 {
@@ -24,9 +24,8 @@ void mf_write_log(char* msg)
 		printf("\nLog Msg is null");
 		//exit(0);
 	}
-	//fprintf(MF_LOG_FILE, )
-	//printf("\nmsg length: %d",(int)strlen(msg));
-	fprintf(MF_LOG_FILE, "%s\n", msg);	
+	char* t = get_asctime();
+	fprintf(MF_LOG_FILE, "[%s]:%s\n", t, msg);	
 }
 
 void mf_logger_close()
