@@ -116,15 +116,17 @@ void handle_connection(struct mf_socket s){
 				int sockfd = events[i].data.fd;
 				//printf("\nsockfd: %d", sockfd);
 				if(sockfd < 0)
-					continue;
+					break;
 				memset(rx_buffer, 0, 4096);
 				int length = read(sockfd, rx_buffer, 4096);
-				char* node_rx_buffer = (char*)malloc(length);
-				memcpy(node_rx_buffer,rx_buffer, length);
-				if(length == 0){
+				if(length == 0)
+				{
 					delete_socket_array_node(sockfd, mf_socket_array);
 					close(sockfd);
+					break;
 				}
+				char* node_rx_buffer = (char*)malloc(length);
+				memcpy(node_rx_buffer,rx_buffer, length);
 				struct q_node* qn = q_node_init(node_rx_buffer, length, sockfd);
 				struct mf_rx_queue* rxq = get_rx_queue(sockfd, mf_socket_array);
 				if(push_q_node(qn, rxq) == 0)

@@ -32,17 +32,25 @@ void msg_handler_destory(struct mf_msg_handler* mmh)
 
 void hello_msg_handler(struct q_node* qn)
 {
-	if(qn == NULL)
+	//TODO: mutex needs to be fixed
+	//probably in the while loop of hello_msg_handler_thread_func
+	//lock the queue before reading the value
+	//Goal: make qn==NULL impossible
+
+	//status update: DONE
+	/*if(qn == NULL)
 	{
 		printf("\ninvalid node\n");
-	}else{
+	}
+	else*/
+	//{
 		printf("\nHello msg handling\n");
 		uint32_t xid;
 		memcpy(&xid, qn->rx_packet + 4, 4);
 		struct ofp_header oh = of13_hello_msg_constructor(xid);
 		send(qn->socket_fd, &oh, sizeof(oh), MSG_DONTWAIT);
 		destory_q_node(qn);
-	}
+	//}
 	//struct ofp_header* header= (struct ofp_header*)(qn->rx_packet)
 }
 
@@ -52,7 +60,8 @@ void* hello_msg_handler_thread_func(void* argv)
 	struct mf_msg_handler* mmh = (struct mf_msg_handler*)argv;
 	while(1)
 	{
-		while(mmh->msg_queue->head)
+		//while(mmh->msg_queue->head)
+		while(mmh->msg_queue->queue_length)
 		{
 			struct q_node* qn = pop_q_node(mmh->msg_queue);
 			mmh->mhf(qn);

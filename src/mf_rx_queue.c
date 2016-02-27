@@ -52,6 +52,7 @@ uint8_t push_q_node(struct q_node* n, struct mf_rx_queue* q){
 }
 
 struct q_node* pop_q_node(struct mf_rx_queue* q){
+	pthread_mutex_lock(&(q->q_mutex));
 	if(!q->queue_length)
 		return NULL;
 	else
@@ -59,7 +60,7 @@ struct q_node* pop_q_node(struct mf_rx_queue* q){
 		struct q_node* tmp = NULL;
 		tmp = q->head;
 		//printf("\nqueue locked");
-		pthread_mutex_lock(&(q->q_mutex));
+		//pthread_mutex_lock(&(q->q_mutex));
 		if(q->queue_length == 1)
 		{
 			q->head = NULL;
