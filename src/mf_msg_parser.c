@@ -28,6 +28,13 @@ static inline uint8_t parser_msg_type(struct q_node* qn)
 	return type;
 }
 
+static inline uint8_t parser_msg_version(struct q_node* qn)
+{
+	uint8_t version;
+	memcpy(&version, qn->rx_packet, 1);
+	return version;
+}
+
 static struct q_node* get_q_node(struct mf_socket_array_node* san)
 {
 	if((san->s.rx_queue)->queue_length == 0)
@@ -51,12 +58,16 @@ static void push_msg_queue(struct q_node* qn)
 {
 	//char* content = (char*)(qn->rx_packet);
 	//printf("\npush_msg_:Packet content:%s\n", content);
+	uint8_t version = parser_msg_version(qn);
 	uint8_t type = parser_msg_type(qn);
 	//printf("\nstep out of parser_msg_type_func");
 	printf("\ntype:%d", type);
 	//type++;
-	if(!push_q_node(qn, Hello_rx_message_queue))
-		printf("push queue failed");
+	if(version ==4 && type == 0)
+	{
+		if(!push_q_node(qn, Hello_rx_message_queue))
+			printf("push queue failed");
+	}
 	//print_queue(Hello_rx_message_queue);
 	//printf("Got msg");
 	/*switch(type)

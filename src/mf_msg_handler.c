@@ -32,12 +32,17 @@ void msg_handler_destory(struct mf_msg_handler* mmh)
 
 void hello_msg_handler(struct q_node* qn)
 {
-	printf("\nHello msg handling\n");
-	uint32_t xid;
-	memcpy(&xid, qn->rx_packet + 4, 4);
-	struct ofp_header oh = of13_hello_msg_constructor(xid);
-	send(qn->socket_fd, &oh, sizeof(oh), MSG_DONTWAIT);
-	destory_q_node(qn);
+	if(qn == NULL)
+	{
+		printf("\ninvalid node\n");
+	}else{
+		printf("\nHello msg handling\n");
+		uint32_t xid;
+		memcpy(&xid, qn->rx_packet + 4, 4);
+		struct ofp_header oh = of13_hello_msg_constructor(xid);
+		send(qn->socket_fd, &oh, sizeof(oh), MSG_DONTWAIT);
+		destory_q_node(qn);
+	}
 	//struct ofp_header* header= (struct ofp_header*)(qn->rx_packet)
 }
 
