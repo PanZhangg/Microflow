@@ -60,13 +60,14 @@ void* parser_work(void* arg)
 	//tmp = mf_socket_array->head;
 	while(1)
 	{
-		pthread_mutex_lock(&socket_array_mutex);
+		//pthread_mutex_lock(&socket_array_mutex);
 		if(mf_socket_array->head != NULL)
 		//if(mf_socket_array->array_length)
 			tmp = mf_socket_array->head;
-		pthread_mutex_unlock(&socket_array_mutex);
+		//pthread_mutex_unlock(&socket_array_mutex);
 		while(tmp)
 		{
+			//pthread_mutex_lock(&socket_array_mutex);
 				struct q_node* qn = get_q_node(tmp);
 				if(qn == NULL)
 				{
@@ -81,11 +82,21 @@ void* parser_work(void* arg)
 					push_msg_queue(qn);
 goto_next_node:
 					if(tmp->next_node == NULL)
+					{
+						if(mf_socket_array->head == NULL)
+						{
+							printf("array head == NULL\n");
+							exit(0);
+						}
+
 						tmp = mf_socket_array->head;
+					}
 					else
 						tmp = tmp->next_node;
 				}
-		}	
+		//		pthread_mutex_unlock(&socket_array_mutex);
+		}
+		//pthread_mutex_unlock(&socket_array_mutex);	
 	}
 }
 

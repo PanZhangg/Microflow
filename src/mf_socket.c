@@ -98,7 +98,7 @@ void handle_connection(struct mf_socket s)
 	parser_thread_start();
 	while(1)
 	{
-		nfds = epoll_wait(epfd, events, 20, 500);
+		nfds = epoll_wait(epfd, events, 2000000, -1);
 		for(i = 0; i < nfds; i++)
 		{
 			if(events[i].data.fd == s.socket_fd)
