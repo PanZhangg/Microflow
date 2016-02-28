@@ -42,7 +42,8 @@ static void set_nonblocking(int sock)
 }
 
 
-struct mf_socket mf_listen_socket_create(){
+struct mf_socket mf_listen_socket_create()
+{
 	struct mf_socket s;
 	if((s.socket_fd = socket(AF_INET, SOCK_STREAM,0)) == -1){
 		perror("socket created failed");
@@ -53,7 +54,8 @@ struct mf_socket mf_listen_socket_create(){
 	return s;
 }
 
-static void epoll_init(struct mf_socket s){
+static void epoll_init(struct mf_socket s)
+{
 	epfd = epoll_create(256);
 	ev.data.fd = s.socket_fd;
 	ev.events = EPOLLIN | EPOLLET;
@@ -64,19 +66,22 @@ static void epoll_init(struct mf_socket s){
 	//printf("\nlistening at socket %d\n",s.socket_fd);
 }
 
-struct mf_socket mf_socket_create(uint32_t fd){
+struct mf_socket mf_socket_create(uint32_t fd)
+{
 	struct mf_socket s;
 	s.socket_fd = fd;
 	s.rx_queue = mf_rx_queue_init();
 	return s;
 }
 
-void mf_socket_bind(struct mf_socket s){
+void mf_socket_bind(struct mf_socket s)
+{
 	memset(&controller_addr, 0, sizeof(controller_addr));
 	controller_addr.sin_family = AF_INET;
 	controller_addr.sin_addr.s_addr=htonl(INADDR_ANY);
 	controller_addr.sin_port = htons(DEFAULT_PORT);
-	if((bind(s.socket_fd, (struct sockaddr*)&controller_addr,sizeof(controller_addr))) == -1){
+	if((bind(s.socket_fd, (struct sockaddr*)&controller_addr,sizeof(controller_addr))) == -1)
+	{
 		perror("socket bind failed");
 		exit(0);
 	}
@@ -84,17 +89,21 @@ void mf_socket_bind(struct mf_socket s){
 }
 
 
-void handle_connection(struct mf_socket s){
+void handle_connection(struct mf_socket s)
+{
 	int i, connfd;
 	socklen_t clilen;
 	epoll_init(s);
 	mf_socket_array = mf_socket_array_init();
 	parser_thread_start();
-	while(1){
+	while(1)
+	{
 		nfds = epoll_wait(epfd, events, 20, 500);
-		for(i = 0; i < nfds; i++){
-			if(events[i].data.fd == s.socket_fd){
-				printf("\nincoming connection\n");
+		for(i = 0; i < nfds; i++)
+		{
+			if(events[i].data.fd == s.socket_fd)
+			{
+				printf("incoming connection\n");
 				connfd = accept(s.socket_fd, (struct sockaddr*)&switch_addr, &clilen);
 				//printf("\nconnfd: %d", connfd);
 				if(connfd<0){
@@ -104,7 +113,8 @@ void handle_connection(struct mf_socket s){
 			//mf_socket_array[connfd] = mf_socket_create(connfd);
 			struct mf_socket sk = mf_socket_create(connfd);
 			struct mf_socket_array_node* san = mf_socket_array_node_init(sk);
-			if(insert_mf_socket_array(san,mf_socket_array) != 1){
+			if(insert_mf_socket_array(san,mf_socket_array) != 1)
+			{
 				perror("insert socket error");
 				exit(1);
 			}
@@ -112,7 +122,8 @@ void handle_connection(struct mf_socket s){
 			ev.events = EPOLLIN | EPOLLET;
 			epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
 		}
-			else if(events[i].events & EPOLLIN){
+			else if(events[i].events & EPOLLIN)
+			{
 				int sockfd = events[i].data.fd;
 				//printf("\nsockfd: %d", sockfd);
 				if(sockfd < 0)
@@ -125,6 +136,8 @@ void handle_connection(struct mf_socket s){
 					close(sockfd);
 					break;
 				}
+				if(length < 0 )
+					break;
 				char* node_rx_buffer = (char*)malloc(length);
 				memcpy(node_rx_buffer,rx_buffer, length);
 				struct q_node* qn = q_node_init(node_rx_buffer, length, sockfd);
@@ -137,6 +150,7 @@ void handle_connection(struct mf_socket s){
 }
 
 
-void destory_mf_socket(struct mf_socket s){
+void destory_mf_socket(struct mf_socket s)
+{
 	destory_queue(s.rx_queue);
 }

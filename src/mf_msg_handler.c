@@ -36,21 +36,13 @@ void hello_msg_handler(struct q_node* qn)
 	//probably in the while loop of hello_msg_handler_thread_func
 	//lock the queue before reading the value
 	//Goal: make qn==NULL impossible
-
-	//status update: DONE
-	/*if(qn == NULL)
-	{
-		printf("\ninvalid node\n");
-	}
-	else*/
-	//{
-		printf("\nHello msg handling\n");
-		uint32_t xid;
-		memcpy(&xid, qn->rx_packet + 4, 4);
-		struct ofp_header oh = of13_hello_msg_constructor(xid);
-		send(qn->socket_fd, &oh, sizeof(oh), MSG_DONTWAIT);
-		destory_q_node(qn);
-	//}
+	//printf("\nHello msg handling\n");
+	uint32_t xid;
+	memcpy(&xid, qn->rx_packet + 4, 4);
+	struct ofp_header oh = of13_hello_msg_constructor(xid);
+	send(qn->socket_fd, &oh, sizeof(oh), MSG_DONTWAIT);
+	printf("\nHello msg handling");
+	destory_q_node(qn);
 	//struct ofp_header* header= (struct ofp_header*)(qn->rx_packet)
 }
 

@@ -8,7 +8,7 @@
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 
-
+extern pthread_mutex_t socket_array_mutex;
 
 static void msg_queue_init()
 {
@@ -19,12 +19,8 @@ static void msg_queue_init()
 
 static inline uint8_t parser_msg_type(struct q_node* qn)
 {
-	//char* content = (char*)(qn->rx_packet);
-	//printf("\nparser_msg_type:Packet content:%s\n", content);
 	uint8_t type;
-	//printf("\nruning here\n");
 	memcpy(&type, qn->rx_packet + 1, 1);
-	//printf("\ntype:%d\n", type);
 	return type;
 }
 
@@ -42,41 +38,20 @@ static struct q_node* get_q_node(struct mf_socket_array_node* san)
 	else
 	{
 		struct q_node* tmp = pop_q_node(san->s.rx_queue);
-		//char* content = (char*)(tmp->rx_packet);
-		//printf("\nPacket content:%s\n", content);
-		//return pop_q_node(san->s.rx_queue);
 		return tmp;
 	}
 }
 
-/*static struct mf_socket_array_node* get_socket_array_node()
-{
-
-}
-*/
 static void push_msg_queue(struct q_node* qn)
 {
-	//char* content = (char*)(qn->rx_packet);
-	//printf("\npush_msg_:Packet content:%s\n", content);
 	uint8_t version = parser_msg_version(qn);
 	uint8_t type = parser_msg_type(qn);
-	//printf("\nstep out of parser_msg_type_func");
-	printf("\ntype:%d", type);
-	//type++;
+	//printf("\ntype:%d", type);
 	if(version ==4 && type == 0)
 	{
 		if(!push_q_node(qn, Hello_rx_message_queue))
 			printf("push queue failed");
 	}
-	//print_queue(Hello_rx_message_queue);
-	//printf("Got msg");
-	/*switch(type)
-	{
-		case HELLO :
-			push_q_node(qn, Hello_rx_message_queue);
-			break;
-	}
-	*/
 }
 
 void* parser_work(void* arg)
@@ -85,8 +60,11 @@ void* parser_work(void* arg)
 	//tmp = mf_socket_array->head;
 	while(1)
 	{
+		pthread_mutex_lock(&socket_array_mutex);
 		if(mf_socket_array->head != NULL)
+		//if(mf_socket_array->array_length)
 			tmp = mf_socket_array->head;
+		pthread_mutex_unlock(&socket_array_mutex);
 		while(tmp)
 		{
 				struct q_node* qn = get_q_node(tmp);
