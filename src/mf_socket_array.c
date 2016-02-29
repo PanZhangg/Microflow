@@ -50,12 +50,13 @@ uint8_t insert_mf_socket_array (struct mf_socket_array_node* n, struct mf_socket
 
 uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){
 //	pthread_mutex_lock(&socket_array_mutex);
-	if(socket_fd < 0 || q == NULL)
+	if(socket_fd < 0 || q->head == NULL)
 	{
 //		pthread_mutex_unlock(&socket_array_mutex);
 		return 0;
 	}
 	struct mf_socket_array_node * tmp = q->head;
+	//pthread_mutex_lock(&socket_array_mutex);
 	while(tmp){
 		if(tmp->s.socket_fd == socket_fd){
 			if(q->array_length == 1){
@@ -79,7 +80,7 @@ uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){
 		}else{
 			if(tmp == q->tail)
 			{
-//				pthread_mutex_unlock(&socket_array_mutex);
+				//pthread_mutex_unlock(&socket_array_mutex);
 				return 0;
 			} //No matched socket_fd
 				//return 0;
@@ -89,7 +90,7 @@ uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){
 	}
 	q->array_length--;
 	destory_mf_socket(tmp->s);
-//	pthread_mutex_unlock(&socket_array_mutex);
+	//pthread_mutex_unlock(&socket_array_mutex);
 	return 1;
 }
 

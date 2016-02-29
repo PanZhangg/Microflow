@@ -25,7 +25,24 @@ void mf_write_log(char* msg)
 		//exit(0);
 	}
 	char* t = get_asctime();
-	fprintf(MF_LOG_FILE, "[%s]:%s\n", t, msg);	
+	if(fprintf(MF_LOG_FILE, "[%s]:%s\n", t, msg) < 0)
+	{
+		printf("Log write error");
+	}	
+}
+
+void mf_write_socket_log(char* msg, int socketfd)
+{
+	if(msg == NULL)
+	{
+		printf("\nLog Msg is null");
+		//exit(0);
+	}
+	char* t = get_asctime();
+	if(fprintf(MF_LOG_FILE, "[%s]:<Socket: %d>, %s\n", t, socketfd, msg) < 0)
+	{
+		printf("Log write error");
+	}
 }
 
 void mf_logger_close()

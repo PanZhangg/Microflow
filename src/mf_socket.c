@@ -1,6 +1,7 @@
 #include "mf_socket.h"
 #include "mf_socket_array.h"
 #include "mf_msg_parser.h"
+#include "mf_logger.h"
 
 #include <stdio.h>  
 #include <stdlib.h>  
@@ -13,7 +14,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-
+#include <pthread.h>
+extern pthread_mutex_t socket_array_mutex;
 //struct mf_socket mf_socket_array[4096];
 struct mf_socket_array * mf_socket_array;
 struct sockaddr_in controller_addr, switch_addr;
@@ -51,6 +53,7 @@ struct mf_socket mf_listen_socket_create()
 	}
 	s.rx_queue = mf_rx_queue_init();
 	//printf("\nlisten socket created\n");
+	mf_write_socket_log("controller socket created",s.socket_fd);
 	return s;
 }
 
@@ -85,6 +88,7 @@ void mf_socket_bind(struct mf_socket s)
 		perror("socket bind failed");
 		exit(0);
 	}
+	mf_write_socket_log("socket binded with local IP addresses",s.socket_fd);
 	//printf("\nsocket binded, IP:%u, Port:%d\n",ntohl(controller_addr.sin_addr.s_addr), ntohs(controller_addr.sin_port));
 }
 
@@ -104,24 +108,29 @@ void handle_connection(struct mf_socket s)
 			if(events[i].data.fd == s.socket_fd)
 			{
 				printf("incoming connection\n");
+				mf_write_socket_log("Incoming socket connection", s.socket_fd);
 				connfd = accept(s.socket_fd, (struct sockaddr*)&switch_addr, &clilen);
 				//printf("\nconnfd: %d", connfd);
-				if(connfd<0){
+				if(connfd<0)
+				{
                     perror("connfd<0");
+                    //mf_write_socket_log("connfd < 0", s.socket_fd);
                     exit(1);
+				}
+				//mf_socket_array[connfd] = mf_socket_create(connfd);
+				struct mf_socket sk = mf_socket_create(connfd);
+				struct mf_socket_array_node* san = mf_socket_array_node_init(sk);
+				pthread_mutex_lock(&socket_array_mutex);
+				if(insert_mf_socket_array(san,mf_socket_array) != 1)
+				{
+					perror("insert socket error");
+					exit(1);
+				}
+				pthread_mutex_unlock(&socket_array_mutex);
+				ev.data.fd = connfd;
+				ev.events = EPOLLIN | EPOLLET;
+				epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
 			}
-			//mf_socket_array[connfd] = mf_socket_create(connfd);
-			struct mf_socket sk = mf_socket_create(connfd);
-			struct mf_socket_array_node* san = mf_socket_array_node_init(sk);
-			if(insert_mf_socket_array(san,mf_socket_array) != 1)
-			{
-				perror("insert socket error");
-				exit(1);
-			}
-			ev.data.fd = connfd;
-			ev.events = EPOLLIN | EPOLLET;
-			epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
-		}
 			else if(events[i].events & EPOLLIN)
 			{
 				int sockfd = events[i].data.fd;
@@ -132,8 +141,16 @@ void handle_connection(struct mf_socket s)
 				int length = read(sockfd, rx_buffer, 4096);
 				if(length == 0)
 				{
-					delete_socket_array_node(sockfd, mf_socket_array);
+					pthread_mutex_lock(&socket_array_mutex);
+					if(delete_socket_array_node(sockfd, mf_socket_array) == 0)
+					{
+						perror("can not delete socket array node");
+						break;
+					}
 					close(sockfd);
+					mf_write_socket_log("socket closed", sockfd);
+					printf("socket closed\n");
+					pthread_mutex_unlock(&socket_array_mutex);
 					break;
 				}
 				if(length < 0 )
