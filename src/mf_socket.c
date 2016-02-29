@@ -102,7 +102,7 @@ void handle_connection(struct mf_socket s)
 	parser_thread_start();
 	while(1)
 	{
-		nfds = epoll_wait(epfd, events, 2000000, -1);
+		nfds = epoll_wait(epfd, events, 4096, -1);
 		for(i = 0; i < nfds; i++)
 		{
 			if(events[i].data.fd == s.socket_fd)
@@ -120,13 +120,13 @@ void handle_connection(struct mf_socket s)
 				//mf_socket_array[connfd] = mf_socket_create(connfd);
 				struct mf_socket sk = mf_socket_create(connfd);
 				struct mf_socket_array_node* san = mf_socket_array_node_init(sk);
-				pthread_mutex_lock(&socket_array_mutex);
+				//pthread_mutex_lock(&socket_array_mutex);
 				if(insert_mf_socket_array(san,mf_socket_array) != 1)
 				{
 					perror("insert socket error");
 					exit(1);
 				}
-				pthread_mutex_unlock(&socket_array_mutex);
+				//pthread_mutex_unlock(&socket_array_mutex);
 				ev.data.fd = connfd;
 				ev.events = EPOLLIN | EPOLLET;
 				epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
@@ -141,26 +141,29 @@ void handle_connection(struct mf_socket s)
 				int length = read(sockfd, rx_buffer, 4096);
 				if(length == 0)
 				{
-					pthread_mutex_lock(&socket_array_mutex);
+				//	pthread_mutex_lock(&socket_array_mutex);
 					if(delete_socket_array_node(sockfd, mf_socket_array) == 0)
 					{
 						perror("can not delete socket array node");
 						break;
 					}
 					close(sockfd);
+				//	pthread_mutex_unlock(&socket_array_mutex);
 					mf_write_socket_log("socket closed", sockfd);
-					printf("socket closed\n");
-					pthread_mutex_unlock(&socket_array_mutex);
+					printf("socket closed\n");	
 					break;
 				}
 				if(length < 0 )
+				{
+					printf("socket error\n");
 					break;
+				}
 				char* node_rx_buffer = (char*)malloc(length);
 				memcpy(node_rx_buffer,rx_buffer, length);
 				struct q_node* qn = q_node_init(node_rx_buffer, length, sockfd);
 				struct mf_rx_queue* rxq = get_rx_queue(sockfd, mf_socket_array);
 				if(push_q_node(qn, rxq) == 0)
-					continue;
+					printf("queue push error");
 			}
 		}
 	}
@@ -169,5 +172,6 @@ void handle_connection(struct mf_socket s)
 
 void destory_mf_socket(struct mf_socket s)
 {
+	while(s.rx_queue->queue_length);
 	destory_queue(s.rx_queue);
 }

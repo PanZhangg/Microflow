@@ -56,36 +56,34 @@ static void push_msg_queue(struct q_node* qn)
 
 void* parser_work(void* arg)
 {
-	//struct mf_socket_array_node * tmp = NULL;
-	//tmp = mf_socket_array->head;
+	struct mf_socket_array_node * tmp = NULL;
+
 	while(1)
 	{
-		pthread_mutex_lock(&socket_array_mutex);
-		struct mf_socket_array_node * tmp = NULL;
 		//pthread_mutex_lock(&socket_array_mutex);
-		if(mf_socket_array->head != NULL)
+		
+		//pthread_mutex_lock(&socket_array_mutex);
+		if(mf_socket_array->array_length != 0)
 		{
-		//if(mf_socket_array->array_length)
 			tmp = mf_socket_array->head;
-			pthread_mutex_unlock(&socket_array_mutex);
+		//	pthread_mutex_unlock(&socket_array_mutex);
 		}
 		else
-			pthread_mutex_unlock(&socket_array_mutex);
+		{
+			tmp = NULL;
+		//	pthread_mutex_unlock(&socket_array_mutex);
+		}
 			//break;
 			//continue;
 		//pthread_mutex_unlock(&socket_array_mutex);
 		while(tmp)
 		{
-				pthread_mutex_lock(&socket_array_mutex);
+				//pthread_mutex_lock(&socket_array_mutex);
 				struct q_node* qn = get_q_node(tmp);
-				pthread_mutex_unlock(&socket_array_mutex);
+				//pthread_mutex_unlock(&socket_array_mutex);
 				if(qn == NULL)
 				{
 					goto goto_next_node;
-					/*if(tmp->next_node == NULL)
-						tmp = mf_socket_array->head;
-					else
-						tmp = tmp->next_node;*/
 				}
 				else
 				{
@@ -94,7 +92,7 @@ goto_next_node:
 					//pthread_mutex_lock(&socket_array_mutex);
 					if(tmp->next_node == NULL)
 					{
-						if(mf_socket_array->head == NULL)
+						if(mf_socket_array->array_length == 0)
 						{
 							printf("array head == NULL\n");
 							tmp = mf_socket_array->head;
