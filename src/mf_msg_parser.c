@@ -61,7 +61,7 @@ void* parser_work(void* arg)
 	while(1)
 	{
 		//pthread_mutex_lock(&socket_array_mutex);
-		
+parser_start:	
 		//pthread_mutex_lock(&socket_array_mutex);
 		if(mf_socket_array->array_length != 0)
 		{
@@ -94,12 +94,16 @@ goto_next_node:
 					{
 						if(mf_socket_array->array_length == 0)
 						{
-							printf("array head == NULL\n");
-							tmp = mf_socket_array->head;
+							goto parser_start;
+							//printf("array head == NULL\n");
+							//tmp = NULL;
+							//tmp = mf_socket_array->head;
 							//exit(0);
 						}
 						else
-							continue;
+						{
+							tmp = mf_socket_array->head;
+						}
 						//pthread_mutex_unlock(&socket_array_mutex);
 					}
 					else
