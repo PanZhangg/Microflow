@@ -6,7 +6,8 @@ void mf_logger_open(const char* path)
 	if(path == NULL)
 	{
 		printf("\nLog path is not specific");
-		exit(0);
+		path = mf_default_log_path;
+		//exit(0);
 	}
 
 	MF_LOG_FILE = fopen(path, "w");
@@ -27,7 +28,7 @@ void mf_write_log(char* msg)
 	char* t = get_asctime();
 	if(fprintf(MF_LOG_FILE, "[%s]:%s\n", t, msg) < 0)
 	{
-		printf("Log write error");
+		printf("Log write error\n");
 	}	
 }
 
@@ -39,9 +40,9 @@ void mf_write_socket_log(char* msg, int socketfd)
 		//exit(0);
 	}
 	char* t = get_asctime();
-	if(fprintf(MF_LOG_FILE, "[%s]:<Socket: %d>, %s\n", t, socketfd, msg) < 0)
+	if(fprintf(MF_LOG_FILE, "[%s]:<Socket: %d> %s\n", t, socketfd, msg) < 0)
 	{
-		printf("Log write error");
+		printf("Socket log write error\n");
 	}
 }
 
