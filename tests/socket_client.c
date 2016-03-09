@@ -41,14 +41,14 @@ int main(int argc, char** argv)
             printf("connect error: %s(errno: %d)\n",strerror(errno),errno);
             exit(0);
         }
-        sleep(1);
+        usleep(1);
     }
 
     //sleep(2);
     for(i = 0; i < 10; i++)
     {
         close(socket_fd_array[i]);
-        sleep(1);
+        usleep(1);
     }
 
 

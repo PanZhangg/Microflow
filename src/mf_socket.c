@@ -47,7 +47,7 @@ static void set_nonblocking(int sock)
 struct mf_socket mf_listen_socket_create()
 {
 	struct mf_socket s;
-	if((s.socket_fd = socket(AF_INET, SOCK_STREAM,0)) == -1){
+	if((s.socket_fd = socket(AF_INET, SOCK_STREAM,0)) < 0){
 		perror("socket created failed");
 		exit(0);
 	}
