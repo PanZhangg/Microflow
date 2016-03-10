@@ -14,10 +14,14 @@ void* handle_rx_msg(void* arg)
 	struct mf_switch * sw = (struct mf_switch*)arg;
 	while(1)
 	{
+		//pthread_mutex_lock(&(sw->sw_mutex));
 		if(sw->is_alive == 0)
 		{
+		//	pthread_mutex_unlock(&(sw->sw_mutex));
+			destory_queue(sw->rxq);
 			pthread_exit(0);
 		}
+		//pthread_mutex_unlock(&(sw->sw_mutex));
 		pthread_mutex_lock(&(sw->rxq->q_mutex));
 		if(sw->rxq->queue_length == 0 || sw->rxq->head == NULL)
 		{
@@ -27,16 +31,17 @@ void* handle_rx_msg(void* arg)
 		else 
 		{
 			print_queue(sw->rxq);
-			pthread_mutex_unlock(&(sw->rxq->q_mutex));
+			//pthread_mutex_unlock(&(sw->rxq->q_mutex));
 			struct q_node * qn = pop_q_node(sw->rxq);
 			parse_msg(sw, qn);
 		}
+		
 	}
 }
 
 struct mf_switch * mf_switch_create(uint32_t sockfd)
 {
-	struct mf_switch * sw = (struct mf_switch*)malloc(sizeof(*sw));
+	struct mf_switch * sw = (struct mf_switch*)malloc(sizeof(struct mf_switch));
 	sw->sockfd = sockfd;
 	sw->rxq = mf_rx_queue_init();
 	sw->is_alive = 1;
@@ -69,13 +74,11 @@ void mf_switch_destory(struct mf_switch * sw)
 		printf("error: switch to destory is NULL\n");
 		exit(0);
 	}
-	if(sw->is_alive == 0)
+	pthread_join(sw->pid, NULL);
+	if(close(sw->sockfd) < 0)
 	{
-		if(sw->rxq)
-			destory_queue(sw->rxq);
-		pthread_join(sw->pid, NULL);
-		close(sw->sockfd);
-		free(sw);
+		printf("socket close error\n");
 	}
+	free(sw);
 }
 

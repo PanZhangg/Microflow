@@ -53,7 +53,7 @@ uint8_t push_q_node(struct q_node* n, struct mf_rx_queue* q){
 
 struct q_node* pop_q_node(struct mf_rx_queue* q){
 	pthread_mutex_lock(&(q->q_mutex));
-	if(!q->queue_length)
+	if(!q->queue_length || q->head == NULL)
 	{
 		pthread_mutex_unlock(&(q->q_mutex));
 		return NULL;
@@ -96,15 +96,19 @@ void destory_queue(struct mf_rx_queue* q){
 	{
 		while(q->head)
 		{
-			struct q_node* tmp;
-			tmp = q->head;
-			q->head = tmp->next_node;
-			destory_q_node(tmp);
+				struct q_node* tmp;
+				tmp = q->head;
+				q->head = tmp->next_node;
+				destory_q_node(tmp);
 		}
 		q->queue_length = 0;
 		pthread_mutex_unlock(&(q->q_mutex));
-		//free(q);
 	}
+	else
+	{
+		pthread_mutex_unlock(&(q->q_mutex));
+	}
+	free(q);
 }
 
 static void print_q_node(struct q_node* n){
