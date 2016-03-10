@@ -1,0 +1,328 @@
+[Thu Mar 10 02:49:45 2016]:--Test starts here--
+[Thu Mar 10 02:49:45 2016]:<Socket: 4> controller socket created
+[Thu Mar 10 02:49:45 2016]:<Socket: 4> socket binded with local IP addresses
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:46 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:52 2016]:<Socket: 6> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 7> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 8> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 9> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 10> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 11> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 12> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 13> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 14> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 15> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 16> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 17> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 18> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 19> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 20> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 21> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 22> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 23> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 24> socket closed
+[Thu Mar 10 02:49:52 2016]:<Socket: 25> socket closed
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:49:55 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:00 2016]:<Socket: 6> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 7> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 8> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 9> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 10> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 11> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 12> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 13> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 14> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 15> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 16> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 17> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 18> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 19> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 20> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 21> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 22> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 23> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 24> socket closed
+[Thu Mar 10 02:50:00 2016]:<Socket: 25> socket closed
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:05 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:11 2016]:<Socket: 6> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 7> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 8> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 9> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 10> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 11> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 12> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 13> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 14> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 15> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 16> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 17> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 18> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 19> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 20> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 21> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 22> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 23> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 24> socket closed
+[Thu Mar 10 02:50:11 2016]:<Socket: 25> socket closed
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:13 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:14 2016]:<Socket: 4> Incoming socket connection
+[Thu Mar 10 02:50:27 2016]:<Socket: 6> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 7> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 8> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 9> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 10> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 11> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 12> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 13> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 14> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 15> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 16> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 17> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 18> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 19> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 20> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 21> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 22> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 23> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 24> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 25> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 26> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 27> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 28> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 29> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 30> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 31> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 33> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 34> socket closed
+[Thu Mar 10 02:50:27 2016]:<Socket: 36> socket closed
+[Thu Mar 10 02:50:28 2016]:<Socket: 106> socket closed
+[

@@ -15,6 +15,8 @@ struct mf_switch
 	struct mf_rx_queue * rxq;
 	/*--thread--*/
 	pthread_t pid;
+	uint8_t is_alive;
+	pthread_mutex_t sw_mutex;
 	/*--openflow--*/
 	uint64_t datapath_id;
 	uint32_t n_buffers;

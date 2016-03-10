@@ -28,52 +28,58 @@ struct mf_rx_queue* mf_rx_queue_init(){
 }
 
 uint8_t push_q_node(struct q_node* n, struct mf_rx_queue* q){
+	pthread_mutex_lock(&(q->q_mutex));
 	if(n == NULL || q == NULL)
 		return 0;
-	//printf("\nqueue locked");
-	pthread_mutex_lock(&(q->q_mutex));
 	if(!q->queue_length){
 		q->head = n;
 		q->tail = n;
 		q->queue_length = 1;
-		//printf("\nqueue unlocked");
 		pthread_mutex_unlock(&(q->q_mutex));
 		return 1;
-	}else{
+	}
+	else if(q->queue_length > 0)
+	{
 		q->tail->next_node = n;
 		n->previous_node = q->tail;
 		n->next_node = NULL;
 		q->tail = n;
 		q->queue_length++;
-		//printf("\nqueue unlocked");
 		pthread_mutex_unlock(&(q->q_mutex));
 		return 1;
 	}
+	return 0;
 }
 
 struct q_node* pop_q_node(struct mf_rx_queue* q){
 	pthread_mutex_lock(&(q->q_mutex));
 	if(!q->queue_length)
+	{
+		pthread_mutex_unlock(&(q->q_mutex));
 		return NULL;
+	}
 	else
 	{
 		struct q_node* tmp = NULL;
 		tmp = q->head;
-		//printf("\nqueue locked");
-		//pthread_mutex_lock(&(q->q_mutex));
 		if(q->queue_length == 1)
 		{
 			q->head = NULL;
 			q->tail = NULL;
+			q->queue_length = 0;
 		}
-		else
+		else if(q->queue_length > 1)
 		{	
 			q->head = tmp->next_node;
 			q->head->previous_node = NULL;
 			tmp->next_node = NULL;
+			q->queue_length--;
 		}
-		q->queue_length--;
-		//printf("\nqueue unlocked");
+		else
+		{
+			pthread_mutex_unlock(&(q->q_mutex));
+			return NULL;
+		} 
 		pthread_mutex_unlock(&(q->q_mutex));
 		return tmp;
 	}
@@ -86,21 +92,24 @@ void destory_q_node(struct q_node* n){
 
 void destory_queue(struct mf_rx_queue* q){
 	pthread_mutex_lock(&(q->q_mutex));
-	while(q->head){
-		struct q_node* tmp;
-		tmp = q->head;
-		q->head = tmp->next_node;
-		free(tmp);
+	if(q != NULL && q->head != NULL)
+	{
+		while(q->head)
+		{
+			struct q_node* tmp;
+			tmp = q->head;
+			q->head = tmp->next_node;
+			destory_q_node(tmp);
+		}
+		q->queue_length = 0;
+		pthread_mutex_unlock(&(q->q_mutex));
+		//free(q);
 	}
-	q->queue_length = 0;
-	pthread_mutex_unlock(&(q->q_mutex));
-	free(q);
-
 }
 
 static void print_q_node(struct q_node* n){
 	char* content = (char*)(n->rx_packet);
-	printf("\nPacket content:%s\n", content);
+	printf("Packet content:%s\n", content);
 }
 
 void print_queue(struct mf_rx_queue* q){

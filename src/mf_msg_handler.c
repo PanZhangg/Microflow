@@ -27,9 +27,9 @@ void hello_msg_handler(struct mf_switch* sw, struct q_node* qn)
 	}
 	else
 	{
-
+		
 	}
-	printf("\nHello msg handling");
+	printf("Hello msg handling\n");
 	destory_q_node(qn);
 }
 

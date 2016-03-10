@@ -41,28 +41,17 @@ int main(int argc, char** argv)
             printf("connect error: %s(errno: %d)\n",strerror(errno),errno);
             exit(0);
         }
-        usleep(1);
+        char c[256] = "hello from a socket";
+        send(sockfd, c, sizeof(c), MSG_CONFIRM);
+        usleep(100);
     }
 
     //sleep(2);
     for(i = 0; i < 10; i++)
     {
         close(socket_fd_array[i]);
-        usleep(1);
+        usleep(100);
     }
 
-
-    while(1){
-
-    printf("send msg to server: \n");
-    fgets(sendline, 4096, stdin);
-    if( send(sockfd, sendline, strlen(sendline), 0) < 0)
-    {
-    printf("send msg error: %s(errno: %d)\n", strerror(errno), errno);
-    exit(0);
-    }
-    }
-
-    close(sockfd);
-    exit(0);
+    return 0;
 }

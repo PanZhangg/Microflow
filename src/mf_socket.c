@@ -1,6 +1,7 @@
 #include "mf_socket.h"
 #include "mf_logger.h"
 #include "mf_switch.h"
+#include "mf_devicemgr.h"
 
 #include <stdio.h>  
 #include <stdlib.h>  
@@ -53,7 +54,7 @@ uint32_t mf_listen_socket_create()
 
 static void epoll_init(uint32_t sock)
 {
-	epfd = epoll_create(256);
+	epfd = epoll_create(1);
 	ev.data.fd = sock;
 	ev.events = EPOLLIN | EPOLLET;
 	epoll_ctl(epfd, EPOLL_CTL_ADD, sock, &ev);
@@ -82,7 +83,6 @@ void handle_connection(uint32_t sock)
 	int i, connfd;
 	socklen_t clilen;
 	epoll_init(sock);
-	struct mf_switch * sw;
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, 4096, -1);
@@ -98,7 +98,7 @@ void handle_connection(uint32_t sock)
                     perror("connfd<0");
                     continue;
 				}
-				sw = mf_switch_create(connfd);
+				mf_switch_create(connfd);
 				ev.data.fd = connfd;
 				ev.events = EPOLLIN | EPOLLET;
 				epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
@@ -111,12 +111,14 @@ void handle_connection(uint32_t sock)
 					perror("sockfd < 0");
 					continue;
 				}
+				struct mf_switch * sw = get_switch(sockfd);
 				memset(rx_buffer, 0, 4096);
 				int length = read(sockfd, rx_buffer, 4096);
 				if(length == 0)
 				{
-			
-					close(sockfd);
+					sw->is_alive = 0;
+					//sleep(1);
+					mf_switch_destory(sw);
 					mf_write_socket_log("socket closed", sockfd);
 					printf("socket closed\n");	
 					continue;
@@ -132,7 +134,6 @@ void handle_connection(uint32_t sock)
 					memcpy(node_rx_buffer,rx_buffer, length);
 					struct q_node* qn = q_node_init(node_rx_buffer, length, sockfd);
 					struct mf_rx_queue* rxq = sw->rxq;
-					//struct mf_rx_queue* rxq = get_rx_queue(sockfd, mf_socket_array);
 					if(push_q_node(qn, rxq) == 0)
 						printf("queue push error");
 				}
@@ -140,10 +141,3 @@ void handle_connection(uint32_t sock)
 		}
 	}
 }
-
-
-/*void destory_mf_socket(struct mf_socket s)
-{
-	while(s.rx_queue->queue_length);
-	destory_queue(s.rx_queue);
-}*/
