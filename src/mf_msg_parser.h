@@ -3,17 +3,9 @@
 
 
 #include "mf_rx_queue.h"
+#include "mf_switch.h"
 
+void parse_msg(struct mf_switch*, struct q_node* );
 
-extern struct mf_socket_array * mf_socket_array;
-
-
-//Global parsered msg queue
-struct mf_rx_queue* Hello_rx_message_queue;
-struct mf_rx_queue* Echo_rx_message_queue;
-struct mf_rx_queue* Packet_in_rx_message_queue;
-
-
-void parser_thread_start();
 
 #endif

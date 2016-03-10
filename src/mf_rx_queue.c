@@ -85,13 +85,17 @@ void destory_q_node(struct q_node* n){
 }
 
 void destory_queue(struct mf_rx_queue* q){
+	pthread_mutex_lock(&(q->q_mutex));
 	while(q->head){
 		struct q_node* tmp;
 		tmp = q->head;
 		q->head = tmp->next_node;
 		free(tmp);
 	}
+	q->queue_length = 0;
+	pthread_mutex_unlock(&(q->q_mutex));
 	free(q);
+
 }
 
 static void print_q_node(struct q_node* n){
