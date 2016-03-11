@@ -17,6 +17,7 @@ void msg_handler(struct mf_switch* sw, uint8_t type, uint8_t version, struct q_n
 
 void hello_msg_handler(struct mf_switch* sw, struct q_node* qn)
 {
+
 	uint32_t xid;
 	memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);

@@ -116,11 +116,9 @@ void handle_connection(uint32_t sock)
 				int length = read(sockfd, rx_buffer, 4096);
 				if(length == 0)
 				{
-					//pthread_mutex_lock(&(sw->sw_mutex));
+					pthread_mutex_lock(&(sw->sw_mutex));
 					sw->is_alive = 0;
-					//pthread_mutex_unlock(&(sw->sw_mutex));
-					//usleep(10);
-					mf_switch_destory(sw);
+					pthread_mutex_unlock(&(sw->sw_mutex));
 					mf_write_socket_log("socket closed", sockfd);
 					printf("socket closed\n");	
 					continue;
