@@ -10,7 +10,7 @@
 
 //extern struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
 
-void* handle_rx_msg(void* arg)
+/*void* handle_rx_msg(void* arg)
 {
 	struct mf_switch * sw = (struct mf_switch*)arg;
 	while(1)
@@ -39,15 +39,12 @@ void* handle_rx_msg(void* arg)
 		}
 		
 	}
-}
+}*/
 
 struct mf_switch * mf_switch_create(uint32_t sockfd)
 {
 	struct mf_switch * sw = (struct mf_switch*)malloc(sizeof(struct mf_switch));
 	sw->sockfd = sockfd;
-	sw->rxq = mf_rx_queue_init();
-	sw->is_alive = 1;
-	pthread_mutex_init(&(sw->sw_mutex), NULL);
 	sw->datapath_id = 0;
 	sw->n_buffers = 0;
 	sw->n_tables = 0;
@@ -55,17 +52,7 @@ struct mf_switch * mf_switch_create(uint32_t sockfd)
 	sw->capabilities = 0;
 	memset(&(sw->ports), 0, sizeof(sw->ports));
 	sw->is_hello_sent = 0;
-
 	add_switch(sw);
-
-	sw->pid = pthread_create(&(sw->pid), NULL, handle_rx_msg, (void*)sw);
-	if(sw->pid < 0)
-	{
-		printf("error: pthread create failed\n");
-		exit(0);
-	}
-
-
 	return sw;
 }
 

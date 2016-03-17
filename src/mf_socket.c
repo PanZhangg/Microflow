@@ -2,7 +2,8 @@
 #include "mf_logger.h"
 #include "mf_switch.h"
 #include "mf_devicemgr.h"
-
+#include "mf_rx_queue.h"
+#include "mf_msg_parser.h"
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <string.h>  
@@ -19,6 +20,7 @@
 struct sockaddr_in controller_addr, switch_addr;
 struct epoll_event ev, events[EPOLL_EVENTS_NUM];
 
+struct mf_rx_queue* MSG_RX_QUEUE;
 uint32_t epfd, nfds;
 
 char rx_buffer[4096];
@@ -83,6 +85,7 @@ void handle_connection(uint32_t sock)
 	int i, connfd;
 	socklen_t clilen;
 	epoll_init(sock);
+	MSG_RX_QUEUE = mf_rx_queue_init();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, 4096, 0);
@@ -99,6 +102,7 @@ void handle_connection(uint32_t sock)
                     continue;
 				}
 				mf_switch_create(connfd);
+				parse_thread_start(2);
 				ev.data.fd = connfd;
 				ev.events = EPOLLIN | EPOLLET;
 				epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
@@ -116,9 +120,7 @@ void handle_connection(uint32_t sock)
 				int length = read(sockfd, rx_buffer, 4096);
 				if(length == 0)
 				{
-					pthread_mutex_lock(&(sw->sw_mutex));
-					sw->is_alive = 0;
-					pthread_mutex_unlock(&(sw->sw_mutex));
+					mf_switch_destory(sw);
 					mf_write_socket_log("socket closed", sockfd);
 					printf("socket closed\n");	
 					continue;
@@ -132,9 +134,8 @@ void handle_connection(uint32_t sock)
 				{
 					char* node_rx_buffer = (char*)malloc(length);
 					memcpy(node_rx_buffer,rx_buffer, length);
-					struct q_node* qn = q_node_init(node_rx_buffer, length, sockfd);
-					struct mf_rx_queue* rxq = sw->rxq;
-					if(push_q_node(qn, rxq) == 0)
+					struct q_node* qn = q_node_init(node_rx_buffer, length, sw);
+					if(push_q_node(qn, MSG_RX_QUEUE) == 0)
 						printf("queue push error");
 				}
 			}

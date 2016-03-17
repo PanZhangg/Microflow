@@ -6,18 +6,10 @@
 
 #define MAX_MF_SWITCH_PORT_NUM 256
 
-struct mf_rx_queue;
-
 struct mf_switch
 {
 	/*--socket--*/
 	uint32_t sockfd;
-	/*--msg queue--*/
-	struct mf_rx_queue * rxq;
-	/*--thread--*/
-	pthread_t pid;
-	uint8_t is_alive;
-	pthread_mutex_t sw_mutex;
 	/*--openflow--*/
 	uint64_t datapath_id;
 	uint32_t n_buffers;
