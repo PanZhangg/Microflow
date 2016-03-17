@@ -1,8 +1,6 @@
 #ifndef __MF_SOCKET_H__
 #define __MF_SOCKET_H__
   
-
-
 #include "./Openflow/types.h"
 
 #define DEFAULT_PORT 6633

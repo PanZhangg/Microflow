@@ -2,6 +2,7 @@
 #define __MF_RX_QUEUE_H__
 
 #include "./Openflow/types.h"
+
 #include <pthread.h>
 
 struct mf_switch;

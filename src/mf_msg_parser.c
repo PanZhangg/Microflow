@@ -1,3 +1,4 @@
+#include <sched.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,8 +12,13 @@
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 
+
 void * worker_thread(void* arg)
 {
+	//cpu_set_t my_set;
+	//CPU_ZERO(&my_set);
+	//CPU_SET(1, &my_set);
+	//pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &my_set);
 	while(1)
 	{
 		struct q_node * qn = pop_q_node(MSG_RX_QUEUE);
@@ -23,6 +29,9 @@ void * worker_thread(void* arg)
 void parse_thread_start(uint8_t num)
 {
 	int i;
+
+	
+	
 	for(i = 0; i < num; i++)
 	{
 		pthread_t thread_id;

@@ -1,9 +1,9 @@
 #include "mf_socket.h"
+#include "mf_msg_parser.h"
 #include "mf_logger.h"
 #include "mf_switch.h"
 #include "mf_devicemgr.h"
 #include "mf_rx_queue.h"
-#include "mf_msg_parser.h"
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <string.h>  
@@ -15,7 +15,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include <pthread.h>
 
 struct sockaddr_in controller_addr, switch_addr;
 struct epoll_event ev, events[EPOLL_EVENTS_NUM];

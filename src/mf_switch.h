@@ -1,6 +1,5 @@
 #ifndef __MF_SWITCH_H__
 #define __MF_SWITCH_H__
-#include <pthread.h>
 //#include "mf_rx_queue.h"
 #include "./Openflow/openflow-1.1.h"
 
