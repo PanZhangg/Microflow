@@ -86,6 +86,8 @@ struct q_node* pop_q_node(struct mf_rx_queue* q){
 
 void destory_q_node(struct q_node* n){
 	if(n != NULL)
+		if(n->rx_packet)
+			free(n->rx_packet);
 		free(n);
 }
 

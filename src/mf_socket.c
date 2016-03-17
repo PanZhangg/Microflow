@@ -88,7 +88,7 @@ void handle_connection(uint32_t sock)
 	MSG_RX_QUEUE = mf_rx_queue_init();
 	while(1)
 	{
-		nfds = epoll_wait(epfd, events, 4096, 0);
+		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, 100);
 		for(i = 0; i < nfds; i++)
 		{
 			if(events[i].data.fd == sock)
@@ -102,9 +102,9 @@ void handle_connection(uint32_t sock)
                     continue;
 				}
 				mf_switch_create(connfd);
-				parse_thread_start(2);
+				parse_thread_start(WORKER_THREADS_NUM);
 				ev.data.fd = connfd;
-				ev.events = EPOLLIN | EPOLLET;
+				ev.events = EPOLLIN;
 				epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
 			}
 			else if(events[i].events & EPOLLIN)
@@ -132,6 +132,9 @@ void handle_connection(uint32_t sock)
 				}
 				else
 				{
+					/*TO DO 
+					Make a mem pool for recv messages
+					re-alloc mem when the pool is full**/
 					char* node_rx_buffer = (char*)malloc(length);
 					memcpy(node_rx_buffer,rx_buffer, length);
 					struct q_node* qn = q_node_init(node_rx_buffer, length, sw);

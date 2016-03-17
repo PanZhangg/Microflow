@@ -14,6 +14,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 	{
 		hello_msg_handler(qn);
 	}
+	destory_q_node(qn);
 }
 
 void hello_msg_handler(struct q_node* qn)
@@ -32,7 +33,6 @@ void hello_msg_handler(struct q_node* qn)
 		
 	}
 	printf("Hello msg handling\n");
-	destory_q_node(qn);
 }
 
 

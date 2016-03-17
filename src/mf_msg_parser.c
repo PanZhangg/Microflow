@@ -23,7 +23,7 @@ void * worker_thread(void* arg)
 void parse_thread_start(uint8_t num)
 {
 	int i;
-	for(i = 1; i < num; i++)
+	for(i = 0; i < num; i++)
 	{
 		pthread_t thread_id;
 		if((pthread_create(&thread_id, NULL, worker_thread, NULL)) < 0)
