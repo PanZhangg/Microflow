@@ -1,4 +1,7 @@
 #include "mf_devicemgr.h"
+#include "mf_switch.h"
+
+struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
 
 struct mf_switch * get_switch(uint32_t sock)
 {

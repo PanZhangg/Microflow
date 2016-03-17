@@ -73,7 +73,7 @@ void stopwatch_countdown(struct mf_switch * sw, struct stopwatch_list * swl)
 		}
 		tmp = tmp->next;
 	}
-	sleep(1);
+	//sleep(1);
 }
 
 char* get_asctime()

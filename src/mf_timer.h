@@ -2,7 +2,10 @@
 #define __MF_TIMER_H__
 
 #include <time.h>
-#include "mf_switch.h"
+//#include "mf_switch.h"
+#include "Openflow/types.h"
+
+struct mf_switch;
 
 typedef void (*stopwatch_switch_callback)(struct mf_switch* );
 

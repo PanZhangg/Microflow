@@ -2,6 +2,7 @@
 #include "mf_msg_parser.h"
 #include "mf_logger.h"
 #include "mf_devicemgr.h"
+#include "mf_rx_queue.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

@@ -56,7 +56,7 @@ static void epoll_init(uint32_t sock)
 {
 	epfd = epoll_create(1);
 	ev.data.fd = sock;
-	ev.events = EPOLLIN | EPOLLET;
+	ev.events = EPOLLIN;
 	epoll_ctl(epfd, EPOLL_CTL_ADD, sock, &ev);
 	set_nonblocking(sock);
 	listen(sock, SOMAXCONN);
@@ -85,14 +85,14 @@ void handle_connection(uint32_t sock)
 	epoll_init(sock);
 	while(1)
 	{
-		nfds = epoll_wait(epfd, events, 4096, -1);
+		nfds = epoll_wait(epfd, events, 4096, 0);
 		for(i = 0; i < nfds; i++)
 		{
 			if(events[i].data.fd == sock)
 			{
 				printf("incoming connection\n");
-				mf_write_socket_log("Incoming socket connection", sock);
 				connfd = accept(sock, (struct sockaddr*)&switch_addr, &clilen);
+				mf_write_socket_log("Incoming socket connection", connfd);
 				if(connfd < 0)
 				{
                     perror("connfd<0");

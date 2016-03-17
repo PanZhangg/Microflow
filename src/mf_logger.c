@@ -1,6 +1,11 @@
 #include "mf_logger.h"
 #include "mf_timer.h"
 
+#include <stdint.h>
+#include <stdlib.h>
+
+FILE* MF_LOG_FILE;
+
 void mf_logger_open(const char* path)
 {
 	if(path == NULL)

@@ -4,6 +4,8 @@
 #include "mf_msg_parser.h"
 #include "mf_msg_handler.h"
 #include "mf_logger.h"
+#include "mf_rx_queue.h"
+#include "mf_switch.h"
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 

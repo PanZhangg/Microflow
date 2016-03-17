@@ -1,11 +1,12 @@
 #ifndef __MF_SWITCH_H__
 #define __MF_SWITCH_H__
 #include <pthread.h>
-#include "mf_rx_queue.h"
+//#include "mf_rx_queue.h"
 #include "./Openflow/openflow-1.1.h"
 
 #define MAX_MF_SWITCH_PORT_NUM 256
 
+struct mf_rx_queue;
 
 struct mf_switch
 {
