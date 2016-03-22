@@ -2,17 +2,20 @@
 #define __MF_RX_QUEUE_H__
 
 #include "./Openflow/types.h"
-
 #include <pthread.h>
+
+#define RX_PACKET_SIZE 1024
 
 struct mf_switch;
 
 struct q_node{
-	void* rx_packet;
+	char rx_packet[RX_PACKET_SIZE];
 	uint16_t packet_length;
+	uint8_t is_occupied;
+	//uint8_t is_freed;
 	struct mf_switch* sw;
-	struct q_node* next_node;
-	struct q_node* previous_node;
+	//struct q_node* next_node;
+	//struct q_node* previous_node;
 };
 
 struct mf_rx_queue{

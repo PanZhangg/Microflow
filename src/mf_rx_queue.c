@@ -1,7 +1,7 @@
 #include "mf_rx_queue.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+/*
 struct q_node* q_node_init(void* packet_buffer, uint16_t length, struct mf_switch* sw){
 	struct q_node* q = (struct q_node*)malloc(sizeof(struct q_node));
 	q->rx_packet = packet_buffer;
@@ -126,4 +126,5 @@ void print_queue(struct mf_rx_queue* q){
 	}
 
 }
+*/
 

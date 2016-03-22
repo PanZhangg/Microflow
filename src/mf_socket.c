@@ -4,6 +4,7 @@
 #include "mf_switch.h"
 #include "mf_devicemgr.h"
 #include "mf_rx_queue.h"
+#include "mf_mempool.h"
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <string.h>  
@@ -18,8 +19,7 @@
 
 struct sockaddr_in controller_addr, switch_addr;
 struct epoll_event ev, events[EPOLL_EVENTS_NUM];
-
-struct mf_rx_queue* MSG_RX_QUEUE;
+struct mf_queue_node_mempool * MSG_RX_QUEUE;
 uint32_t epfd, nfds;
 
 char rx_buffer[4096];
@@ -84,7 +84,7 @@ void handle_connection(uint32_t sock)
 	int i, connfd;
 	socklen_t clilen;
 	epoll_init(sock);
-	MSG_RX_QUEUE = mf_rx_queue_init();
+	MSG_RX_QUEUE = mf_queue_node_mempool_create();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, 100);
@@ -131,14 +131,7 @@ void handle_connection(uint32_t sock)
 				}
 				else
 				{
-					/*TO DO 
-					Make a mem pool for recv messages
-					re-alloc mem when the pool is full**/
-					char* node_rx_buffer = (char*)malloc(length);
-					memcpy(node_rx_buffer,rx_buffer, length);
-					struct q_node* qn = q_node_init(node_rx_buffer, length, sw);
-					if(push_q_node(qn, MSG_RX_QUEUE) == 0)
-						printf("queue push error");
+					push_queue_node_to_mempool(rx_buffer, length, sw, MSG_RX_QUEUE);
 				}
 			}
 		}

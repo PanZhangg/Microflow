@@ -5,15 +5,16 @@
 #include <sys/types.h>
 #include "mf_msg_handler.h"
 #include "mf_ofmsg_constructor.h"
+#include "mf_mempool.h"
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
-	//printf("msg received\n");
+	printf("msg received\n");
 	if(version == 4 && type == 0)
 	{
 		hello_msg_handler(qn);
 	}
-	destory_q_node(qn);
+	free_memblock(qn, MSG_RX_QUEUE);
 }
 
 void hello_msg_handler(struct q_node* qn)

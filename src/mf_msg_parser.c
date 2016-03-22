@@ -9,6 +9,7 @@
 #include "mf_rx_queue.h"
 #include "mf_switch.h"
 #include "mf_socket.h"
+#include "mf_mempool.h"
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 
@@ -21,7 +22,7 @@ void * worker_thread(void* arg)
 	//pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &my_set);
 	while(1)
 	{
-		struct q_node * qn = pop_q_node(MSG_RX_QUEUE);
+		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
 		parse_msg(qn);
 	}
 }
@@ -29,9 +30,6 @@ void * worker_thread(void* arg)
 void parse_thread_start(uint8_t num)
 {
 	int i;
-
-	
-	
 	for(i = 0; i < num; i++)
 	{
 		pthread_t thread_id;
@@ -45,7 +43,7 @@ void parse_thread_start(uint8_t num)
 
 static inline uint8_t parse_msg_type(struct q_node* qn)
 {
-	if(qn == NULL || qn->rx_packet == NULL)
+	if(qn == NULL)
 	{
 		return 0;
 	}
@@ -56,7 +54,7 @@ static inline uint8_t parse_msg_type(struct q_node* qn)
 
 static inline uint8_t parse_msg_version(struct q_node* qn)
 {
-	if(qn == NULL || qn->rx_packet == NULL)
+	if(qn == NULL)
 	{
 		return 0;
 	}
