@@ -22,7 +22,8 @@ struct epoll_event ev, events[EPOLL_EVENTS_NUM];
 struct mf_queue_node_mempool * MSG_RX_QUEUE;
 uint32_t epfd, nfds;
 
-char rx_buffer[4096];
+#define RX_BUFFER_SIZE 8192
+
 
 static void set_nonblocking(uint32_t sock)
 {
@@ -83,11 +84,12 @@ void handle_connection(uint32_t sock)
 {
 	int i, connfd;
 	socklen_t clilen;
+	char rx_buffer[RX_BUFFER_SIZE];
 	epoll_init(sock);
 	MSG_RX_QUEUE = mf_queue_node_mempool_create();
 	while(1)
 	{
-		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, 100);
+		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, 10);
 		for(i = 0; i < nfds; i++)
 		{
 			if(events[i].data.fd == sock)
@@ -97,7 +99,7 @@ void handle_connection(uint32_t sock)
 				mf_write_socket_log("Incoming socket connection", connfd);
 				if(connfd < 0)
 				{
-                    perror("connfd<0");
+                    perror("connfd < 0");
                     continue;
 				}
 				mf_switch_create(connfd);
@@ -115,10 +117,13 @@ void handle_connection(uint32_t sock)
 					continue;
 				}
 				struct mf_switch * sw = get_switch(sockfd);
-				memset(rx_buffer, 0, 4096);
-				int length = read(sockfd, rx_buffer, 4096);
+				memset(rx_buffer, 0, RX_BUFFER_SIZE);
+				int length = read(sockfd, rx_buffer, RX_BUFFER_SIZE);
 				if(length == 0)
 				{
+					ev.data.fd = sockfd;
+					ev.events = EPOLLIN;
+					epoll_ctl(epfd, EPOLL_CTL_DEL, sockfd, &ev);
 					mf_switch_destory(sw);
 					mf_write_socket_log("socket closed", sockfd);
 					printf("socket closed\n");	

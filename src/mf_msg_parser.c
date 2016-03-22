@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <unistd.h>
 #include "mf_msg_parser.h"
 #include "mf_msg_handler.h"
 #include "mf_logger.h"
@@ -24,7 +25,9 @@ void * worker_thread(void* arg)
 	{
 		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
 		parse_msg(qn);
+		usleep(1000);
 	}
+	
 }
 
 void parse_thread_start(uint8_t num)
