@@ -13,7 +13,9 @@ struct mf_queue_node_mempool
 	struct q_node * push;
 	struct q_node * head;
 	struct q_node * tail;
+	uint16_t valid_block_num;
 	pthread_mutex_t pool_mutex;
+	pthread_cond_t pool_cond;
 };
 
 

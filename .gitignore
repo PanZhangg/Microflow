@@ -30,3 +30,5 @@
 # Debug files
 *.dSYM/
 tests/*.log
+callgrind.*
+cachegrind.*

@@ -18,6 +18,7 @@ struct mf_switch
 	struct ofp11_port ports[MAX_MF_SWITCH_PORT_NUM];
 	/*--msg control--*/
 	uint8_t is_hello_sent;
+	uint8_t is_feature_request_sent;
 };
 
 struct mf_switch * mf_switch_create(uint32_t sockfd);

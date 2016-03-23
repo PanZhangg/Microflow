@@ -52,6 +52,7 @@ struct mf_switch * mf_switch_create(uint32_t sockfd)
 	sw->capabilities = 0;
 	memset(&(sw->ports), 0, sizeof(sw->ports));
 	sw->is_hello_sent = 0;
+	sw->is_feature_request_sent = 0;
 	add_switch(sw);
 	return sw;
 }
@@ -63,7 +64,6 @@ void mf_switch_destory(struct mf_switch * sw)
 		printf("error: switch to destory is NULL\n");
 		exit(0);
 	}
-	//pthread_join(sw->pid, NULL);
 	if(close(sw->sockfd) < 0)
 	{
 		printf("socket close error\n");

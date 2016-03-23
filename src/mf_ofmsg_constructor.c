@@ -10,3 +10,13 @@ struct ofp_header of13_hello_msg_constructor(uint32_t xid)
 	of13_hello_msg.xid = xid;
 	return of13_hello_msg;
 }
+
+struct ofp_header of13_echo_reply_msg_constructor(uint32_t xid)
+{
+	struct ofp_header of13_echo_reply_msg;
+	of13_echo_reply_msg.version = 0x04;
+	of13_echo_reply_msg.type = 0x03;
+	of13_echo_reply_msg.length = htons(0x08);
+	of13_echo_reply_msg.xid = xid;
+	return of13_echo_reply_msg;
+}
