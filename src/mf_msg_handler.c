@@ -6,6 +6,7 @@
 #include "mf_msg_handler.h"
 #include "mf_ofmsg_constructor.h"
 #include "mf_mempool.h"
+#include "mf_logger.h"
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
@@ -28,13 +29,14 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 
 void hello_msg_handler(struct q_node* qn)
 {
-
+	//mf_write_socket_log("Hello Message received", qn->sw->sockfd);
 	uint32_t xid;
 	memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);
 	if(qn->sw->is_hello_sent == 0)
 	{
 		send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
+		//mf_write_socket_log("Hello Message sent", qn->sw->sockfd);
 		qn->sw->is_hello_sent = 1;
 	}
 	else
@@ -43,17 +45,19 @@ void hello_msg_handler(struct q_node* qn)
 	}
 	if(qn->sw->is_feature_request_sent == 0)
 	{
-		
+
 	}
 	printf("Hello msg handling\n");
 }
 
 void echo_request_handler(struct q_node* qn)
 {
+	//mf_write_socket_log("Echo Message received", qn->sw->sockfd);
 	uint32_t xid;
 	memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
+	//mf_write_socket_log("Echo Message sent", qn->sw->sockfd);
 	printf("echo reply msg send\n");
 }
 

@@ -4,7 +4,7 @@
 #include "mf_rx_queue.h"
 #include <pthread.h>
 
-#define MF_QUEUE_NODE_MEMPOOL_SIZE 2048 //Num of connected switches should be less than this number
+#define MF_QUEUE_NODE_MEMPOOL_SIZE 2048//Num of connected switches should be less than this number
 
 struct mf_queue_node_mempool
 {

@@ -5,7 +5,7 @@
 
 #define DEFAULT_PORT 6633
 #define EPOLL_EVENTS_NUM 256
-#define WORKER_THREADS_NUM 1
+#define WORKER_THREADS_NUM 1 /*--DO NOT Change--*/
 
 struct mf_rx_queue;
 

@@ -29,8 +29,8 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 	mp->push->packet_length = rx_length;
 	mp->push->sw = sw;
 	mp->push->is_occupied = 1;
-	pthread_cond_signal(&mp->pool_cond);
 	mp->valid_block_num++;
+	pthread_cond_signal(&mp->pool_cond);
 	if(mp->push == mp->tail)
 		mp->push = mp->head;
 	else
