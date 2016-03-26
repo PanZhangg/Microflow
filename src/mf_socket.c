@@ -5,6 +5,7 @@
 #include "mf_devicemgr.h"
 #include "mf_rx_queue.h"
 #include "mf_mempool.h"
+#include "mf_timer.h"
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <string.h>  
@@ -88,6 +89,7 @@ void handle_connection(uint32_t sock)
 	epoll_init(sock);
 	MSG_RX_QUEUE = mf_queue_node_mempool_create();
 	parse_thread_start(WORKER_THREADS_NUM);
+	start_stopwatch_thread();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, 10);

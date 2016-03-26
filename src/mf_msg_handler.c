@@ -7,6 +7,20 @@
 #include "mf_ofmsg_constructor.h"
 #include "mf_mempool.h"
 #include "mf_logger.h"
+#include "mf_timer.h"
+
+void hello_msg_stopwatch_callback(void* arg)
+{
+	if(arg == NULL)
+	{
+		printf("stopwatch callback arg is null\n");
+		return;
+	}else{
+		struct q_node * qn = (struct q_node *)arg;
+		printf("Print this msg every 1 sec\n");
+	}
+	
+}
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
@@ -29,14 +43,20 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 
 void hello_msg_handler(struct q_node* qn)
 {
-	//mf_write_socket_log("Hello Message received", qn->sw->sockfd);
+	static uint8_t is_timer_added;
+	if(is_timer_added == 0)
+	{
+		struct stopwatch * spw = stopwatch_create(1.0, &hello_msg_stopwatch_callback, PERMANENT, (void*)qn);
+		is_timer_added = 1;
+	}
+	mf_write_socket_log("Hello Message received", qn->sw->sockfd);
 	uint32_t xid;
 	memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);
 	if(qn->sw->is_hello_sent == 0)
 	{
 		send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-		//mf_write_socket_log("Hello Message sent", qn->sw->sockfd);
+		mf_write_socket_log("Hello Message sent", qn->sw->sockfd);
 		qn->sw->is_hello_sent = 1;
 	}
 	else
@@ -52,12 +72,12 @@ void hello_msg_handler(struct q_node* qn)
 
 void echo_request_handler(struct q_node* qn)
 {
-	//mf_write_socket_log("Echo Message received", qn->sw->sockfd);
+	mf_write_socket_log("Echo Message received", qn->sw->sockfd);
 	uint32_t xid;
 	memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-	//mf_write_socket_log("Echo Message sent", qn->sw->sockfd);
+	mf_write_socket_log("Echo Message sent", qn->sw->sockfd);
 	printf("echo reply msg send\n");
 }
 
