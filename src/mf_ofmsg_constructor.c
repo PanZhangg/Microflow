@@ -20,3 +20,13 @@ struct ofp_header of13_echo_reply_msg_constructor(uint32_t xid)
 	of13_echo_reply_msg.xid = xid;
 	return of13_echo_reply_msg;
 }
+
+struct ofp_header of13_switch_feature_msg_constructor(uint32_t xid)
+{
+	struct ofp_header of13_switch_feature_request_msg;
+	of13_switch_feature_request_msg.version = 0x04;
+	of13_switch_feature_request_msg.type = 0x05;
+	of13_switch_feature_request_msg.length = htons(0x08);
+	of13_switch_feature_request_msg.xid = xid;
+	return of13_switch_feature_request_msg;
+}

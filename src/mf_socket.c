@@ -92,7 +92,7 @@ void handle_connection(uint32_t sock)
 	start_stopwatch_thread();
 	while(1)
 	{
-		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, 10);
+		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, -1);
 		for(i = 0; i < nfds; i++)
 		{
 			if(events[i].data.fd == sock)

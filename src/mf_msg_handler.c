@@ -8,8 +8,15 @@
 #include "mf_mempool.h"
 #include "mf_logger.h"
 #include "mf_timer.h"
+#include "mf_utilities.h"
 
-void hello_msg_stopwatch_callback(void* arg)
+
+/*=====================================
+Functions for msg handlers
+======================================*/
+
+
+void hello_msg_stopwatch_callback(void* arg) //for timer function test
 {
 	if(arg == NULL)
 	{
@@ -21,6 +28,20 @@ void hello_msg_stopwatch_callback(void* arg)
 	}
 	
 }
+
+static void send_switch_features_request(struct q_node* qn)
+{
+	uint32_t xid = generate_random();
+	qn->sw->feature_request_xid = xid;
+	struct ofp_header oh = of13_switch_feature_msg_constructor(xid);
+	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
+}
+
+
+/*=====================================
+Msg handler functions
+======================================*/
+
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
@@ -65,7 +86,8 @@ void hello_msg_handler(struct q_node* qn)
 	}
 	if(qn->sw->is_feature_request_sent == 0)
 	{
-
+		send_switch_features_request(qn);
+		qn->sw->is_feature_request_sent = 1;
 	}
 	printf("Hello msg handling\n");
 }

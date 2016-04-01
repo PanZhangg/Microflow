@@ -6,6 +6,7 @@
 
 struct ofp_header of13_hello_msg_constructor(uint32_t xid);
 struct ofp_header of13_echo_reply_msg_constructor(uint32_t xid);
+struct ofp_header of13_switch_feature_msg_constructor(uint32_t xid);
 
 
 #endif
