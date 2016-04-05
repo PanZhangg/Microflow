@@ -38,6 +38,17 @@ static void send_switch_features_request(struct q_node* qn)
 }
 
 
+void send_packet_out(uint32_t buffer_id, uint32_t in_port, void* data, uint32_t data_length, void* action, uint16_t action_length)
+{
+	char packet_out_buffer[1024];
+
+	uint32_t xid = generate_random();
+	
+	struct ofp_header oh = of13_msg_header_constructor(xid, 13, data_length + action_length + 8);
+	struct ofp11_packet_out pkt = of13_packet_out_msg_constructor(buffer_id)
+
+}
+
 /*=====================================
 Msg handler functions
 ======================================*/
