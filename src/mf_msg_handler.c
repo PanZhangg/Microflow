@@ -38,15 +38,18 @@ static void send_switch_features_request(struct q_node* qn)
 }
 
 
-void send_packet_out(uint32_t buffer_id, uint32_t in_port, void* data, uint32_t data_length, void* action, uint16_t action_length)
+void send_packet_out(struct q_node* qn, uint32_t buffer_id, void* data, uint32_t data_length)
 {
 	char packet_out_buffer[1024];
-
 	uint32_t xid = generate_random();
-	
-	struct ofp_header oh = of13_msg_header_constructor(xid, 13, data_length + action_length + 8);
-	struct ofp11_packet_out pkt = of13_packet_out_msg_constructor(buffer_id)
-
+	struct ofp_header oh = ofp13_msg_header_constructor(xid, 13, data_length + 16 + 8);
+	struct ofp11_packet_out pkt = of13_packet_out_msg_constructor(buffer_id, 16);
+	struct ofp_action_output oao = ofp13_action_output_constructor(1);
+	memcpy(packet_out_buffer, &oh, sizeof(oh));
+	memcpy(packet_out_buffer+sizeof(oh), &pkt, sizeof(pkt));
+	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt), &oao, sizeof(oao));
+	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt)+sizeof(oao), data, data_length);
+	send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
 }
 
 /*=====================================
@@ -57,7 +60,7 @@ Msg handler functions
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
 	printf("msg received\n");
-
+	char packet_out_content[] = "Test Packet_Out content";
 	if(version == 4)
 	{
 		switch(type)
@@ -69,6 +72,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 	}
 	else
 		printf("Msg is not Openflow Version 1.3\n");
+		//send_packet_out(qn, 0xffffffff, &packet_out_content, sizeof(packet_out_content));
 
 	free_memblock(qn, MSG_RX_QUEUE);
 }

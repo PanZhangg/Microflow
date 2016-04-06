@@ -417,4 +417,24 @@ enum ofp_table_config {
     OFPTC14_VACANCY_EVENTS        = 1 << 3, /* Enable vacancy events. */
 };
 
+
+struct ofp_action_header {
+    uint16_t type; /* One of OFPAT_*. */
+    uint16_t len; /* Length of action, including this
+                    header. This is the length of action,
+                    including any padding to make it
+                    64-bit aligned. */
+    //uint8_t pad[4];
+};
+//OFP_ASSERT(sizeof(struct ofp_action_header) == 8);
+
+struct ofp_action_output {
+    uint16_t type; /* OFPAT_OUTPUT. */
+    uint16_t len; /* Length is 16. */
+    uint32_t port; /* Output port. */
+    uint16_t max_len; /* Max length to send to controller. */
+    uint8_t pad[6]; /* Pad to 64 bits. */
+};
+OFP_ASSERT(sizeof(struct ofp_action_output) == 16);
+
 #endif /* openflow/openflow-common.h */

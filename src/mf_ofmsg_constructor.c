@@ -1,12 +1,13 @@
 #include "mf_ofmsg_constructor.h"
 #include <arpa/inet.h>
+#include <strings.h>
 //#include "openflow-common.h"
 
 struct ofp_header ofp13_msg_header_constructor(uint32_t xid, uint8_t type, uint16_t length)
 {
 	struct ofp_header oh;
 	oh.version = 0x04;
-	oh.type = htons(type);
+	oh.type = type;
 	oh.length = htons(length);
 	oh.xid = xid;
 	return oh;
@@ -42,7 +43,31 @@ struct ofp_header of13_switch_feature_msg_constructor(uint32_t xid)
 	return of13_switch_feature_request_msg;
 }
 
-struct ofp11_packet_out of13_packet_out_msg_constructor()
+struct ofp11_packet_out of13_packet_out_msg_constructor(uint32_t buffer_id, uint16_t actions_len)
 {
+	struct ofp11_packet_out po;
+	po.buffer_id = htonl(buffer_id);
+	po.in_port = htonl(0xfffffffd); // OFPP_CONTROLLER
+	po.actions_len = htons(actions_len);
+	bzero(&po.pad, sizeof(po.pad));
+	return po;
+}
 
+struct ofp_action_header ofp13_action_header_constructor(uint16_t type, uint16_t len)
+{
+	struct ofp_action_header oah;
+	oah.type = type;
+	oah.len = len;
+	return oah;
+}
+
+struct ofp_action_output ofp13_action_output_constructor(uint32_t port)
+{
+	struct ofp_action_output oao;
+	oao.type = 0;
+	oao.len = htons(16);
+	oao.port = htonl(port);
+	oao.max_len = 0;
+	bzero(&oao.pad, sizeof(oao.pad));
+	return oao;
 }
