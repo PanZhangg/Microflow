@@ -60,20 +60,18 @@ Msg handler functions
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
 	printf("msg received\n");
-	char packet_out_content[] = "Test Packet_Out content";
 	if(version == 4)
 	{
 		switch(type)
 		{
 			case 0: hello_msg_handler(qn); break;
 			case 2: echo_request_handler(qn); break;
+			case 6: feature_reply_handler(qn); break;
 			default: printf("Invalid msg type\n"); break;
 		}
 	}
 	else
 		printf("Msg is not Openflow Version 1.3\n");
-		//send_packet_out(qn, 0xffffffff, &packet_out_content, sizeof(packet_out_content));
-
 	free_memblock(qn, MSG_RX_QUEUE);
 }
 
@@ -87,7 +85,7 @@ void hello_msg_handler(struct q_node* qn)
 	}
 	mf_write_socket_log("Hello Message received", qn->sw->sockfd);
 	uint32_t xid;
-	memcpy(&xid, qn->rx_packet + 4, 4);
+	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);
 	if(qn->sw->is_hello_sent == 0)
 	{
@@ -111,11 +109,28 @@ void echo_request_handler(struct q_node* qn)
 {
 	mf_write_socket_log("Echo Message received", qn->sw->sockfd);
 	uint32_t xid;
-	memcpy(&xid, qn->rx_packet + 4, 4);
+	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
 	mf_write_socket_log("Echo Message sent", qn->sw->sockfd);
 	printf("echo reply msg send\n");
 }
 
+
+void feature_reply_handler(struct q_node* qn)
+{
+	mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
+	printf("feature_reply message received\n");
+	//memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
+	inverse_memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
+	//memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
+	inverse_memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
+	memcpy(&qn->sw->n_tables, qn->rx_packet + 20, 1);
+	memcpy(&qn->sw->auxiliary_id, qn->rx_packet + 21, 1);
+	//memcpy(&qn->sw->capabilities, qn->rx_packet + 24, 4);
+	inverse_memcpy(&qn->sw->capabilities, qn->rx_packet + 24, 4);
+	printf("dpid:%lld\n",qn->sw->datapath_id);
+	printf("buffers:%d\n",qn->sw->n_buffers);
+	printf("tables:%d\n",qn->sw->n_tables);
+}
 

@@ -4,5 +4,6 @@
 #include "Openflow/types.h"
 
 uint32_t generate_random();
+void inverse_memcpy(void* dst, void* src, uint8_t len);
 
 #endif

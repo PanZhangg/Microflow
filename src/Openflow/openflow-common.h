@@ -424,9 +424,9 @@ struct ofp_action_header {
                     header. This is the length of action,
                     including any padding to make it
                     64-bit aligned. */
-    //uint8_t pad[4];
+    uint8_t pad[4];
 };
-//OFP_ASSERT(sizeof(struct ofp_action_header) == 8);
+OFP_ASSERT(sizeof(struct ofp_action_header) == 8);
 
 struct ofp_action_output {
     uint16_t type; /* OFPAT_OUTPUT. */
