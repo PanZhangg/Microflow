@@ -35,6 +35,7 @@ static void send_switch_features_request(struct q_node* qn)
 	qn->sw->feature_request_xid = xid;
 	struct ofp_header oh = of13_switch_feature_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
+	mf_write_socket_log("Feature_request Message sent", qn->sw->sockfd);
 }
 
 
@@ -80,7 +81,7 @@ void hello_msg_handler(struct q_node* qn)
 	static uint8_t is_timer_added;
 	if(is_timer_added == 0)
 	{
-		struct stopwatch * spw = stopwatch_create(1.0, &hello_msg_stopwatch_callback, PERMANENT, (void*)qn);
+		//struct stopwatch * spw = stopwatch_create(1.0, &hello_msg_stopwatch_callback, PERMANENT, (void*)qn);
 		is_timer_added = 1;
 	}
 	mf_write_socket_log("Hello Message received", qn->sw->sockfd);
@@ -119,6 +120,7 @@ void echo_request_handler(struct q_node* qn)
 
 void feature_reply_handler(struct q_node* qn)
 {
+	static int count;
 	mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
 	printf("feature_reply message received\n");
 	//memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
@@ -132,5 +134,7 @@ void feature_reply_handler(struct q_node* qn)
 	printf("dpid:%lld\n",qn->sw->datapath_id);
 	printf("buffers:%d\n",qn->sw->n_buffers);
 	printf("tables:%d\n",qn->sw->n_tables);
+	count++;
+	printf("count:%d\n", count);
 }
 
