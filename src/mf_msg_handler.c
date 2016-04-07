@@ -63,6 +63,19 @@ void send_packet_out(struct q_node* qn, uint32_t buffer_id, void* data, uint32_t
 	send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
 }
 
+void static port_desc_reply_handler(struct q_node* qn)
+{
+	char* pkt_ptr = qn->rx_packet + 16;
+	uint8_t i = 0;
+	uint16_t len = 16; //16 is the length of ofp header and multipart reply header
+	while(len < qn->packet_length)
+	{
+		inverse_memcpy(&(qn->sw->ports[i++]), pkt_ptr, 64);
+		len += 64; //64 is the length of the port structure
+		pkt_ptr += 64;
+	}
+}
+
 /*=====================================
 Msg handler functions
 ======================================*/
@@ -79,6 +92,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 			case 2: echo_request_handler(qn); break;
 			case 6: feature_reply_handler(qn); break;
 			case 10: packet_in_msg_handler(qn); break;
+			case 19: multipart_reply_handler(qn); break;
 			default: printf("Invalid msg type\n"); break;
 		}
 	}
@@ -148,5 +162,13 @@ void feature_reply_handler(struct q_node* qn)
 void packet_in_msg_handler(struct q_node* qn)
 {
 	//struct ofp_multipart_request = of13_multipart_request_constructor()
+}
+
+void multipart_reply_handler(struct q_node* qn)
+{
+	uint16_t type;
+	inverse_memcpy(&type, qn->rx_packet + 8, 2);
+	if(type == 13)
+		port_desc_reply_handler(qn);
 }
 

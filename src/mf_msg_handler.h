@@ -14,6 +14,6 @@ void send_packet_out(struct q_node* qn, uint32_t buffer_id, void* data, uint32_t
 void send_multipart_port_request(struct q_node* qn);
 void feature_reply_handler(struct q_node* qn);
 void packet_in_msg_handler(struct q_node*);
-
+void multipart_reply_handler(struct q_node* qn);
 
 #endif

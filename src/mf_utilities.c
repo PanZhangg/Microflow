@@ -20,7 +20,7 @@ Copy len byte of data from memory pointed
 by src inversely to memory pointed by dst
 e.g. src = "abcd", dst = "dcba"
 ===========================*/
-void inverse_memcpy(void* dst, void* src, uint8_t len)
+void inline inverse_memcpy(void* dst, void* src, uint8_t len)
 {
 	if(len <= 0 || dst == NULL || src == NULL)
 		return;
