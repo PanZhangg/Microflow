@@ -11,5 +11,9 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn);
 void hello_msg_handler(struct q_node*);
 void echo_request_handler(struct q_node* qn);
 void send_packet_out(struct q_node* qn, uint32_t buffer_id, void* data, uint32_t data_length);
+void send_multipart_port_request(struct q_node* qn);
 void feature_reply_handler(struct q_node* qn);
+void packet_in_msg_handler(struct q_node*);
+
+
 #endif

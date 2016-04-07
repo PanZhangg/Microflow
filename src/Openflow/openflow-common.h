@@ -437,4 +437,13 @@ struct ofp_action_output {
 };
 OFP_ASSERT(sizeof(struct ofp_action_output) == 16);
 
+
+struct ofp_multipart_request {
+    struct ofp_header header;
+    uint16_t type; /* One of the OFPMP_* constants. */
+    uint16_t flags; /* OFPMPF_REQ_* flags. */
+    uint8_t pad[4];
+};
+OFP_ASSERT(sizeof(struct ofp_multipart_request) == 16);
+
 #endif /* openflow/openflow-common.h */

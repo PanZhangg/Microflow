@@ -1,4 +1,5 @@
 #include "mf_ofmsg_constructor.h"
+#include "mf_utilities.h"
 #include <arpa/inet.h>
 #include <strings.h>
 //#include "openflow-common.h"
@@ -70,4 +71,18 @@ struct ofp_action_output ofp13_action_output_constructor(uint32_t port)
 	oao.max_len = 0;
 	bzero(&oao.pad, sizeof(oao.pad));
 	return oao;
+}
+
+
+struct ofp_multipart_request of13_multiaprt_request_constructor(uint16_t type, uint16_t flags)
+{
+	struct ofp_multipart_request omr;
+	struct ofp_header oh;
+	uint32_t xid = generate_random();
+	oh = ofp13_msg_header_constructor(xid, 18, 16);
+	omr.header = oh;
+	omr.type = htons(type);
+	omr.flags = htons(flags);
+	bzero(&omr.pad, sizeof(omr.pad));
+	return omr;
 }

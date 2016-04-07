@@ -38,14 +38,24 @@ static void send_switch_features_request(struct q_node* qn)
 	mf_write_socket_log("Feature_request Message sent", qn->sw->sockfd);
 }
 
+void send_multipart_port_desc_request(struct q_node* qn)
+{
+	struct ofp_multipart_request omr = of13_multiaprt_request_constructor(13, 0);
+	send(qn->sw->sockfd, &omr, sizeof(omr), MSG_DONTWAIT);
+}
+
 
 void send_packet_out(struct q_node* qn, uint32_t buffer_id, void* data, uint32_t data_length)
 {
 	char packet_out_buffer[1024];
+	//char* buffer_ptr = packet_out_buffer;
 	uint32_t xid = generate_random();
 	struct ofp_header oh = ofp13_msg_header_constructor(xid, 13, data_length + 16 + 8);
 	struct ofp11_packet_out pkt = of13_packet_out_msg_constructor(buffer_id, 16);
 	struct ofp_action_output oao = ofp13_action_output_constructor(1);
+	/*TODO:
+	 *quick code for testing purpose 
+	 *need to be improved*/
 	memcpy(packet_out_buffer, &oh, sizeof(oh));
 	memcpy(packet_out_buffer+sizeof(oh), &pkt, sizeof(pkt));
 	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt), &oao, sizeof(oao));
@@ -68,6 +78,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 			case 0: hello_msg_handler(qn); break;
 			case 2: echo_request_handler(qn); break;
 			case 6: feature_reply_handler(qn); break;
+			case 10: packet_in_msg_handler(qn); break;
 			default: printf("Invalid msg type\n"); break;
 		}
 	}
@@ -103,6 +114,11 @@ void hello_msg_handler(struct q_node* qn)
 		send_switch_features_request(qn);
 		qn->sw->is_feature_request_sent = 1;
 	}
+	if(qn->sw->is_port_desc_request_sent == 0)
+	{
+		send_multipart_port_desc_request(qn);
+		qn->sw->is_port_desc_request_sent = 1;
+	}
 	printf("Hello msg handling\n");
 }
 
@@ -120,21 +136,17 @@ void echo_request_handler(struct q_node* qn)
 
 void feature_reply_handler(struct q_node* qn)
 {
-	static int count;
 	mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
-	printf("feature_reply message received\n");
-	//memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
 	inverse_memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
-	//memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
 	inverse_memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
 	memcpy(&qn->sw->n_tables, qn->rx_packet + 20, 1);
 	memcpy(&qn->sw->auxiliary_id, qn->rx_packet + 21, 1);
-	//memcpy(&qn->sw->capabilities, qn->rx_packet + 24, 4);
 	inverse_memcpy(&qn->sw->capabilities, qn->rx_packet + 24, 4);
-	printf("dpid:%lld\n",qn->sw->datapath_id);
-	printf("buffers:%d\n",qn->sw->n_buffers);
-	printf("tables:%d\n",qn->sw->n_tables);
-	count++;
-	printf("count:%d\n", count);
+	printf("feature_reply message handling\n");
+}
+
+void packet_in_msg_handler(struct q_node* qn)
+{
+	//struct ofp_multipart_request = of13_multipart_request_constructor()
 }
 
