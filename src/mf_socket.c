@@ -6,6 +6,7 @@
 #include "mf_rx_queue.h"
 #include "mf_mempool.h"
 #include "mf_timer.h"
+#include "mf_utilities.h"
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <string.h>  
@@ -106,7 +107,6 @@ void handle_connection(uint32_t sock)
                     continue;
 				}
 				mf_switch_create(connfd);
-				//parse_thread_start(WORKER_THREADS_NUM);
 				ev.data.fd = connfd;
 				ev.events = EPOLLIN;
 				epoll_ctl(epfd, EPOLL_CTL_ADD, connfd, &ev);
@@ -120,7 +120,6 @@ void handle_connection(uint32_t sock)
 					continue;
 				}
 				struct mf_switch * sw = get_switch(sockfd);
-				//memset(rx_buffer, 0, RX_BUFFER_SIZE);
 				int length = read(sockfd, rx_buffer, RX_BUFFER_SIZE);
 				if(length == 0)
 				{
@@ -141,7 +140,18 @@ void handle_connection(uint32_t sock)
 				else
 				{
 					mf_write_socket_log("Message in", sockfd);
-					push_queue_node_to_mempool(rx_buffer, length, sw, MSG_RX_QUEUE);
+					/*Sometimes epoll reads in two or more openflow messages once.
+					Use length field of openflow header to tell if all the messages
+					are pushed to mempool respectively*/
+					char * pkt_prt = rx_buffer;
+					while(length != 0)
+					{
+						uint16_t msg_length;
+						inverse_memcpy(&msg_length, pkt_prt + 2, 2);
+						push_queue_node_to_mempool(pkt_prt, msg_length, sw, MSG_RX_QUEUE);
+						pkt_prt += msg_length;
+						length -= msg_length;
+					}	
 				}
 			}
 		}
