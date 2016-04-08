@@ -30,5 +30,7 @@
 # Debug files
 *.dSYM/
 tests/*.log
+src/*.log
+src/microflow
 callgrind.*
 cachegrind.*
