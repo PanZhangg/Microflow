@@ -69,6 +69,7 @@ void mf_switch_destory(struct mf_switch * sw)
 	{
 		printf("socket close error\n");
 	}
+	delete_switch_from_map(sw);
 	free(sw);
 }
 

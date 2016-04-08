@@ -3,16 +3,44 @@
 
 //#include "mf_switch.h"
 #include "Openflow/types.h"
+#include <pthread.h>
 
 struct mf_switch;
 
 #define MAX_MF_SWITCH_NUM 4096
 
-uint32_t total_switch_number;
-extern struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
+extern struct mf_devicemgr MF_SWITCH_MAP;
 
-void add_switch(struct mf_switch* sw);
+
+struct mf_devicemgr
+{
+	uint32_t total_switch_number;
+	struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
+	pthread_mutex_t devicemgr_mutex;
+};
+//uint32_t total_switch_number;
+//extern struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
+void mf_devicemgr_create();
+
+void add_switch(struct mf_switch * );
 
 struct mf_switch * get_switch(uint32_t sock);
+
+void delete_switch_from_map(struct mf_switch *);
+
+struct mf_switch * get_all_switch_one_by_one(uint32_t* loop_index);//Usually used in a for-loop
+/*
+do_something for all the valid switches
+func()
+{
+pthread_mutex_lock(MF_SWITCH_MAP.devicemgr_mutex);
+for(int i = 0; i < MF_SWITCH_MAP.total_switch_number; i++)
+{
+	struct mf_switch sw = get_all_switch_one_by_one(&i);
+	do_something(sw);
+}
+pthread_mutex_unlock(MF_SWITCH_MAP.devicemgr_mutex);
+}
+*/
 
 #endif

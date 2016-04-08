@@ -91,6 +91,7 @@ void handle_connection(uint32_t sock)
 	MSG_RX_QUEUE = mf_queue_node_mempool_create();
 	parse_thread_start(WORKER_THREADS_NUM);
 	start_stopwatch_thread();
+	mf_devicemgr_create();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, -1);
