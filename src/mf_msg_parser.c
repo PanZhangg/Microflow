@@ -28,12 +28,9 @@ void * worker_thread(void* arg)
 		{
 			pthread_cond_wait(&MSG_RX_QUEUE->pool_cond, &MSG_RX_QUEUE->pool_mutex);
 		}
-		//if(MSG_RX_QUEUE->valid_block_num > 0)
-		//{
 			struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
 			pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);
 			parse_msg(qn);
-		//}
 	}
 	
 }

@@ -23,7 +23,7 @@ void hello_msg_stopwatch_callback(void* arg) //for timer function test
 		printf("stopwatch callback arg is null\n");
 		return;
 	}else{
-		struct q_node * qn = (struct q_node *)arg;
+		//struct q_node * qn = (struct q_node *)arg;
 		printf("Print this msg every 1 sec\n");
 	}
 	
@@ -63,7 +63,7 @@ void send_packet_out(struct q_node* qn, uint32_t buffer_id, void* data, uint32_t
 	send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
 }
 
-void static port_desc_reply_handler(struct q_node* qn)
+static void port_desc_reply_handler(struct q_node* qn)
 {
 	char* pkt_ptr = qn->rx_packet + 16;
 	uint8_t i = 0;
@@ -74,6 +74,47 @@ void static port_desc_reply_handler(struct q_node* qn)
 		len += 64; //64 is the length of the port structure
 		pkt_ptr += 64;
 	}
+}
+
+static uint32_t packet_in_msg_get_bufferid(struct q_node* qn)
+{
+	uint32_t buffer_id;
+	inverse_memcpy(&buffer_id, qn->rx_packet + 8, 4);
+	return buffer_id;
+}
+
+static uint16_t packet_in_msg_get_total_len(struct q_node* qn)
+{
+	uint16_t total_len;
+	inverse_memcpy(&total_len, qn->rx_packet + 12, 2);
+	return total_len;
+}
+
+static uint8_t packet_in_msg_get_reason(struct q_node* qn)
+{
+	uint8_t reason;
+	memcpy(&reason, qn->rx_packet + 14, 1);
+	return reason;
+}
+
+static uint8_t packet_in_msg_get_tableid(struct q_node* qn)
+{
+	uint8_t tableid;
+	memcpy(&tableid, qn->rx_packet + 15, 1);
+	return tableid;
+}
+
+static uint64_t packet_in_msg_get_cookie(struct q_node* qn)
+{
+	uint64_t cookie;
+	inverse_memcpy(&cookie, qn->rx_packet + 16, 8);
+	return cookie;
+}
+
+static void packet_in_msg_get_data(struct q_node* qn, char* buffer)
+{
+	uint16_t total_len = packet_in_msg_get_total_len(qn);
+	inverse_memcpy(buffer, qn->rx_packet + qn->packet_length - total_len, total_len);
 }
 
 /*=====================================
@@ -119,10 +160,6 @@ void hello_msg_handler(struct q_node* qn)
 		mf_write_socket_log("Hello Message sent", qn->sw->sockfd);
 		qn->sw->is_hello_sent = 1;
 	}
-	else
-	{
-		
-	}
 	if(qn->sw->is_feature_request_sent == 0)
 	{
 		send_switch_features_request(qn);
@@ -161,8 +198,17 @@ void feature_reply_handler(struct q_node* qn)
 
 void packet_in_msg_handler(struct q_node* qn)
 {
-	//struct ofp_multipart_request = of13_multipart_request_constructor()
+	char buffer[1024];
+	//bzero(buffer, 1024);
+	uint32_t buffer_id = packet_in_msg_get_bufferid(qn);
+	uint8_t reason = packet_in_msg_get_reason(qn);
+	uint8_t table_id = packet_in_msg_get_tableid(qn);
+	uint64_t cookie = packet_in_msg_get_cookie(qn);
+	uint16_t total_len = packet_in_msg_get_total_len(qn);
+	packet_in_msg_get_data(qn, buffer);
 }
+
+
 
 void multipart_reply_handler(struct q_node* qn)
 {

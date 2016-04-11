@@ -5,4 +5,4 @@ microflow: main.c ../src/mf_socket.c ../src/mf_logger.c \
 	cc -g -Wall -D_GUN_SOURCE -D__USE_GUN -o $@ $^ -pthread
 
 clean:
-	rm main.out
+	rm microflow

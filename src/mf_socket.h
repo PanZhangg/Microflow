@@ -5,7 +5,10 @@
 
 #define DEFAULT_PORT 6633
 #define EPOLL_EVENTS_NUM 1024
-#define WORKER_THREADS_NUM 1 /*--DO NOT Change--*/
+/*pthread_cond should be broadcast instead of signal if there are more than 1 worker threads
+Code of push_queue_node_to_mempool in mf_mempool.c*/
+#define WORKER_THREADS_NUM 1 /*--Do not change --*/
+
 
 struct mf_rx_queue;
 
