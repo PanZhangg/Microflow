@@ -2,6 +2,7 @@
 #define __MF_SWITCH_H__
 //#include "mf_rx_queue.h"
 #include "./Openflow/openflow-1.1.h"
+#include "mf_topomgr.h"
 
 #define MAX_MF_SWITCH_PORT_NUM 256
 
@@ -22,6 +23,8 @@ struct mf_switch
 	uint8_t is_port_desc_request_sent;
 	/*--transcation ids--*/
 	uint32_t feature_request_xid;
+	/*--topo links --*/
+	struct topo_link links[MAX_MF_SWITCH_PORT_NUM];
 };
 
 struct mf_switch * mf_switch_create(uint32_t sockfd);
