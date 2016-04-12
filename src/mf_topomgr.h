@@ -8,6 +8,7 @@ struct mf_switch;
 
 #define MAX_NETWORK_LINK_NUM 4096
 #define MAX_NETWORK_LINK_NUM_PER_SWITCH 256 //identical to MAX SWITCH PORT NUM
+#define LONGEST_PATH_LINK_NUM 64
 
 struct topo_link_node
 {
@@ -41,12 +42,11 @@ struct network_topo
 struct network_path
 {
 	uint16_t hop_num;
-	struct topo_link * head;
-	struct topo_link * next;
+	struct topo_link * path[LONGEST_PATH_LINK_NUM];
 };
 
 struct topo_link_node topo_link_node_create(struct mf_switch* sw);
 struct topo_link topo_link_create(struct topo_link_node* , struct topo_link_node* );
-
+struct network_path network_path_create();
 
 #endif

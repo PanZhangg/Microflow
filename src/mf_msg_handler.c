@@ -10,6 +10,12 @@
 #include "mf_timer.h"
 #include "mf_utilities.h"
 
+/*=====================================
+Global variables
+======================================*/
+
+struct msg_handlers * MSG_HANDLERS;
+
 
 /*=====================================
 Functions for msg handlers
@@ -111,10 +117,34 @@ static uint64_t packet_in_msg_get_cookie(struct q_node* qn)
 	return cookie;
 }
 
-static void packet_in_msg_get_data(struct q_node* qn, char* buffer)
+static void packet_in_msg_get_data(struct q_node* qn, char* buffer, uint16_t total_len)
 {
-	uint16_t total_len = packet_in_msg_get_total_len(qn);
-	inverse_memcpy(buffer, qn->rx_packet + qn->packet_length - total_len, total_len);
+	//uint16_t total_len = packet_in_msg_get_total_len(qn);
+	printf("packet_length:%d\n", qn->packet_length);
+	printf("total_len: %d\n", total_len);
+	inverse_memcpy(buffer, qn->rx_packet + (qn->packet_length - total_len), total_len);
+}
+
+static void get_ether_src_mac(char * buffer)
+{
+
+}
+
+static uint16_t get_ether_type(char * buffer)
+{
+	uint16_t ether_type;
+	memcpy(&ether_type, buffer + 12, 2);
+	return ether_type;
+}
+
+static void parse_ether_type(struct q_node* qn, char * buffer)
+{
+	uint16_t ether_type = get_ether_type(buffer);
+	printf("ether_type: %d\n", ether_type);
+	switch(ether_type)
+	{
+		case 0x806: arp_msg_handler(qn, buffer); break;
+	}
 }
 
 /*=====================================
@@ -198,17 +228,17 @@ void feature_reply_handler(struct q_node* qn)
 
 void packet_in_msg_handler(struct q_node* qn)
 {
+	printf("packet_in_msg_received\n");
 	char buffer[1024];
 	//bzero(buffer, 1024);
-	uint32_t buffer_id = packet_in_msg_get_bufferid(qn);
-	uint8_t reason = packet_in_msg_get_reason(qn);
-	uint8_t table_id = packet_in_msg_get_tableid(qn);
-	uint64_t cookie = packet_in_msg_get_cookie(qn);
+	//uint32_t buffer_id = packet_in_msg_get_bufferid(qn);
+	//uint8_t reason = packet_in_msg_get_reason(qn);
+	//uint8_t table_id = packet_in_msg_get_tableid(qn);
+	//uint64_t cookie = packet_in_msg_get_cookie(qn);
 	uint16_t total_len = packet_in_msg_get_total_len(qn);
-	packet_in_msg_get_data(qn, buffer);
+	packet_in_msg_get_data(qn, buffer, total_len);
+	parse_ether_type(qn, buffer);
 }
-
-
 
 void multipart_reply_handler(struct q_node* qn)
 {
@@ -218,3 +248,7 @@ void multipart_reply_handler(struct q_node* qn)
 		port_desc_reply_handler(qn);
 }
 
+void arp_msg_handler(struct q_node* qn, char* buffer)
+{
+	printf("arp msg received\n");
+}

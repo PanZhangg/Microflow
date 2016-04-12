@@ -31,16 +31,21 @@ void delete_switch_from_map(struct mf_switch *);
 struct mf_switch * get_all_switch_one_by_one(uint32_t* loop_index);//Usually used in a for-loop
 /*
 do_something for all the valid switches
+Code template:
 func()
 {
-pthread_mutex_lock(MF_SWITCH_MAP.devicemgr_mutex);
-for(int i = 0; i < MF_SWITCH_MAP.total_switch_number; i++)
+unit32_t i;
+pthread_mutex_lock(&MF_SWITCH_MAP.devicemgr_mutex);
+for(i = 0; i < MF_SWITCH_MAP.total_switch_number; i++)
 {
-	struct mf_switch sw = get_all_switch_one_by_one(&i);
+	struct mf_switch* sw = get_all_switch_one_by_one(&i);
+	check & get(sw)
+	pthread_mutex_unlock(&MF_SWITCH_MAP.devicemgr_mutex);
 	do_something(sw);
 }
-pthread_mutex_unlock(MF_SWITCH_MAP.devicemgr_mutex);
 }
 */
+
+struct mf_switch * get_switch_by_dpid(uint64_t dpid);
 
 #endif
