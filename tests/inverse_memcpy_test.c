@@ -4,6 +4,6 @@ int main()
 {
 	char * src_buffer = "abcdefghijk";
 	char dst_buffer[12];
-	inverse_memcpy(dst_buffer, src_buffer, 11);
+	inverse_memcpy(dst_buffer, src_buffer+2, 2);
 	return 0;
 }

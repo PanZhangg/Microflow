@@ -120,9 +120,17 @@ static uint64_t packet_in_msg_get_cookie(struct q_node* qn)
 static void packet_in_msg_get_data(struct q_node* qn, char* buffer, uint16_t total_len)
 {
 	//uint16_t total_len = packet_in_msg_get_total_len(qn);
-	printf("packet_length:%d\n", qn->packet_length);
-	printf("total_len: %d\n", total_len);
-	inverse_memcpy(buffer, qn->rx_packet + (qn->packet_length - total_len), total_len);
+	//printf("packet_length:%d\n", qn->packet_length);
+	//printf("total_len: %d\n", total_len);
+	memcpy(buffer, qn->rx_packet + qn->packet_length - total_len, total_len);
+	/*int i;
+	for(i = 0; i < total_len; i++)
+	{
+		printf("0x%x ",*(char*)(buffer+i));
+		if((i+1)%8==0)
+			printf("\n");
+	}
+	printf("\n");*/
 }
 
 static void get_ether_src_mac(char * buffer)
@@ -133,7 +141,7 @@ static void get_ether_src_mac(char * buffer)
 static uint16_t get_ether_type(char * buffer)
 {
 	uint16_t ether_type;
-	memcpy(&ether_type, buffer + 12, 2);
+	inverse_memcpy(&ether_type, buffer + 12, 2);
 	return ether_type;
 }
 
