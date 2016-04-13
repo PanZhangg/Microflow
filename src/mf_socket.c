@@ -24,7 +24,9 @@ struct epoll_event ev, events[EPOLL_EVENTS_NUM];
 struct mf_queue_node_mempool * MSG_RX_QUEUE;
 uint32_t epfd, nfds;
 
-#define RX_BUFFER_SIZE 2048
+#define RX_BUFFER_SIZE 65536
+//When facing with large thoughput
+//Buffer size matters....
 
 
 static void set_nonblocking(uint32_t sock)
@@ -140,12 +142,12 @@ void handle_connection(uint32_t sock)
 				}
 				else
 				{
-					mf_write_socket_log("Message in", sockfd);
+					//mf_write_socket_log("Message in", sockfd);
 					/*Sometimes epoll reads in two or more openflow messages once.
 					Use length field of openflow header to tell if all the messages
 					are pushed to mempool respectively*/
 					char * pkt_prt = rx_buffer;
-					while(length != 0)
+					while(length > 0)
 					{
 						uint16_t msg_length;
 						inverse_memcpy(&msg_length, pkt_prt + 2, 2);
