@@ -21,25 +21,21 @@ struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 
 void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_switch* sw, struct mf_queue_node_mempool* mp)
 {
-	pthread_mutex_lock(&mp->pool_mutex);
-	if(rx_length == 0)
-	{
-		pthread_mutex_unlock(&mp->pool_mutex);
-		return;
-	}
+
 	if(mp->valid_block_num >= MF_QUEUE_NODE_MEMPOOL_SIZE)
 	{
 		printf("The MSG RX QUEUE is FULL, valid_block_num: %d\n", mp->valid_block_num);
-		pthread_cond_broadcast(&mp->pool_cond);
-		pthread_mutex_unlock(&mp->pool_mutex);
 	}
 	else
 	{
+		
 		memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 		mp->push->packet_length = rx_length;
 		mp->push->sw = sw;
 		mp->push->is_occupied = 1;
+		pthread_mutex_lock(&mp->pool_mutex);
 		mp->valid_block_num++;
+		pthread_mutex_unlock(&mp->pool_mutex);
 		printf("PUSH:valid_block_num:%d\n", mp->valid_block_num);
 		pthread_cond_broadcast(&mp->pool_cond);
 		if(mp->push == mp->tail)
@@ -47,7 +43,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 		else
 			mp->push++;
 		printf("PUSH FINISHED:valid_block_num:%d\n", mp->valid_block_num);
-		pthread_mutex_unlock(&mp->pool_mutex);
+		
 	}
 }
 

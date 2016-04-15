@@ -17,23 +17,27 @@
 
 void * worker_thread(void* arg)
 {
-	//cpu_set_t my_set;
-	//CPU_ZERO(&my_set);
-	//CPU_SET(1, &my_set);
-	//pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &my_set);
 	while(1)
 	{
 		pthread_mutex_lock(&MSG_RX_QUEUE->pool_mutex);
 		while(MSG_RX_QUEUE->valid_block_num == 0)
 		{
+			
 			pthread_cond_wait(&MSG_RX_QUEUE->pool_cond, &MSG_RX_QUEUE->pool_mutex);
 		}
 		while(MSG_RX_QUEUE->valid_block_num > 0)
 		{
-			struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
-			parse_msg(qn);
+			//if(MSG_RX_QUEUE->valid_block_num > 0)
+			//{
+				struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
+				//pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);		
+				parse_msg(qn);
+				
+			//}
+			
 		}
-		pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);
+		pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);	
+			
 	}
 }
 
