@@ -24,8 +24,8 @@ struct epoll_event ev, events[EPOLL_EVENTS_NUM];
 struct mf_queue_node_mempool * MSG_RX_QUEUE;
 uint32_t epfd, nfds;
 
-#define RX_BUFFER_SIZE 65536
-//When facing with large thoughput
+#define RX_BUFFER_SIZE 131072
+//When dealing with large thoughput
 //Buffer size matters....
 
 
@@ -151,6 +151,8 @@ void handle_connection(uint32_t sock)
 					{
 						uint16_t msg_length;
 						inverse_memcpy(&msg_length, pkt_prt + 2, 2);
+						if(msg_length == 0)
+							break;
 						push_queue_node_to_mempool(pkt_prt, msg_length, sw, MSG_RX_QUEUE);
 						pkt_prt += msg_length;
 						length -= msg_length;
