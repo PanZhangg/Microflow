@@ -28,20 +28,21 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 	}
 	else
 	{
-		
+		pthread_mutex_lock(&mp->pool_mutex);	
 		memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 		mp->push->packet_length = rx_length;
 		mp->push->sw = sw;
+		//pthread_mutex_lock(&mp->pool_mutex);	
 		mp->push->is_occupied = 1;
-		pthread_mutex_lock(&mp->pool_mutex);
 		mp->valid_block_num++;
-		pthread_mutex_unlock(&mp->pool_mutex);
-		printf("PUSH:valid_block_num:%d\n", mp->valid_block_num);
-		pthread_cond_broadcast(&mp->pool_cond);
 		if(mp->push == mp->tail)
 			mp->push = mp->head;
 		else
 			mp->push++;
+		pthread_mutex_unlock(&mp->pool_mutex);
+		pthread_cond_broadcast(&mp->pool_cond);
+
+		printf("PUSH:valid_block_num:%d\n", mp->valid_block_num);
 		printf("PUSH FINISHED:valid_block_num:%d\n", mp->valid_block_num);
 		
 	}
