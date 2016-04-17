@@ -4,49 +4,52 @@
 #include "Openflow/types.h"
 #include "./Openflow/openflow-1.1.h"
 
+
 struct mf_switch;
 
 #define MAX_NETWORK_LINK_NUM 4096
 #define MAX_NETWORK_LINK_NUM_PER_SWITCH 256 //identical to MAX SWITCH PORT NUM
 #define LONGEST_PATH_LINK_NUM 64
 
-struct topo_link_node
+struct link_node
 {
-	uint64_t switch_dpid;
-	//struct ofp11_port switch_port;
-	uint32_t switch_port_no;
-	uint8_t is_link_to_host;
+	struct mf_switch * sw;
+	struct ofp11_port * port;
 };
 
-extern struct topo_link_node TOPO_LINK_NODE_LIST[MAX_NETWORK_LINK_NUM * 2];
+struct network_link
+{
+	struct link_node* src;
+	struct link_node* dst;
+};
 
-struct topo_link
+struct link_list_element
 {
-	struct topo_link_node* original_node;
-	struct topo_link_node* adjacent_node;
+	struct network_link * link;
+	struct link_list_element * next;
 };
-/*
-struct links_of_switch
-{
-	uint64_t switch_dpid;
-	struct topo_link[MAX_NETWORK_LINK_NUM_PER_SWITCH] links;
-};
-*/
-/*
-struct network_topo
-{
-	struct topo_link network_links[MAX_NETWORK_LINK_NUM];
-};
-*/
 
-struct network_path
+struct sw_link_list
+{
+	uint16_t link_num;
+	struct link_list_element * head;
+};
+
+struct path_link_list
 {
 	uint16_t hop_num;
-	struct topo_link * path[LONGEST_PATH_LINK_NUM];
+	struct link_list_element * head;
 };
 
-struct topo_link_node topo_link_node_create(struct mf_switch* sw);
-struct topo_link topo_link_create(struct topo_link_node* , struct topo_link_node* );
-struct network_path network_path_create();
+
+struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port);
+struct network_link * network_link_create(struct link_node* src, struct link_node* dst);
+struct link_list_element * link_list_element_create(struct network_link * link);
+struct sw_link_list * sw_link_list_create();
+struct path_link_list * path_link_create();
+void sw_link_insert(struct sw_link_list * list, struct link_list_element * link);
+void network_path_insert(struct path_link_list* list, struct link_list_element * link);
+void network_link_free(struct network_link * link);
+
 
 #endif

@@ -55,7 +55,6 @@ struct mf_switch * mf_switch_create(uint32_t sockfd)
 	sw->is_feature_request_sent = 0;
 	sw->is_port_desc_request_sent = 0;
 	sw->feature_request_xid = 0;
-	memset(&(sw->links), 0, sizeof(sw->links));
 	add_switch(sw);
 	return sw;
 }

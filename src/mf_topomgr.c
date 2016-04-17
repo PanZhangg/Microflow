@@ -1,22 +1,65 @@
 #include "mf_topomgr.h"
+#include <stdlib.h>
 
-struct topo_link_node TOPO_LINK_NODE_LIST[MAX_NETWORK_LINK_NUM * 2];
-/*
-struct topo_link_node topo_link_node_create(struct mf_switch* sw)
+struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)
 {
-
-}
-struct topo_link topo_link_create(struct topo_link_node left, struct topo_link_node right)
-{
-
-}
-struct network_topo network_topo_create()
-{
-
+	struct link_node * node = (struct link_node*)malloc(sizeof(*node));
+	node->sw = sw;
+	node->port = port;
+	return node;
 }
 
-void push_link_to_network_topo(struct topo_link link, struct network_topo topo)
+struct network_link * network_link_create(struct link_node* src, struct link_node* dst)
 {
-
+	struct network_link * link = (struct network_link *)malloc(sizeof(*link));
+	link->src = src;
+	link->dst = dst;
+	return link;
 }
+
+struct link_list_element * link_list_element_create(struct network_link * link)
+{
+	struct link_list_element * link_element = (struct link_list_element *)malloc(sizeof(*link));
+	link_element->link = link;
+	link_element->next = NULL;
+	return link_element;
+}
+
+struct sw_link_list * sw_link_list_create()
+{
+	struct sw_link_list * list = (struct sw_link_list *)malloc(sizeof(*list));
+	list->link_num = 0;
+	list->head = NULL;
+	return list;
+}
+
+struct path_link_list * path_link_list_create()
+{
+	struct path_link_list * list = (struct path_link_list *)malloc(sizeof(*list));
+	list->hop_num = 0;
+	list->head = NULL;
+	return list;
+}
+
+void sw_link_insert(struct sw_link_list * list, struct link_list_element * link)
+{
+	if(list == NULL || link == NULL)
+		return;
+	if(list->link_num == 0 && list->head == NULL)
+	{
+		list->head = link;
+	}
+	else
+	{
+		struct link_list_element * tmp = list->head;
+		while(tmp->next)
+		{
+			tmp = tmp->next;
+		}
+		tmp->next = link;
+	}
+	list->link_num++;
+}
+/*void network_path_insert(struct path_link_list * list, struct link_list_element * link);
+void network_link_free(struct network_link * link);
 */
