@@ -54,8 +54,6 @@ void send_multipart_port_desc_request(struct q_node* qn)
 void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* data, uint32_t data_length)
 {
 	char packet_out_buffer[1024];
-	//char* buffer_ptr = packet_out_buffer;
-	//uint32_t xid = generate_random();
 	
 	struct ofp11_packet_out pkt = of13_packet_out_msg_constructor(buffer_id, 16);
 	struct ofp_header oh = ofp13_msg_header_constructor(xid, 13, data_length + 16 + 8 + sizeof(pkt));
@@ -121,14 +119,6 @@ static uint64_t packet_in_msg_get_cookie(struct q_node* qn)
 static void packet_in_msg_get_data(struct q_node* qn, char* buffer, uint16_t total_len)
 {
 	memcpy(buffer, qn->rx_packet + qn->packet_length - total_len, total_len);
-	/*int i;
-	for(i = 0; i < total_len; i++)
-	{
-		printf("0x%x ",*(char*)(buffer+i));
-		if((i+1)%8==0)
-			printf("\n");
-	}
-	printf("\n");*/
 }
 
 static void get_ether_src_mac(char * buffer)
@@ -145,11 +135,12 @@ static uint16_t get_ether_type(char * buffer)
 
 static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uint16_t total_len)
 {
-	uint16_t ether_type = get_ether_type(buffer);
+	uint16_t ether_type = *(buffer + 12) << 8 | *(buffer + 13);
 	printf("ether_type: %d\n", ether_type);
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len); break;
+		case 0x8cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
 	}
 }
 
@@ -175,7 +166,6 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 	}
 	else
 		printf("Msg is not Openflow Version 1.3\n");
-	//free_memblock(qn, MSG_RX_QUEUE);
 }
 
 void hello_msg_handler(struct q_node* qn)
@@ -235,7 +225,7 @@ void feature_reply_handler(struct q_node* qn)
 void packet_in_msg_handler(struct q_node* qn)
 {
 	printf("packet_in_msg_received\n");
-	char buffer[1024];
+	//char buffer[1024];
 	//bzero(buffer, 1024);
 	//uint32_t buffer_id = packet_in_msg_get_bufferid(qn);
 	//uint8_t reason = packet_in_msg_get_reason(qn);
@@ -243,15 +233,15 @@ void packet_in_msg_handler(struct q_node* qn)
 	//uint64_t cookie = packet_in_msg_get_cookie(qn);
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
-	uint16_t total_len = packet_in_msg_get_total_len(qn);
-	packet_in_msg_get_data(qn, buffer, total_len);
-	parse_ether_type(qn, xid, buffer,total_len);
+	uint16_t total_len = *(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
+	char * data_pointor = qn->rx_packet + qn->packet_length - total_len;
+	parse_ether_type(qn, xid, data_pointor, total_len);
 }
 
 void multipart_reply_handler(struct q_node* qn)
 {
-	uint16_t type;
-	inverse_memcpy(&type, qn->rx_packet + 8, 2);
+	uint16_t type = *(qn->rx_packet + 8) << 8 | *(qn->rx_packet + 9);
+	//inverse_memcpy(&type, qn->rx_packet + 8, 2);
 	if(type == 13)
 		port_desc_reply_handler(qn);
 }
@@ -260,4 +250,10 @@ void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t tot
 {
 	printf("arp msg received\n");
 	send_packet_out(qn, xid, 0, buffer, total_len);
+}
+
+void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
+{
+	printf("lldp msg received\n");
+
 }

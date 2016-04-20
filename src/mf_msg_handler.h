@@ -44,7 +44,7 @@ void packet_in_msg_handler(struct q_node*);
 void multipart_reply_handler(struct q_node* qn);
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len);
-
+void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len);
 /*functions needed to be implemented*/
 
 void msg_handlers_init(); //register default msg hander func to MSG_HANDLERS
