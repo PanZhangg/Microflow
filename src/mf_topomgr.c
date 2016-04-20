@@ -60,6 +60,35 @@ void sw_link_insert(struct sw_link_list * list, struct link_list_element * link)
 	}
 	list->link_num++;
 }
-/*void network_path_insert(struct path_link_list * list, struct link_list_element * link);
-void network_link_free(struct network_link * link);
-*/
+
+void network_path_insert(struct path_link_list * list, struct link_list_element * link)
+{
+	if(list == NULL || link == NULL)
+		return;
+	if(list->hop_num == 0 && list->head == NULL)
+	{
+		list->head = link;
+	}
+	else
+	{
+		struct link_list_element * tmp = list->head;
+		while(tmp->next)
+		{
+			tmp = tmp->next;
+		}
+		tmp->next = link;
+	}
+	list->hop_num++;
+}
+
+void network_link_free(struct network_link * link)
+{
+	if(link)
+		free(link);
+}
+
+void link_node_free(struct link_node * node)
+{
+	if(node)
+		free(node);
+}

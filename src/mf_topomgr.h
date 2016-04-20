@@ -50,6 +50,7 @@ struct path_link_list * path_link_create();
 void sw_link_insert(struct sw_link_list * list, struct link_list_element * link);
 void network_path_insert(struct path_link_list* list, struct link_list_element * link);
 void network_link_free(struct network_link * link);
+void link_node_free(struct link_node * node);
 
 
 #endif

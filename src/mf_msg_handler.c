@@ -9,6 +9,7 @@
 #include "mf_logger.h"
 #include "mf_timer.h"
 #include "mf_utilities.h"
+#include "mf_devicemgr.h"
 
 /*=====================================
 Global variables
@@ -81,6 +82,13 @@ static void port_desc_reply_handler(struct q_node* qn)
 	}
 }
 
+static uint64_t get_src_mac_addr(char* data)
+{
+	uint64_t src_mac = 0;
+	inverse_memcpy(&src_mac, data + 6, 6);
+	return src_mac;
+}
+/*
 static uint32_t packet_in_msg_get_bufferid(struct q_node* qn)
 {
 	uint32_t buffer_id;
@@ -126,20 +134,21 @@ static void get_ether_src_mac(char * buffer)
 
 }
 
+
 static uint16_t get_ether_type(char * buffer)
 {
 	uint16_t ether_type;
 	inverse_memcpy(&ether_type, buffer + 12, 2);
 	return ether_type;
 }
+*/
 
 static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uint16_t total_len)
 {
 	uint16_t ether_type = *(buffer + 12) << 8 | *(buffer + 13);
-	//printf("ether_type: %d\n", ether_type);
 	switch(ether_type)
 	{
-		case 0x806: arp_msg_handler(qn, xid, buffer, total_len); break;
+		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
 		case 0x8cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
 	}
 }
@@ -224,13 +233,6 @@ void feature_reply_handler(struct q_node* qn)
 
 void packet_in_msg_handler(struct q_node* qn)
 {
-	printf("packet_in_msg_received\n");
-	//char buffer[1024];
-	//bzero(buffer, 1024);
-	//uint32_t buffer_id = packet_in_msg_get_bufferid(qn);
-	//uint8_t reason = packet_in_msg_get_reason(qn);
-	//uint8_t table_id = packet_in_msg_get_tableid(qn);
-	//uint64_t cookie = packet_in_msg_get_cookie(qn);
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	uint16_t total_len = *(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
@@ -241,19 +243,21 @@ void packet_in_msg_handler(struct q_node* qn)
 void multipart_reply_handler(struct q_node* qn)
 {
 	uint16_t type = *(qn->rx_packet + 8) << 8 | *(qn->rx_packet + 9);
-	//inverse_memcpy(&type, qn->rx_packet + 8, 2);
 	if(type == 13)
 		port_desc_reply_handler(qn);
 }
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
-	//printf("arp msg received\n");
+	uint64_t mac_addr = get_src_mac_addr(buffer);
+	/*TODO:
+	Verify if this mac_addr already exists before create its hash value structure
+	*/
+	host_add_to_hash_map(host_hash_value_create(qn->sw, 3, mac_addr));
 	send_packet_out(qn, xid, 0, buffer, total_len);
 }
 
 void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
 	printf("lldp msg received\n");
-
 }
