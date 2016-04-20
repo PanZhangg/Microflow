@@ -18,6 +18,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 
 struct sockaddr_in controller_addr, switch_addr;
 struct epoll_event ev, events[EPOLL_EVENTS_NUM];
@@ -54,6 +55,8 @@ uint32_t mf_listen_socket_create()
 		perror("socket created failed");
 		exit(0);
 	}
+	int enable = 1;
+    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (void*)&enable, sizeof(enable));
 	mf_write_socket_log("controller socket created",sock);
 	return sock;
 }

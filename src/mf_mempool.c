@@ -42,8 +42,8 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 		pthread_mutex_unlock(&mp->pool_mutex);
 		pthread_cond_broadcast(&mp->pool_cond);
 
-		printf("PUSH:valid_block_num:%d\n", mp->valid_block_num);
-		printf("PUSH FINISHED:valid_block_num:%d\n", mp->valid_block_num);
+		//printf("PUSH:valid_block_num:%d\n", mp->valid_block_num);
+		//printf("PUSH FINISHED:valid_block_num:%d\n", mp->valid_block_num);
 		
 	}
 }
@@ -60,12 +60,12 @@ struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 		qn = mp->pop;
 		mp->pop->is_occupied = 0;
 		mp->valid_block_num--;
-		printf("POP:valid_block_num:%d\n", mp->valid_block_num);
+		//printf("POP:valid_block_num:%d\n", mp->valid_block_num);
 		if(mp->pop == mp->tail)
 			mp->pop = mp->head;
 		else
 			mp->pop++;
-		printf("POP:packet_length:%d", qn->packet_length);
+		//printf("POP:packet_length:%d", qn->packet_length);
 		return qn;
 	}
 }

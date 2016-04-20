@@ -136,7 +136,7 @@ static uint16_t get_ether_type(char * buffer)
 static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uint16_t total_len)
 {
 	uint16_t ether_type = *(buffer + 12) << 8 | *(buffer + 13);
-	printf("ether_type: %d\n", ether_type);
+	//printf("ether_type: %d\n", ether_type);
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len); break;
@@ -248,7 +248,7 @@ void multipart_reply_handler(struct q_node* qn)
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
-	printf("arp msg received\n");
+	//printf("arp msg received\n");
 	send_packet_out(qn, xid, 0, buffer, total_len);
 }
 
