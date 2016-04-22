@@ -81,6 +81,65 @@ void network_path_insert(struct path_link_list * list, struct link_list_element 
 	list->hop_num++;
 }
 
+void sw_link_delete(struct sw_link_list * list, struct link_list_element* link)
+{
+	if(list == NULL || list->head == NULL)
+		return;
+	struct link_list_element * tmp = list->head;
+	struct link_list_element * curr = NULL;
+	while(tmp)
+	{
+		if(tmp == link)
+		{
+			if(tmp == list->head)
+			{
+				list->head = tmp->next;
+				list->link_num--;
+				break;
+			}
+			else
+			{
+				curr->next = tmp->next;
+				list->link_num--;
+				link_list_element_free(tmp);
+				break;
+			}
+		}
+		curr = tmp;
+		tmp = tmp->next;
+	}
+}
+
+void path_link_delete(struct path_link_list * list, struct link_list_element* link)
+{
+	if(list == NULL || list->head == NULL)
+		return;
+	struct link_list_element * tmp = list->head;
+	struct link_list_element * curr = NULL;
+	while(tmp)
+	{
+		if(tmp == link)
+		{
+			if(tmp == list->head)
+			{
+				list->head = tmp->next;
+				list->hop_num--;
+				link_list_element_free(tmp);
+				break;
+			}
+			else
+			{
+				curr->next = tmp->next;
+				list->hop_num--;
+				link_list_element_free(tmp);
+				break;
+			}
+		}
+		curr = tmp;
+		tmp = tmp->next;
+	}
+}
+
 void network_link_free(struct network_link * link)
 {
 	if(link)
@@ -91,4 +150,12 @@ void link_node_free(struct link_node * node)
 {
 	if(node)
 		free(node);
+}
+
+void link_list_element_free(struct link_list_element* link)
+{
+	if(link)
+		if(link->link)
+			network_link_free(link->link);
+		free(link);
 }

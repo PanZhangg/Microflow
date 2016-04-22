@@ -24,7 +24,7 @@ struct mf_switch
 	/*--transcation ids--*/
 	uint32_t feature_request_xid;
 	/*--topo links --*/
-	
+	struct sw_link_list link_list;
 };
 
 struct mf_switch * mf_switch_create(uint32_t sockfd);

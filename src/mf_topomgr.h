@@ -46,11 +46,14 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst);
 struct link_list_element * link_list_element_create(struct network_link * link);
 struct sw_link_list * sw_link_list_create();
-struct path_link_list * path_link_create();
+struct path_link_list * path_link_list_create();
 void sw_link_insert(struct sw_link_list * list, struct link_list_element * link);
 void network_path_insert(struct path_link_list* list, struct link_list_element * link);
+void sw_link_delete(struct sw_link_list * list, struct link_list_element* link);
+void path_link_delete(struct path_link_list * list, struct link_list_element* link);
 void network_link_free(struct network_link * link);
 void link_node_free(struct link_node * node);
+void link_list_element_free(struct link_list_element* link);
 
 
 #endif
