@@ -12,6 +12,10 @@ struct mf_devicemgr MF_SWITCH_MAP;
 
 static struct host_hash_value * HOST_HASH_MAP[HOST_HASH_MAP_SIZE];
 
+/*================
+Functions
+==================*/
+
 void mf_devicemgr_create()
 {
 	MF_SWITCH_MAP.total_switch_number = 0;
@@ -68,13 +72,24 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 }
 
 
-static uint8_t is_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)
+static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)
 {
 	if(a->mac_addr == b->mac_addr && a->sw == b->sw && a->port_num == b->port_num)
 		return 1;
 	else
 		return 0;
 }
+
+/*uint8_t is_host_already_exist(struct host_hash_value * value)
+{
+	uint64_t index = mac_addr_hash(value->mac_addr);
+	if(HOST_HASH_MAP[index] == NULL)
+		return 0;
+	else
+	{
+		if(is_struct_hash_value_identical(value, HOST_HASH_MAP[index]))
+	}
+}*/
 
 struct host_hash_value* host_hash_value_create(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
@@ -109,7 +124,7 @@ void host_add_to_hash_map(struct host_hash_value* value)
 		struct host_hash_value * tmp = HOST_HASH_MAP[index];
 		while(tmp)
 		{
-			if(is_hash_value_identical(tmp, value))
+			if(is_struct_hash_value_identical(tmp, value))
 			{
 				if((uint64_t)tmp == (uint64_t)value)
 					return;
@@ -119,7 +134,7 @@ void host_add_to_hash_map(struct host_hash_value* value)
 			}
 			/*
 			TODO:
-			Delet hash value structure which hash identical mac addr but different
+			Delete hash value structure which hash identical mac addr but different
 			sw or port_num from the global hash map
 			It happens when the same host connect to another port or switch
 			*/
@@ -162,4 +177,10 @@ void host_hash_value_destory(struct host_hash_value* value)
 {
 	if(value)
 		free(value);
+}
+
+
+void delete_host_hash_value(struct host_hash_value * value)
+{
+
 }

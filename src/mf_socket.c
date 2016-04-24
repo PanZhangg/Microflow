@@ -149,15 +149,15 @@ void handle_connection(uint32_t sock)
 					/*Sometimes epoll reads in two or more openflow messages once.
 					Use length field of openflow header to tell if all the messages
 					are pushed to mempool respectively*/
-					char * pkt_prt = rx_buffer;
+					char * pkt_ptr = rx_buffer;
 					while(length > 0)
 					{
-						uint16_t msg_length;
-						inverse_memcpy(&msg_length, pkt_prt + 2, 2);
+						uint16_t msg_length = 0;
+						msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
 						if(msg_length == 0)
 							break;
-						push_queue_node_to_mempool(pkt_prt, msg_length, sw, MSG_RX_QUEUE);
-						pkt_prt += msg_length;
+						push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE);
+						pkt_ptr += msg_length;
 						length -= msg_length;
 					}	
 				}

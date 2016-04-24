@@ -51,8 +51,8 @@ static inline uint8_t parse_msg_type(struct q_node* qn)
 	{
 		return 0;
 	}
-	uint8_t type;
-	memcpy(&type, qn->rx_packet + 1, 1);
+	uint8_t type = (uint8_t)*(qn->rx_packet + 1);
+	//memcpy(&type, qn->rx_packet + 1, 1);
 	return type;
 }
 
@@ -62,8 +62,8 @@ static inline uint8_t parse_msg_version(struct q_node* qn)
 	{
 		return 0;
 	}
-	uint8_t version;
-	memcpy(&version, qn->rx_packet, 1);
+	uint8_t version = (uint8_t)*qn->rx_packet;
+	//memcpy(&version, qn->rx_packet, 1);
 	return version;
 }
 
