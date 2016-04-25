@@ -8,8 +8,10 @@
 struct mf_switch;
 
 #define MAX_MF_SWITCH_NUM 4096
+#define HOST_HASH_MAP_SIZE 2048
+#define MAX_HOST_NUM 4096
 
-extern struct mf_devicemgr MF_SWITCH_MAP;
+//extern struct mf_devicemgr MF_SWITCH_MAP;
 
 
 struct mf_devicemgr
@@ -17,6 +19,8 @@ struct mf_devicemgr
 	uint32_t total_switch_number;
 	struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
 	pthread_mutex_t devicemgr_mutex;
+	struct host_hash_value ** available_slot;
+	struct host_hash_value ** used_slot;
 };
 //uint32_t total_switch_number;
 //extern struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
@@ -61,11 +65,13 @@ struct host_hash_value
 	uint32_t port_num;
 	uint64_t mac_addr;
 	struct host_hash_value * next;
+	struct host_hash_value * prev;
+	uint8_t is_occupied;
 };
 
 //extern struct host_hash_value HOST_HASH_MAP[HOST_HASH_MAP_SIZE];
 
-struct host_hash_value* host_hash_value_create(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr);
+struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr);
 
 inline uint32_t mac_addr_hash(uint64_t mac_addr);
 
