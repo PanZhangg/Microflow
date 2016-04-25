@@ -1,7 +1,6 @@
 #ifndef __MF_DEVICEMGR_H__
 #define __MF_DEVICEMGR_H__
 
-//#include "mf_switch.h"
 #include "Openflow/types.h"
 #include <pthread.h>
 
@@ -11,19 +10,20 @@ struct mf_switch;
 #define HOST_HASH_MAP_SIZE 2048
 #define MAX_HOST_NUM 4096
 
-//extern struct mf_devicemgr MF_SWITCH_MAP;
-
-
 struct mf_devicemgr
 {
 	uint32_t total_switch_number;
 	struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
 	pthread_mutex_t devicemgr_mutex;
-	struct host_hash_value ** available_slot;
-	struct host_hash_value ** used_slot;
+	/*
+	always start with the available_slot
+	to get a ptr pointed to static memory slot
+	then store the ptr into used_slot
+	*/
+	struct host_hash_value * available_slot; //* available_slot head of the list
+	struct host_hash_value * used_slot;
 };
-//uint32_t total_switch_number;
-//extern struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
+
 void mf_devicemgr_create();
 
 void add_switch(struct mf_switch * );
@@ -66,10 +66,9 @@ struct host_hash_value
 	uint64_t mac_addr;
 	struct host_hash_value * next;
 	struct host_hash_value * prev;
+	struct host_hash_value * hash_next;
 	uint8_t is_occupied;
 };
-
-//extern struct host_hash_value HOST_HASH_MAP[HOST_HASH_MAP_SIZE];
 
 struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr);
 
@@ -80,8 +79,6 @@ void host_add_to_hash_map(struct host_hash_value* value);
 struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr);
 
 void host_hash_value_destory(struct host_hash_value* value);
-
-//uint8_t is_host_already_exist(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr);
 
 void delete_host_hash_value(struct host_hash_value * value);
 

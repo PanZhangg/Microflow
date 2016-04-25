@@ -253,7 +253,8 @@ void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t tot
 	/*TODO:
 	Verify if this mac_addr already exists before create its hash value structure
 	*/
-	host_add_to_hash_map(host_hash_value_add(qn->sw, 3, mac_addr));
+	//host_add_to_hash_map(host_hash_value_add(qn->sw, 3, mac_addr));
+	host_hash_value_add(qn->sw, 5, mac_addr);
 	send_packet_out(qn, xid, 0, buffer, total_len);
 }
 

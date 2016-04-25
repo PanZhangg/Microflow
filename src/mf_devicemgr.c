@@ -17,14 +17,18 @@ static struct host_hash_value HOST_CACHE_ARRAY[MAX_HOST_NUM];
 /*================
 Functions
 ==================*/
+static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array);
 
 void mf_devicemgr_create()
 {
 	MF_DEVICE_MGR.total_switch_number = 0;
-	//memset(&MF_DEVICE_MGR.MF_DEVICE_MGR, 0, sizeof(MF_DEVICE_MGR.mf_switch_map));
 	pthread_mutex_init(&(MF_DEVICE_MGR.devicemgr_mutex), NULL);
-	struct host_hash_value * value = &HOST_CACHE_ARRAY[0];
-	MF_DEVICE_MGR.available_slot = &value;
+	MF_DEVICE_MGR.available_slot = NULL;
+	int i = 0;
+	for(; i < MAX_HOST_NUM; i++)
+	{
+		push_to_array(&HOST_CACHE_ARRAY[i],&(MF_DEVICE_MGR.available_slot));
+	}
 	MF_DEVICE_MGR.used_slot = NULL;
 }
 
@@ -87,22 +91,12 @@ static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct 
 		return 0;
 }
 
-/*uint8_t is_host_already_exist(struct host_hash_value * value)
-{
-	uint64_t index = mac_addr_hash(value->mac_addr);
-	if(HOST_HASH_MAP[index] == NULL)
-		return 0;
-	else
-	{
-		if(is_struct_hash_value_identical(value, HOST_HASH_MAP[index]))
-	}
-}*/
 
 static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)
 {
-	if(array == NULL)
+	if(*array == NULL)
 	{
-		array = &value;
+		*array = value;
 		value->prev = NULL;
 		value->next = NULL;
 	}
@@ -131,6 +125,8 @@ static struct host_hash_value* pop_from_array(struct host_hash_value * value, st
 			if(tmp->prev == NULL)
 			{
 				* array = tmp->next;
+				if(tmp->next != NULL)
+					tmp->next->prev = NULL;
 				tmp->next = NULL;
 				return tmp;
 			}
@@ -159,9 +155,9 @@ static struct host_hash_value* pop_from_array(struct host_hash_value * value, st
 
 static struct host_hash_value * get_available_value_slot()
 {
-	if((*MF_DEVICE_MGR.available_slot)->is_occupied == 0)
+	if(MF_DEVICE_MGR.available_slot->is_occupied == 0)
 	{
-		struct host_hash_value * value = pop_from_array(*MF_DEVICE_MGR.available_slot, MF_DEVICE_MGR.available_slot);
+		struct host_hash_value * value = pop_from_array(MF_DEVICE_MGR.available_slot, &(MF_DEVICE_MGR.available_slot));
 		return value;
 	}
 	return NULL;
@@ -171,11 +167,22 @@ static struct host_hash_value * get_available_value_slot()
 
 struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
-	struct host_hash_value * value = (struct host_hash_value * )malloc(sizeof(*value));
-	value->sw = sw;
-	value->port_num = port_num;
-	value->mac_addr = mac_addr;
-	return value;
+	//struct host_hash_value * value = (struct host_hash_value * )malloc(sizeof(*value));
+	struct host_hash_value * value = get_available_value_slot();
+	if(value != NULL)
+	{
+		value->sw = sw;
+		value->port_num = port_num;
+		value->mac_addr = mac_addr;
+		value->next = NULL;
+		value->prev = NULL;
+		value->hash_next = NULL;
+		value->is_occupied = 1;
+		push_to_array(value, &(MF_DEVICE_MGR.used_slot));
+		host_add_to_hash_map(value);
+		return value;
+	}
+	return NULL;
 }
 
 inline uint32_t mac_addr_hash(uint64_t key)
@@ -204,10 +211,9 @@ void host_add_to_hash_map(struct host_hash_value* value)
 		{
 			if(is_struct_hash_value_identical(tmp, value))
 			{
-				if((uint64_t)tmp == (uint64_t)value)
-					return;
-				else
-					host_hash_value_destory(value);
+				pop_from_array(value, &MF_DEVICE_MGR.used_slot);
+				value->is_occupied = 0;
+				push_to_array(value, &MF_DEVICE_MGR.available_slot);
 				return;
 			}
 			/*
@@ -216,11 +222,11 @@ void host_add_to_hash_map(struct host_hash_value* value)
 			sw or port_num from the global hash map
 			It happens when the same host connect to another port or switch
 			*/
-			if(tmp->next)
-				tmp = tmp->next;
+			if(tmp->hash_next)
+				tmp = tmp->hash_next;
 			else
 			{
-				tmp->next = value;
+				tmp->hash_next = value;
 				return;
 			}
 		}
@@ -241,8 +247,8 @@ struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr)
 				return tmp->sw;
 			else
 			{
-				if(tmp->next)
-					tmp = tmp->next;
+				if(tmp->hash_next)
+					tmp = tmp->hash_next;
 				else
 					return NULL;
 			}
