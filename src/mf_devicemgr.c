@@ -102,14 +102,19 @@ static void push_to_array(struct host_hash_value * value, struct host_hash_value
 	}
 	else
 	{
-		struct host_hash_value * tmp = *array;
+		/*struct host_hash_value * tmp = *array;
 		while(tmp->next)
 		{
 			tmp = tmp->next;
 		}
 		tmp->next = value;
 		value->prev = tmp;
-		value->next = NULL;
+		value->next = NULL;*/
+		(*array)->prev = value;
+		value->next = *array;
+		value->prev = NULL;
+		*array = value;
+		
 	}
 }
 

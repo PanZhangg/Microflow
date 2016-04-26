@@ -210,13 +210,13 @@ void hello_msg_handler(struct q_node* qn)
 
 void echo_request_handler(struct q_node* qn)
 {
-	mf_write_socket_log("Echo Message received", qn->sw->sockfd);
+	//mf_write_socket_log("Echo Message received", qn->sw->sockfd);
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-	mf_write_socket_log("Echo Message sent", qn->sw->sockfd);
-	printf("echo reply msg send\n");
+	//mf_write_socket_log("Echo Message sent", qn->sw->sockfd);
+	//printf("echo reply msg send\n");
 }
 
 
