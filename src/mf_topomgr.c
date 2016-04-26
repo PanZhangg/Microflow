@@ -1,11 +1,135 @@
 #include "mf_topomgr.h"
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+
+static struct mf_topomgr MF_TOPO_MGR;
+
+static struct link_node * LINK_NODE_CACHE_ARRAY; 
+
+//static struct network_link NETWORK_LINK_CACHE_ARRAY[MAX_NETWORK_LINK_NUM];
+
+//static struct network_link NETWORK_LINK_CACHE_ARRAY[];
+static void push_to_array(struct link_node * value, struct link_node ** array);
+
+void mf_topomgr_create()
+{
+	MF_TOPO_MGR.total_node_number = 0;
+	MF_TOPO_MGR.node_cache_array_size = 256;
+	pthread_mutex_init(&(MF_TOPO_MGR.devicemgr_mutex), NULL);
+	LINK_NODE_CACHE_ARRAY = (struct link_node *)malloc(MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
+	memset(LINK_NODE_CACHE_ARRAY, 0 , sizeof(*LINK_NODE_CACHE_ARRAY));
+	if(LINK_NODE_CACHE_ARRAY == NULL)
+	{
+		printf("topo mgr malloc failed\n");
+		exit(0);
+	}
+	int i = 0;
+	for(; i< MF_TOPO_MGR.node_cache_array_size; i++)
+		push_to_array(LINK_NODE_CACHE_ARRAY + i, &(MF_TOPO_MGR.available_slot));
+	MF_TOPO_MGR.used_slot = NULL;
+}
+
+static void push_to_array(struct link_node * value, struct link_node ** array)
+{
+	if(*array == NULL)
+	{
+		*array = value;
+		value->prev = NULL;
+		value->next = NULL;
+	}
+	else
+	{
+		(*array)->prev = value;
+		value->next = *array;
+		value->prev = NULL;
+		*array = value;
+	}
+}
+
+static struct link_node* pop_from_array(struct link_node * value, struct link_node ** array)
+{
+	if(array == NULL || *array == NULL)
+		return NULL;
+	struct link_node * tmp = * array;
+	while(tmp)
+	{
+		if(tmp == value)
+		{
+			if(tmp->prev == NULL)
+			{	
+				if(tmp->next != NULL)
+				{
+					* array = tmp->next;
+					tmp->next->prev = NULL;
+				}
+				else
+				{
+					* array = NULL;
+				}
+				tmp->next = NULL;
+				return tmp;
+			}
+			if(tmp->next == NULL)
+			{
+				tmp->prev->next = NULL;
+				tmp->prev = NULL;
+				return tmp;
+			}
+			if(tmp->prev && tmp->next)
+			{
+				tmp->prev->next = tmp->next;
+				tmp->next->prev = tmp->prev;
+				return tmp;
+			}
+
+		}
+		else
+			if(tmp->next)
+				tmp = tmp->next;
+			else
+				return NULL;
+	}
+	return NULL;
+}
+
+static void realloc_cache_array()
+{
+	LINK_NODE_CACHE_ARRAY = (struct link_node *)realloc(LINK_NODE_CACHE_ARRAY, 2 * MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
+	if(LINK_NODE_CACHE_ARRAY == NULL)
+	{
+		printf("realloc cache array failed\n");
+		exit(0);
+	}
+	memset(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size, 0, sizeof(MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node)));
+	int i;
+	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
+		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));
+	MF_TOPO_MGR.node_cache_array_size *= 2;
+}
+
+static struct link_node * get_available_value_slot()
+{
+	if(MF_TOPO_MGR.available_slot == NULL)
+		realloc_cache_array();
+	if(MF_TOPO_MGR.available_slot->is_occupied == 0)
+	{
+		struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));
+		return value;
+	}
+	return NULL;
+}
 
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)
 {
-	struct link_node * node = (struct link_node*)malloc(sizeof(*node));
+	struct link_node * node = get_available_value_slot();
 	node->sw = sw;
 	node->port = port;
+	node->next = NULL;
+	node->prev = NULL;
+	node->is_occupied = 1;
+	push_to_array(node, &(MF_TOPO_MGR.used_slot));
 	return node;
 }
 

@@ -3,6 +3,7 @@
 
 #include "Openflow/types.h"
 #include "./Openflow/openflow-1.1.h"
+#include <pthread.h>
 
 
 struct mf_switch;
@@ -11,10 +12,23 @@ struct mf_switch;
 #define MAX_NETWORK_LINK_NUM_PER_SWITCH 256 //identical to MAX SWITCH PORT NUM
 #define LONGEST_PATH_LINK_NUM 64
 
+
+struct mf_topomgr
+{
+	uint64_t total_node_number;
+	uint64_t node_cache_array_size;
+	pthread_mutex_t devicemgr_mutex;
+	struct link_node * available_slot;
+	struct link_node * used_slot;
+};
+
 struct link_node
 {
 	struct mf_switch * sw;
 	struct ofp11_port * port;
+	struct link_node * next; //pointers for available/used slot bi-link list
+	struct link_node * prev;
+	uint8_t is_occupied;
 };
 
 struct network_link
@@ -41,7 +55,7 @@ struct path_link_list
 	struct link_list_element * head;
 };
 
-
+void mf_topomgr_create();
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port);
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst);
 struct link_list_element * link_list_element_create(struct network_link * link);

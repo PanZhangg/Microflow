@@ -210,13 +210,10 @@ void hello_msg_handler(struct q_node* qn)
 
 void echo_request_handler(struct q_node* qn)
 {
-	//mf_write_socket_log("Echo Message received", qn->sw->sockfd);
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-	//mf_write_socket_log("Echo Message sent", qn->sw->sockfd);
-	//printf("echo reply msg send\n");
 }
 
 
@@ -250,10 +247,6 @@ void multipart_reply_handler(struct q_node* qn)
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
 	uint64_t mac_addr = get_src_mac_addr(buffer);
-	/*TODO:
-	Verify if this mac_addr already exists before create its hash value structure
-	*/
-	//host_add_to_hash_map(host_hash_value_add(qn->sw, 3, mac_addr));
 	host_hash_value_add(qn->sw, 5, mac_addr);
 	send_packet_out(qn, xid, 0, buffer, total_len);
 }

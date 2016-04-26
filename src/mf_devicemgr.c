@@ -17,6 +17,7 @@ static struct host_hash_value HOST_CACHE_ARRAY[MAX_HOST_NUM];
 /*================
 Functions
 ==================*/
+
 static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array);
 
 void mf_devicemgr_create()
@@ -102,19 +103,10 @@ static void push_to_array(struct host_hash_value * value, struct host_hash_value
 	}
 	else
 	{
-		/*struct host_hash_value * tmp = *array;
-		while(tmp->next)
-		{
-			tmp = tmp->next;
-		}
-		tmp->next = value;
-		value->prev = tmp;
-		value->next = NULL;*/
 		(*array)->prev = value;
 		value->next = *array;
 		value->prev = NULL;
 		*array = value;
-		
 	}
 }
 
@@ -168,11 +160,8 @@ static struct host_hash_value * get_available_value_slot()
 	return NULL;
 }
 
-
-
 struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
-	//struct host_hash_value * value = (struct host_hash_value * )malloc(sizeof(*value));
 	struct host_hash_value * value = get_available_value_slot();
 	if(value != NULL)
 	{
@@ -182,8 +171,6 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 		value->next = NULL;
 		value->prev = NULL;
 		value->hash_next = NULL;
-		value->is_occupied = 1;
-		push_to_array(value, &(MF_DEVICE_MGR.used_slot));
 		host_add_to_hash_map(value);
 		return value;
 	}
@@ -208,6 +195,8 @@ void host_add_to_hash_map(struct host_hash_value* value)
 	if(HOST_HASH_MAP[index] == NULL)
 	{
 		HOST_HASH_MAP[index] = value;
+		value->is_occupied = 1;
+		push_to_array(value, &(MF_DEVICE_MGR.used_slot));
 	}
 	else
 	{
@@ -216,9 +205,7 @@ void host_add_to_hash_map(struct host_hash_value* value)
 		{
 			if(is_struct_hash_value_identical(tmp, value))
 			{
-				pop_from_array(value, &MF_DEVICE_MGR.used_slot);
 				value->is_occupied = 0;
-				push_to_array(value, &MF_DEVICE_MGR.available_slot);
 				return;
 			}
 			/*
@@ -232,6 +219,8 @@ void host_add_to_hash_map(struct host_hash_value* value)
 			else
 			{
 				tmp->hash_next = value;
+				value->is_occupied = 1;
+				push_to_array(value, &(MF_DEVICE_MGR.used_slot));
 				return;
 			}
 		}
