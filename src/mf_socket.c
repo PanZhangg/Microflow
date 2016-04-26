@@ -3,6 +3,7 @@
 #include "mf_logger.h"
 #include "mf_switch.h"
 #include "mf_devicemgr.h"
+#include "mf_topomgr.h"
 #include "mf_rx_queue.h"
 #include "mf_mempool.h"
 #include "mf_timer.h"
@@ -97,6 +98,7 @@ void handle_connection(uint32_t sock)
 	parse_thread_start(WORKER_THREADS_NUM);
 	start_stopwatch_thread();
 	mf_devicemgr_create();
+	mf_topomgr_create();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, -1);
@@ -145,10 +147,6 @@ void handle_connection(uint32_t sock)
 				}
 				else
 				{
-					//mf_write_socket_log("Message in", sockfd);
-					/*Sometimes epoll reads in two or more openflow messages once.
-					Use length field of openflow header to tell if all the messages
-					are pushed to mempool respectively*/
 					char * pkt_ptr = rx_buffer;
 					while(length > 0)
 					{
