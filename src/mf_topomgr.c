@@ -174,22 +174,6 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	return (& NETWORK_LINK_CACHE_ARRAY[index]);
 }
 
-/*struct link_list_element * link_list_element_create(struct network_link * link)
-{
-	struct link_list_element * link_element = (struct link_list_element *)malloc(sizeof(*link));
-	link_element->link = link;
-	link_element->next = NULL;
-	return link_element;
-}*/
-
-/*struct sw_link_list * sw_link_list_create()
-{
-	struct sw_link_list * list = (struct sw_link_list *)malloc(sizeof(*list));
-	list->link_num = 0;
-	list->head = NULL;
-	return list;
-}*/
-
 struct path_link_list * path_link_list_create()
 {
 	struct path_link_list * list = (struct path_link_list *)malloc(sizeof(*list));
@@ -247,13 +231,14 @@ void sw_link_delete(struct sw_link_list * list, struct network_link * link)
 			{
 				list->head = tmp->sw_link_next;
 				list->link_num--;
+				network_link_free(tmp);
 				break;
 			}
 			else
 			{
 				curr->sw_link_next = tmp->sw_link_next;
 				list->link_num--;
-				//link_list_element_free(tmp);
+				network_link_free(tmp);
 				break;
 			}
 		}
@@ -261,54 +246,15 @@ void sw_link_delete(struct sw_link_list * list, struct network_link * link)
 		tmp = tmp->sw_link_next;
 	}
 }
-/*
-void path_link_delete(struct path_link_list * list, struct link_list_element* link)
+
+void path_link_list_free(struct path_link_list * list)
 {
-	if(list == NULL || list->head == NULL)
-		return;
-	struct link_list_element * tmp = list->head;
-	struct link_list_element * curr = NULL;
-	while(tmp)
-	{
-		if(tmp == link)
-		{
-			if(tmp == list->head)
-			{
-				list->head = tmp->next;
-				list->hop_num--;
-				link_list_element_free(tmp);
-				break;
-			}
-			else
-			{
-				curr->next = tmp->next;
-				list->hop_num--;
-				link_list_element_free(tmp);
-				break;
-			}
-		}
-		curr = tmp;
-		tmp = tmp->next;
-	}
+	if(list)
+		free(list);
 }
 
 void network_link_free(struct network_link * link)
 {
-	if(link)
-		free(link);
+	if(link->is_occupied == 1)
+		link->is_occupied = 0;
 }
-
-void link_node_free(struct link_node * node)
-{
-	if(node)
-		free(node);
-}
-
-void link_list_element_free(struct link_list_element* link)
-{
-	if(link)
-		if(link->link)
-			network_link_free(link->link);
-		free(link);
-}
-*/
