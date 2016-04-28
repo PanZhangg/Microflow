@@ -1,13 +1,14 @@
 #include "mf_socket.h"
-#include "mf_msg_parser.h"
+//#include "mf_msg_parser.h"
 #include "mf_logger.h"
 #include "mf_switch.h"
-#include "mf_devicemgr.h"
-#include "mf_topomgr.h"
+//#include "mf_devicemgr.h"
+//#include "mf_topomgr.h"
 #include "mf_rx_queue.h"
 #include "mf_mempool.h"
-#include "mf_timer.h"
+//#include "mf_timer.h"
 #include "mf_utilities.h"
+#include "mf_api.h"
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <string.h>  
@@ -95,10 +96,7 @@ void handle_connection(uint32_t sock)
 	char rx_buffer[RX_BUFFER_SIZE];
 	epoll_init(sock);
 	MSG_RX_QUEUE = mf_queue_node_mempool_create();
-	parse_thread_start(WORKER_THREADS_NUM);
-	start_stopwatch_thread();
-	mf_devicemgr_create();
-	mf_topomgr_create();
+	mf_controller_init();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, -1);

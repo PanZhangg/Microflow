@@ -20,6 +20,7 @@ struct mf_topomgr
 	pthread_mutex_t devicemgr_mutex;
 	struct link_node * available_slot;
 	struct link_node * used_slot;
+	uint32_t next_available_index;
 };
 
 struct link_node
@@ -35,39 +36,33 @@ struct network_link
 {
 	struct link_node* src;
 	struct link_node* dst;
-};
-
-struct link_list_element
-{
-	struct network_link * link;
-	struct link_list_element * next;
+	uint8_t is_occupied;
+	struct network_link * sw_link_next;
 };
 
 struct sw_link_list
 {
 	uint16_t link_num;
-	struct link_list_element * head;
+	struct network_link * head;
 };
 
 struct path_link_list
 {
 	uint16_t hop_num;
-	struct link_list_element * head;
+	struct network_link * path_link_list[LONGEST_PATH_LINK_NUM];
 };
 
 void mf_topomgr_create();
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port);
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst);
-struct link_list_element * link_list_element_create(struct network_link * link);
-struct sw_link_list * sw_link_list_create();
 struct path_link_list * path_link_list_create();
-void sw_link_insert(struct sw_link_list * list, struct link_list_element * link);
-void network_path_insert(struct path_link_list* list, struct link_list_element * link);
-void sw_link_delete(struct sw_link_list * list, struct link_list_element* link);
-void path_link_delete(struct path_link_list * list, struct link_list_element* link);
-void network_link_free(struct network_link * link);
-void link_node_free(struct link_node * node);
-void link_list_element_free(struct link_list_element* link);
+void sw_link_insert(struct sw_link_list * list, struct network_link * link);
+void network_path_insert(struct path_link_list * list, struct network_link * link);
+void sw_link_delete(struct sw_link_list * list, struct network_link * link);
+//void path_link_delete(struct path_link_list * list, struct link_list_element* link);
+//void network_link_free(struct network_link * link);
+//void link_node_free(struct link_node * node);
+//void link_list_element_free(struct link_list_element* link);
 
 
 #endif
