@@ -139,7 +139,6 @@ static struct host_hash_value* pop_from_array(struct host_hash_value * value, st
 				tmp->next->prev = tmp->prev;
 				return tmp;
 			}
-
 		}
 		else
 			if(tmp->next)

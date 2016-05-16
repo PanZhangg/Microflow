@@ -1,4 +1,5 @@
 #include "mf_topomgr.h"
+#include "mf_switch.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -16,7 +17,7 @@ void mf_topomgr_create()
 {
 	MF_TOPO_MGR.total_node_number = 0;
 	MF_TOPO_MGR.node_cache_array_size = 1024;
-	pthread_mutex_init(&(MF_TOPO_MGR.devicemgr_mutex), NULL);
+	pthread_mutex_init(&(MF_TOPO_MGR.topomgr_mutex), NULL);
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)malloc(MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	memset(LINK_NODE_CACHE_ARRAY, 0 , sizeof(*LINK_NODE_CACHE_ARRAY));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
@@ -31,7 +32,7 @@ void mf_topomgr_create()
 	MF_TOPO_MGR.next_available_index = 0;
 }
 
-static void push_to_array(struct link_node * value, struct link_node ** array)
+static inline void push_to_array(struct link_node * value, struct link_node ** array)
 {
 	if(*array == NULL)
 	{
@@ -48,7 +49,7 @@ static void push_to_array(struct link_node * value, struct link_node ** array)
 	}
 }
 
-static struct link_node* pop_from_array(struct link_node * value, struct link_node ** array)
+static inline struct link_node* pop_from_array(struct link_node * value, struct link_node ** array)
 {
 	if(array == NULL || *array == NULL)
 		return NULL;
@@ -83,7 +84,6 @@ static struct link_node* pop_from_array(struct link_node * value, struct link_no
 				tmp->next->prev = tmp->prev;
 				return tmp;
 			}
-
 		}
 		else
 			if(tmp->next)
@@ -192,12 +192,8 @@ void sw_link_insert(struct sw_link_list * list, struct network_link * link)
 	}
 	else
 	{
-		struct network_link * tmp = list->head;
-		while(tmp->sw_link_next)
-		{
-			tmp = tmp->sw_link_next;
-		}
-		tmp->sw_link_next = link;
+		link->sw_link_next = list->head;
+		list->head = link;
 	}
 	list->link_num++;
 }
@@ -257,4 +253,19 @@ void network_link_free(struct network_link * link)
 {
 	if(link->is_occupied == 1)
 		link->is_occupied = 0;
+}
+
+/*code draft*/
+struct path_link_list * find_one_path_between_switches(struct mf_switch * src_sw, struct mf_switch * dst_sw)
+{
+
+	struct path_link_list * path = path_link_list_create();
+	int i = 0;
+	struct network_link * tmp = src_sw->link_list.head;
+	/*for(;i <= src_sw->link_list.link_num; i++)
+	{
+		if(tmp->dst->sw == dst_sw)
+
+
+	}*/
 }

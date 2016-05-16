@@ -17,7 +17,7 @@ struct mf_topomgr
 {
 	uint64_t total_node_number;
 	uint64_t node_cache_array_size;
-	pthread_mutex_t devicemgr_mutex;
+	pthread_mutex_t topomgr_mutex;
 	struct link_node * available_slot;
 	struct link_node * used_slot;
 	uint32_t next_available_index;
@@ -59,11 +59,9 @@ struct path_link_list * path_link_list_create();
 void sw_link_insert(struct sw_link_list * list, struct network_link * link);
 void network_path_insert(struct path_link_list * list, struct network_link * link);
 void sw_link_delete(struct sw_link_list * list, struct network_link * link);
-//void path_link_delete(struct path_link_list * list, struct network_link * link);
 void path_link_list_free(struct path_link_list * );
 void network_link_free(struct network_link * link);
-//void link_node_free(struct link_node * node);
-//void link_list_element_free(struct link_list_element* link);
+struct path_link_list * find_one_path_between_switches(struct mf_switch * src_sw, struct mf_switch * dst_sw);
 
 
 #endif

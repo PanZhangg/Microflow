@@ -21,10 +21,12 @@ int main()
 	}
 	link_node_create(sw1, &sw1_port1);
 	link_node_create(sw1, &sw1_port1);
-	/*struct network_link * network_link1= network_link_create(src_node1, dst_node1);
+	struct network_link * network_link1= network_link_create(src_node1, dst_node1);
 	struct network_link * network_link2 = network_link_create(src_node2, dst_node2);
 	struct network_link * network_link3 = network_link_create(src_node3, dst_node3);
-	struct link_list_element * link1 = link_list_element_create(network_link1);
+	sw_link_insert(&(sw1->link_list),network_link1);
+	sw_link_insert(&(sw1->link_list),network_link2);
+	/*struct link_list_element * link1 = link_list_element_create(network_link1);
 	struct link_list_element * link2 = link_list_element_create(network_link2);
 	struct link_list_element * link3 = link_list_element_create(network_link3);
 	struct path_link_list * path_link_list = path_link_list_create();
