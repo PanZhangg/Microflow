@@ -10,6 +10,7 @@
 #include "mf_timer.h"
 #include "mf_utilities.h"
 #include "mf_devicemgr.h"
+#include "mf_topomgr.h"
 
 /*=====================================
 Global variables
@@ -33,7 +34,6 @@ void hello_msg_stopwatch_callback(void* arg) //for timer function test
 		//struct q_node * qn = (struct q_node *)arg;
 		printf("Print this msg every 1 sec\n");
 	}
-	
 }
 
 static void send_switch_features_request(struct q_node* qn)
@@ -50,7 +50,6 @@ void send_multipart_port_desc_request(struct q_node* qn)
 	struct ofp_multipart_request omr = of13_multiaprt_request_constructor(13, 0);
 	send(qn->sw->sockfd, &omr, sizeof(omr), MSG_DONTWAIT);
 }
-
 
 void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* data, uint32_t data_length)
 {
@@ -80,6 +79,7 @@ static void port_desc_reply_handler(struct q_node* qn)
 		len += 64; //64 is the length of the port structure
 		pkt_ptr += 64;
 	}
+	qn->sw->port_num = i;
 }
 
 static uint64_t get_src_mac_addr(char* data)
@@ -88,6 +88,23 @@ static uint64_t get_src_mac_addr(char* data)
 	inverse_memcpy(&src_mac, data + 6, 6);
 	return src_mac;
 }
+
+/*
+TODO :
+1. LLDP packet constructor
+2. Send LLDP to sw_ports with timer
+3. LLDP msg handler
+4. Path calculate algorithm
+*/
+
+//static void send_LLDP_packet(struct mf_switch * mf)
+//{
+
+//}
+
+
+
+
 /*
 static uint32_t packet_in_msg_get_bufferid(struct q_node* qn)
 {

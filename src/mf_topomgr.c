@@ -256,16 +256,18 @@ void network_link_free(struct network_link * link)
 }
 
 /*code draft*/
+/*
 struct path_link_list * find_one_path_between_switches(struct mf_switch * src_sw, struct mf_switch * dst_sw)
 {
 
 	struct path_link_list * path = path_link_list_create();
 	int i = 0;
 	struct network_link * tmp = src_sw->link_list.head;
-	/*for(;i <= src_sw->link_list.link_num; i++)
+	for(;i <= src_sw->link_list.link_num; i++)
 	{
 		if(tmp->dst->sw == dst_sw)
 
 
-	}*/
+	}
 }
+*/

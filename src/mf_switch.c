@@ -50,6 +50,7 @@ struct mf_switch * mf_switch_create(uint32_t sockfd)
 	sw->n_tables = 0;
 	sw->auxiliary_id = 0;
 	sw->capabilities = 0;
+	sw->port_num = 0;
 	memset(&(sw->ports), 0, sizeof(sw->ports));
 	sw->is_hello_sent = 0;
 	sw->is_feature_request_sent = 0;

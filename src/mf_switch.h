@@ -16,6 +16,7 @@ struct mf_switch
 	uint8_t n_tables;
 	uint8_t auxiliary_id;
 	uint32_t capabilities;
+	uint16_t port_num;
 	struct ofp11_port ports[MAX_MF_SWITCH_PORT_NUM];
 	/*--msg control--*/
 	uint8_t is_hello_sent;
