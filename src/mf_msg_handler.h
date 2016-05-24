@@ -12,14 +12,14 @@ enum MSG_HANDLER_TYPE{
 	PACKET_IN_MSG_HANDLER_FUNC
 };
 
-extern struct mf_queue_node_mempool * MSG_RX_QUEUE;
-extern struct msg_handlers * MSG_HANDLERS;
+
 typedef void (*msg_handler_func)(struct q_node*);
+
+
 /*Msg handler structure used to register defualt and customlized handler functions
 For each type of msg, a linked list of handler func pointors could be created and the 
 certain type of msg will go through the whole list in order to satisfy certain requirements
 */
-
 struct single_msg_handler
 {
 	msg_handler_func handler_func;

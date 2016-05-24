@@ -18,4 +18,14 @@ void mf_controller_init()
 	msg_handlers_init();
 }
 
+void register_msg_handler(enum MSG_HANDLER_TYPE type, msg_handler_func func)
+{
+	msg_handler_func_register(type, func);
+}
+
+void unregister_msg_handler(enum MSG_HANDLER_TYPE type, msg_handler_func func)
+{
+	msg_handler_func_unregister(type, func);
+}
+
 #endif

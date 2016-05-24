@@ -35,6 +35,31 @@ static void regist_msg_handler(struct single_msg_handler ** handler_list, struct
 	(*handler_list)->next = handler;
 }
 
+static void unregist_msg_handler(struct single_msg_handler ** handler_list, msg_handler_func func)
+{
+	struct single_msg_handler ** tmp = handler_list;
+	if(*handler_list == NULL)
+		return;
+	while(*handler_list)
+	{
+		if((*handler_list)->handler_func == func)
+		{
+			if((*handler_list)->next)
+			{
+				*tmp = (*handler_list)->next;
+			}
+			else
+			{
+				(*tmp)->next = NULL;
+			}
+			free(*handler_list);
+			return;
+		}
+	*tmp = *handler_list;
+	(*handler_list) = (*handler_list)->next;
+	}
+}
+
 void msg_handlers_init()
 {
 	MSG_HANDLERS = (struct msg_handlers *)malloc(sizeof(struct msg_handlers));
@@ -70,7 +95,21 @@ void msg_handler_func_register(enum MSG_HANDLER_TYPE type, msg_handler_func func
 	}
 }
 
-//void msg_handler_func_unregister(enum MSG_HANDLER_TYPE, msg_handler_func){}
+void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func func)
+{
+	switch(type)
+	{
+		case HELLO_MSG_HANDLER_FUNC:
+			unregist_msg_handler(&MSG_HANDLERS->hello_msg_handler_list_head, func);break;
+		case ECHO_REQUEST_HANDLER_FUNC:
+			unregist_msg_handler(&MSG_HANDLERS->echo_request_handler_list_head, func);break;
+		case FEATURE_REPLY_HANDLER_FUNC:
+			unregist_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, func);break;
+		case PACKET_IN_MSG_HANDLER_FUNC:
+			unregist_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, func);break;
+		default: printf("wrong type\n"); break;
+	}
+}
 
 static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_node * qn)
 {
@@ -247,7 +286,6 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 	{
 		switch(type)
 		{
-			//case 0: hello_msg_handler(qn); break;
 			case 0: msg_handler_exec(MSG_HANDLERS->hello_msg_handler_list_head, qn);break;
 			case 2: echo_request_handler(qn); break;
 			case 6: feature_reply_handler(qn); break;
@@ -308,7 +346,7 @@ void feature_reply_handler(struct q_node* qn)
 	memcpy(&qn->sw->n_tables, qn->rx_packet + 20, 1);
 	memcpy(&qn->sw->auxiliary_id, qn->rx_packet + 21, 1);
 	inverse_memcpy(&qn->sw->capabilities, qn->rx_packet + 24, 4);
-	printf("feature_reply message handling\n");
+	//printf("feature_reply message handling\n");
 }
 
 void packet_in_msg_handler(struct q_node* qn)
