@@ -48,7 +48,7 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 /*functions needed to be implemented*/
 
 void msg_handlers_init(); //register default msg hander func to MSG_HANDLERS
-struct single_msg_handler_list * single_msg_handler_create(msg_handler_func);
+struct single_msg_handler * single_msg_handler_create(msg_handler_func);
 void msg_handler_func_register(enum MSG_HANDLER_TYPE, msg_handler_func);
 void msg_handler_func_unregister(enum MSG_HANDLER_TYPE, msg_handler_func);
 #endif

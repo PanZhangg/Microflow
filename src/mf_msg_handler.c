@@ -20,6 +20,71 @@ struct msg_handlers * MSG_HANDLERS;
 
 
 /*=====================================
+Function register 
+======================================*/
+
+static void regist_msg_handler(struct single_msg_handler ** handler_list, struct single_msg_handler * handler)
+{
+	if(*handler_list == NULL)
+	{
+		*handler_list = handler;
+		return;
+	}
+	while((*handler_list)->next)
+		*handler_list = (*handler_list)->next;
+	(*handler_list)->next = handler;
+}
+
+void msg_handlers_init()
+{
+	MSG_HANDLERS = (struct msg_handlers *)malloc(sizeof(struct msg_handlers));
+	memset(MSG_HANDLERS, 0 , sizeof(struct msg_handlers));
+	regist_msg_handler(&MSG_HANDLERS->hello_msg_handler_list_head, single_msg_handler_create(hello_msg_handler));
+	regist_msg_handler(&MSG_HANDLERS->echo_request_handler_list_head, single_msg_handler_create(echo_request_handler));
+	regist_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, single_msg_handler_create(feature_reply_handler));
+	regist_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, single_msg_handler_create(packet_in_msg_handler));
+}
+
+struct single_msg_handler * single_msg_handler_create(msg_handler_func func)
+{
+	struct single_msg_handler * handler = (struct single_msg_handler *) malloc(sizeof(*handler));
+	handler->handler_func = func;
+	handler->next = NULL;
+	return handler;
+}
+
+void msg_handler_func_register(enum MSG_HANDLER_TYPE type, msg_handler_func func)
+{
+	struct single_msg_handler * handler = single_msg_handler_create(func);
+	switch(type)
+	{
+		case HELLO_MSG_HANDLER_FUNC:
+			regist_msg_handler(&MSG_HANDLERS->hello_msg_handler_list_head, handler);break;
+		case ECHO_REQUEST_HANDLER_FUNC:
+			regist_msg_handler(&MSG_HANDLERS->echo_request_handler_list_head, handler);break;
+		case FEATURE_REPLY_HANDLER_FUNC:
+			regist_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, handler);break;
+		case PACKET_IN_MSG_HANDLER_FUNC:
+			regist_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, handler);break;
+		default: printf("wrong type\n"); break;
+	}
+}
+
+//void msg_handler_func_unregister(enum MSG_HANDLER_TYPE, msg_handler_func){}
+
+static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_node * qn)
+{
+	if(handler_head == NULL)
+		return;
+	struct single_msg_handler * tmp = handler_head;
+	while(tmp)
+	{
+		tmp->handler_func(qn);
+		tmp = tmp->next;
+	}
+}
+
+/*=====================================
 Functions for msg handlers
 ======================================*/
 
@@ -99,7 +164,7 @@ TODO :
 
 //static void send_LLDP_packet(struct mf_switch * mf)
 //{
-
+	
 //}
 
 
@@ -182,7 +247,8 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 	{
 		switch(type)
 		{
-			case 0: hello_msg_handler(qn); break;
+			//case 0: hello_msg_handler(qn); break;
+			case 0: msg_handler_exec(MSG_HANDLERS->hello_msg_handler_list_head, qn);break;
 			case 2: echo_request_handler(qn); break;
 			case 6: feature_reply_handler(qn); break;
 			case 10: packet_in_msg_handler(qn); break;

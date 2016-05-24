@@ -7,6 +7,7 @@
 #include "mf_devicemgr.h"
 #include "mf_msg_parser.h"
 #include "mf_timer.h"
+#include "mf_msg_handler.h"
 
 void mf_controller_init()
 {
@@ -14,6 +15,7 @@ void mf_controller_init()
 	start_stopwatch_thread();
 	mf_devicemgr_create();
 	mf_topomgr_create();
+	msg_handlers_init();
 }
 
 #endif
