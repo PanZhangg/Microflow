@@ -141,7 +141,7 @@ typedef struct st_imcp
 typedef struct st_t802_1q
 {
     UINT2 proto;
-    UINT2 vlan;           //4,    12      ���ȼ� + vlanid
+    UINT2 vlan; 
     UINT1 data[0];
 }t802_1q_t;
 
@@ -239,6 +239,6 @@ typedef struct st_lldp
 
 #pragma pack()
 
-void create_lldp_pkt(void *src_addr, UINT8 id, UINT2 port, lldp_t *buffer);
+void create_lldp_pkt(void *src_addr, UINT8 id, ovs_be32 port, lldp_t *buffer);
 
 #endif

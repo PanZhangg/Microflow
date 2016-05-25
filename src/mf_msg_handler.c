@@ -35,7 +35,9 @@ static void regist_msg_handler(struct single_msg_handler ** handler_list, struct
 	(*handler_list)->next = handler;
 }
 
-static void unregist_msg_handler(struct single_msg_handler ** handler_list, msg_handler_func func)
+
+//Need test & debug
+static void unregister_msg_handler(struct single_msg_handler ** handler_list, msg_handler_func func)
 {
 	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
@@ -100,13 +102,13 @@ void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func fu
 	switch(type)
 	{
 		case HELLO_MSG_HANDLER_FUNC:
-			unregist_msg_handler(&MSG_HANDLERS->hello_msg_handler_list_head, func);break;
+			unregister_msg_handler(&MSG_HANDLERS->hello_msg_handler_list_head, func);break;
 		case ECHO_REQUEST_HANDLER_FUNC:
-			unregist_msg_handler(&MSG_HANDLERS->echo_request_handler_list_head, func);break;
+			unregister_msg_handler(&MSG_HANDLERS->echo_request_handler_list_head, func);break;
 		case FEATURE_REPLY_HANDLER_FUNC:
-			unregist_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, func);break;
+			unregister_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, func);break;
 		case PACKET_IN_MSG_HANDLER_FUNC:
-			unregist_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, func);break;
+			unregister_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, func);break;
 		default: printf("wrong type\n"); break;
 	}
 }
@@ -172,6 +174,11 @@ void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* 
 	send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
 }
 
+static void send_lldp_packet_out(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)
+{
+
+}
+
 static void port_desc_reply_handler(struct q_node* qn)
 {
 	char* pkt_ptr = qn->rx_packet + 16;
@@ -195,16 +202,24 @@ static uint64_t get_src_mac_addr(char* data)
 
 /*
 TODO :
-1. LLDP packet constructor
-2. Send LLDP to sw_ports with timer
+1. LLDP packet constructor --Done
+2. Send LLDP to sw_ports with timer 
 3. LLDP msg handler
 4. Path calculate algorithm
 */
 
-//static void send_LLDP_packet(struct mf_switch * mf)
-//{
-	
-//}
+static void send_LLDP_packet(void * arg)
+{
+	struct mf_switch * sw = (struct mf_switch*)arg;
+	lldp_t pkt;
+	//struct ofp11_port * port = &(mf->ports);
+	int i = 0;
+	for(; i < sw->port_num; i ++)
+	{
+		create_lldp_pkt((void *)&(sw->ports[i].hw_addr), sw->datapath_id, sw->ports[i].port_no, &pkt);
+		send_lldp_packet_out(sw, &pkt, sw->ports[i].port_no);
+	}
+}
 
 
 
@@ -324,6 +339,7 @@ void hello_msg_handler(struct q_node* qn)
 	if(qn->sw->is_port_desc_request_sent == 0)
 	{
 		send_multipart_port_desc_request(qn);
+		struct stopwatch * spw = stopwatch_create(1.0, &send_LLDP_packet, PERMANENT, (void*)(qn->sw));
 		qn->sw->is_port_desc_request_sent = 1;
 	}
 	printf("Hello msg handling\n");

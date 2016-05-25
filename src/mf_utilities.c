@@ -43,7 +43,7 @@ static UINT8 gn_htonll(UINT8 n)
     return htonl(1) == 1 ? n : ((UINT8) htonl(n) << 32) | htonl(n >> 32);
 }
 
-void create_lldp_pkt(void *src_addr, UINT8 id, UINT2 port, lldp_t *buffer)
+void create_lldp_pkt(void *src_addr, UINT8 id, ovs_be32 port, lldp_t *buffer)
 {
 	UINT1 dest_addr[6] = {0x01,0x80,0xc2,0x00,0x00,0x0e};
 
