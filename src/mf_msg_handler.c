@@ -42,13 +42,13 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
 		return;
-	while(*handler_list)
+	while(*tmp)
 	{
-		if((*handler_list)->handler_func == func)
+		if((*tmp)->handler_func == func)
 		{
-			if((*handler_list)->next)
+			if((*tmp)->next)
 			{
-				*tmp = (*handler_list)->next;
+				*tmp = (*tmp)->next;
 			}
 			else
 			{
@@ -57,8 +57,10 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 			free(*handler_list);
 			return;
 		}
-	*tmp = *handler_list;
-	(*handler_list) = (*handler_list)->next;
+		tmp = &((*tmp)->next);
+	//*tmp = *handler_list;
+	//(*handler_list) = (*handler_list)->next;
+
 	}
 }
 
