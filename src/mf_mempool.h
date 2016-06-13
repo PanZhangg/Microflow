@@ -4,8 +4,8 @@
 #include "mf_rx_queue.h"
 #include <pthread.h>
 
-//#define MF_QUEUE_NODE_MEMPOOL_SIZE 262140
-#define MF_QUEUE_NODE_MEMPOOL_SIZE 1024
+#define MF_QUEUE_NODE_MEMPOOL_SIZE 262140
+//#define MF_QUEUE_NODE_MEMPOOL_SIZE 1024
 struct mf_queue_node_mempool
 {
 	struct q_node node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE];
@@ -14,6 +14,8 @@ struct mf_queue_node_mempool
 	struct q_node * head;
 	struct q_node * tail;
 	uint16_t valid_block_num;
+	uint64_t seq_num;
+	uint64_t read_seq_num;
 	pthread_mutex_t pool_mutex;
 	pthread_cond_t pool_cond;
 };

@@ -17,16 +17,23 @@
 
 void * worker_thread(void* arg)
 {
+	struct q_node * qn = NULL;
+	int old_read_seq_num = 0;
 	while(1)
 	{
-		pthread_mutex_lock(&MSG_RX_QUEUE->pool_mutex);
-		while(MSG_RX_QUEUE->valid_block_num == 0)
-		{		
-			pthread_cond_wait(&MSG_RX_QUEUE->pool_cond, &MSG_RX_QUEUE->pool_mutex);
-		}
-		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
-		pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);		
-		parse_msg(qn);		
+//		pthread_mutex_lock(&MSG_RX_QUEUE->pool_mutex);
+//		while(MSG_RX_QUEUE->valid_block_num == 0)
+//		{		
+//			pthread_cond_wait(&MSG_RX_QUEUE->pool_cond, &MSG_RX_QUEUE->pool_mutex);
+//		}
+		if(__sync_bool_compare_and_swap(&MSG_RX_QUEUE->read_seq_num, old_read_seq_num, old_read_seq_num + 1))
+		{	
+//		pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);
+			qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
+			parse_msg(qn);
+		}		
+		else
+			old_read_seq_num = old_read_seq_num + 1;
 	}
 }
 
