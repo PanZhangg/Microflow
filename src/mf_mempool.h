@@ -10,10 +10,13 @@ struct mf_queue_node_mempool
 {
 	struct q_node node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE];
 	struct q_node * pop;
+	uint32_t cache_padding1;
 	struct q_node * push;
+	uint32_t cache_padding2;
 	struct q_node * head;
 	struct q_node * tail;
-	uint16_t valid_block_num;
+	uint32_t valid_block_num;
+	uint32_t cache_padding3;
 	pthread_mutex_t pool_mutex;
 	pthread_cond_t pool_cond;
 };

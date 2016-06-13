@@ -11,6 +11,9 @@ struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 	memset(mp, 0, sizeof(*mp));
 	mp->head = &mp->node_pool[0];
 	mp->tail = &mp->node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE - 1];
+	mp->cache_padding1 = 0;
+	mp->cache_padding2 = 0;
+	mp->cache_padding3 = 0;
 	mp->pop = mp->head;
 	mp->push = mp->head;
 	mp->valid_block_num = 0;
@@ -28,16 +31,17 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 	}
 	else
 	{
-		pthread_mutex_lock(&mp->pool_mutex);	
+		//pthread_mutex_lock(&mp->pool_mutex);	
 		memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 		mp->push->packet_length = rx_length;
 		mp->push->sw = sw;	
 		mp->push->is_occupied = 1;
-		mp->valid_block_num++;
 		if(mp->push == mp->tail)
 			mp->push = mp->head;
 		else
 			mp->push++;
+		pthread_mutex_lock(&mp->pool_mutex);
+		mp->valid_block_num++;	
 		pthread_mutex_unlock(&mp->pool_mutex);
 		pthread_cond_broadcast(&mp->pool_cond);
 	}
@@ -47,7 +51,6 @@ struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 {
 	struct q_node * qn;
 	if(mp->pop->is_occupied == 0 || mp->valid_block_num <= 0)
-	//if(mp->pop->is_occupied == 0)
 	{
 		return NULL;
 	}
