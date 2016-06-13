@@ -7,7 +7,7 @@
 struct mf_switch;
 
 #define MAX_MF_SWITCH_NUM 4096
-#define HOST_HASH_MAP_SIZE 2048
+
 #define MAX_HOST_NUM 4096
 
 struct mf_devicemgr
