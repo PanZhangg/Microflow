@@ -58,9 +58,6 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 			return;
 		}
 		tmp = &((*tmp)->next);
-	//*tmp = *handler_list;
-	//(*handler_list) = (*handler_list)->next;
-
 	}
 }
 
@@ -178,7 +175,15 @@ void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* 
 
 static void send_lldp_packet_out(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)
 {
-
+	char packet_out_buffer[1024];
+	struct ofp11_packet_out pkt_out = of13_packet_out_msg_constructor(0, 16);
+	struct ofp_header oh = ofp13_msg_header_constructor(0, 13, sizeof(*pkt) + 16 + 8 + sizeof(pkt_out));
+	struct ofp_action_output oao = ofp13_action_output_constructor(port_no);
+	memcpy(packet_out_buffer, &oh, sizeof(oh));
+	memcpy(packet_out_buffer+sizeof(oh), &pkt_out, sizeof(pkt_out));
+	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt_out), &oao, sizeof(oao));
+	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt_out)+sizeof(oao), pkt, sizeof(*pkt));
+	send(sw->sockfd, &packet_out_buffer, sizeof(*pkt)+16+8+sizeof(pkt_out), MSG_DONTWAIT);
 }
 
 static void port_desc_reply_handler(struct q_node* qn)
@@ -214,7 +219,6 @@ static void send_LLDP_packet(void * arg)
 {
 	struct mf_switch * sw = (struct mf_switch*)arg;
 	lldp_t pkt;
-	//struct ofp11_port * port = &(mf->ports);
 	int i = 0;
 	for(; i < sw->port_num; i ++)
 	{

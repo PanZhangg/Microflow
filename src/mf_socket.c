@@ -1,12 +1,8 @@
 #include "mf_socket.h"
-//#include "mf_msg_parser.h"
 #include "mf_logger.h"
 #include "mf_switch.h"
-//#include "mf_devicemgr.h"
-//#include "mf_topomgr.h"
 #include "mf_rx_queue.h"
 #include "mf_mempool.h"
-//#include "mf_timer.h"
 #include "mf_utilities.h"
 #include "mf_api.h"
 #include <stdio.h>  

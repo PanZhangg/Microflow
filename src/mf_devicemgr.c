@@ -40,18 +40,18 @@ struct mf_switch * get_switch(uint32_t sock)
 
 void add_switch(struct mf_switch* sw)
 {
-	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+	//pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	MF_DEVICE_MGR.mf_switch_map[sw->sockfd] = sw;
 	MF_DEVICE_MGR.total_switch_number++;
-	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+	//pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 }
 
 void delete_switch_from_map(struct mf_switch * sw)
 {
-	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+	//pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	MF_DEVICE_MGR.mf_switch_map[sw->sockfd] = NULL;
 	MF_DEVICE_MGR.total_switch_number--;
-	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+	//pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 }
 
 struct mf_switch * get_next_switch(uint32_t* loop_index)
