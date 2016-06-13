@@ -28,7 +28,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 	}
 	else
 	{
-		//pthread_mutex_lock(&mp->pool_mutex);	
+		pthread_mutex_lock(&mp->pool_mutex);	
 		memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 		mp->push->packet_length = rx_length;
 		mp->push->sw = sw;	
@@ -38,7 +38,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 			mp->push = mp->head;
 		else
 			mp->push++;
-		//pthread_mutex_unlock(&mp->pool_mutex);
+		pthread_mutex_unlock(&mp->pool_mutex);
 		pthread_cond_broadcast(&mp->pool_cond);
 	}
 }
@@ -47,6 +47,7 @@ struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 {
 	struct q_node * qn;
 	if(mp->pop->is_occupied == 0 || mp->valid_block_num <= 0)
+	//if(mp->pop->is_occupied == 0)
 	{
 		return NULL;
 	}

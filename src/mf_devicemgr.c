@@ -151,11 +151,19 @@ static struct host_hash_value* pop_from_array(struct host_hash_value * value, st
 
 static struct host_hash_value * get_available_value_slot()
 {
+	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+	if(MF_DEVICE_MGR.available_slot == NULL)
+	{
+		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+		return NULL;
+	}
 	if(MF_DEVICE_MGR.available_slot->is_occupied == 0)
 	{
 		struct host_hash_value * value = pop_from_array(MF_DEVICE_MGR.available_slot, &(MF_DEVICE_MGR.available_slot));
+		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 		return value;
 	}
+	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
 
