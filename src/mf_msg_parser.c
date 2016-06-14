@@ -14,20 +14,16 @@
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 
+int queue_index[WORKER_THREADS_NUM];
 
 void * worker_thread(void* arg)
 {
+	int index = *(int*)arg;
+	printf("index:%d\n", index);
 	while(1)
 	{
-		//pthread_mutex_lock(&MSG_RX_QUEUE->pool_mutex);
-		//while(MSG_RX_QUEUE->valid_block_num == 0)
-		//{		
-		//	pthread_cond_wait(&MSG_RX_QUEUE->pool_cond, &MSG_RX_QUEUE->pool_mutex);
-		//}
-		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
-		//pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);		
-		parse_msg(qn);
-		//cpu_relax();		
+		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE[index]);
+		parse_msg(qn);		
 	}
 }
 
@@ -37,7 +33,8 @@ void parse_thread_start(uint8_t num)
 	for(i = 0; i < num; i++)
 	{
 		pthread_t thread_id;
-		if((pthread_create(&thread_id, NULL, worker_thread, NULL)) < 0)
+		queue_index[i] = i;
+		if((pthread_create(&thread_id, NULL, worker_thread, (void*)&queue_index[i])) < 0)
 		{
 			printf("thread create error\n");
 		}

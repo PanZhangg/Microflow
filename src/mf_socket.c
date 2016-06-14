@@ -20,7 +20,7 @@
 
 struct sockaddr_in controller_addr, switch_addr;
 struct epoll_event ev, events[EPOLL_EVENTS_NUM];
-struct mf_queue_node_mempool * MSG_RX_QUEUE;
+struct mf_queue_node_mempool * MSG_RX_QUEUE[WORKER_THREADS_NUM];
 uint32_t epfd, nfds;
 
 #define RX_BUFFER_SIZE 131072
@@ -91,7 +91,12 @@ void handle_connection(uint32_t sock)
 	socklen_t clilen;
 	char rx_buffer[RX_BUFFER_SIZE];
 	epoll_init(sock);
-	MSG_RX_QUEUE = mf_queue_node_mempool_create();
+	static unsigned int seq = 0;
+	for(i = 0; i < WORKER_THREADS_NUM; i++)
+	{
+		MSG_RX_QUEUE[i] = mf_queue_node_mempool_create();
+	}
+	//MSG_RX_QUEUE = mf_queue_node_mempool_create();
 	mf_controller_init();
 	while(1)
 	{
@@ -148,7 +153,9 @@ void handle_connection(uint32_t sock)
 						msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
 						if(msg_length == 0)
 							break;
-						push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE);
+						seq++;
+						int index = seq % WORKER_THREADS_NUM;
+						push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[index]);
 						pkt_ptr += msg_length;
 						length -= msg_length;
 					}	
