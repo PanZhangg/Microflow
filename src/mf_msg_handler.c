@@ -302,7 +302,7 @@ Msg handler functions
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
-	printf("msg received\n");
+	//printf("msg received\n");
 	if(version == 4)
 	{
 		switch(type)

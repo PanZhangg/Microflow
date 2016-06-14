@@ -25,46 +25,51 @@ struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_switch* sw, struct mf_queue_node_mempool* mp)
 {
 
-	if(mp->valid_block_num >= MF_QUEUE_NODE_MEMPOOL_SIZE)
-	{
-		printf("The MSG RX QUEUE is FULL, valid_block_num: %d\n", mp->valid_block_num);
-	}
-	else
-	{
-		//pthread_mutex_lock(&mp->pool_mutex);	
+	//if(mp->valid_block_num >= MF_QUEUE_NODE_MEMPOOL_SIZE)
+	//{
+	//	printf("The MSG RX QUEUE is FULL, valid_block_num: %d\n", mp->valid_block_num);
+	//}
+	//else
+	//{
+		//pthread_mutex_lock(&mp->pool_mutex);
 		memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 		mp->push->packet_length = rx_length;
 		mp->push->sw = sw;	
-		mp->push->is_occupied = 1;
+		//mp->valid_block_num++;	
+		//smp_mb();
+		//mp->push->is_occupied = 1;
 		if(mp->push == mp->tail)
 			mp->push = mp->head;
 		else
 			mp->push++;
-		pthread_mutex_lock(&mp->pool_mutex);
-		mp->valid_block_num++;	
-		pthread_mutex_unlock(&mp->pool_mutex);
-		pthread_cond_broadcast(&mp->pool_cond);
-	}
+		//pthread_mutex_lock(&mp->pool_mutex);
+		//mp->valid_block_num++;	
+		//pthread_mutex_unlock(&mp->pool_mutex);
+		//pthread_cond_broadcast(&mp->pool_cond);
+	//}
 }
 
 struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 {
 	struct q_node * qn;
-	if(mp->pop->is_occupied == 0 || mp->valid_block_num <= 0)
-	{
+	//if(mp->pop->is_occupied == 0 || mp->valid_block_num <= 0)
+	//{
+	//	return NULL;
+	//}
+	//else
+	//{
+	if(mp->pop == mp->push)
 		return NULL;
-	}
+	qn = mp->pop;
+		//mp->pop->is_occupied = 0;
+		//mp->valid_block_num--;
+		//smp_mb();
+	if(mp->pop == mp->tail)
+		mp->pop = mp->head;
 	else
-	{
-		qn = mp->pop;
-		mp->pop->is_occupied = 0;
-		mp->valid_block_num--;
-		if(mp->pop == mp->tail)
-			mp->pop = mp->head;
-		else
-			mp->pop++;
-		return qn;
-	}
+		mp->pop++;
+	return qn;
+	//}
 }
 /*
 void free_memblock(struct q_node* qn, struct mf_queue_node_mempool* mp)

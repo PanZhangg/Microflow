@@ -19,14 +19,15 @@ void * worker_thread(void* arg)
 {
 	while(1)
 	{
-		pthread_mutex_lock(&MSG_RX_QUEUE->pool_mutex);
-		while(MSG_RX_QUEUE->valid_block_num == 0)
-		{		
-			pthread_cond_wait(&MSG_RX_QUEUE->pool_cond, &MSG_RX_QUEUE->pool_mutex);
-		}
+		//pthread_mutex_lock(&MSG_RX_QUEUE->pool_mutex);
+		//while(MSG_RX_QUEUE->valid_block_num == 0)
+		//{		
+		//	pthread_cond_wait(&MSG_RX_QUEUE->pool_cond, &MSG_RX_QUEUE->pool_mutex);
+		//}
 		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE);
-		pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);		
-		parse_msg(qn);		
+		//pthread_mutex_unlock(&MSG_RX_QUEUE->pool_mutex);		
+		parse_msg(qn);
+		//cpu_relax();		
 	}
 }
 

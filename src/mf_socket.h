@@ -9,7 +9,7 @@
 Code of push_queue_node_to_mempool in mf_mempool.c
 It's the threadpool capacity of Openflow Msg handler process*/
 
-#define WORKER_THREADS_NUM 3
+#define WORKER_THREADS_NUM 1
 
 
 struct mf_rx_queue;
