@@ -23,7 +23,10 @@ void * worker_thread(void* arg)
 	while(1)
 	{
 		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE[index]);
-		parse_msg(qn);		
+		if(qn == NULL)
+			usleep(1);
+		else
+			parse_msg(qn);		
 	}
 }
 

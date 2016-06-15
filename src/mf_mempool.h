@@ -6,7 +6,7 @@
 
 //#define MF_QUEUE_NODE_MEMPOOL_SIZE 262140
 //#define MF_QUEUE_NODE_MEMPOOL_SIZE 1024
-#define MF_QUEUE_NODE_MEMPOOL_SIZE 4096
+#define MF_QUEUE_NODE_MEMPOOL_SIZE 8192
 
 struct mf_queue_node_mempool
 {
