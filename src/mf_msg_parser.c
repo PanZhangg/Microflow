@@ -19,7 +19,6 @@ int queue_index[WORKER_THREADS_NUM];
 void * worker_thread(void* arg)
 {
 	int index = *(int*)arg;
-	printf("index:%d\n", index);
 	while(1)
 	{
 		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE[index]);

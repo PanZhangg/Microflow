@@ -30,7 +30,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 	memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 	mp->push->packet_length = rx_length;
 	mp->push->sw = sw;
-	barrier();
+	//barrier();
 	if(mp->push == mp->tail)
 		mp->push = mp->head;
 	else
@@ -43,7 +43,7 @@ struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 	if(mp->pop == mp->push)
 		return NULL;
 	qn = mp->pop;
-	barrier();
+	//barrier();
 	if(mp->pop == mp->tail)
 		mp->pop = mp->head;
 	else
