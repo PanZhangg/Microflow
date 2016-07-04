@@ -13,8 +13,6 @@ struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 	memset(mp, 0, sizeof(*mp));
 	mp->head = &mp->node_pool[0];
 	mp->tail = &mp->node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE - 1];
-	mp->cache_padding1 = 0;
-	mp->cache_padding2 = 0;
 	mp->pop = mp->head;
 	mp->push = mp->head;
 	return mp;
