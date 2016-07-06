@@ -25,20 +25,31 @@ Function register
 
 static void regist_msg_handler(struct single_msg_handler ** handler_list, struct single_msg_handler * handler)
 {
+	if(handler == NULL)
+	{
+		perror("handler is NULL");
+		exit(0);
+	}
+	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
 	{
 		*handler_list = handler;
 		return;
 	}
-	while((*handler_list)->next)
-		*handler_list = (*handler_list)->next;
-	(*handler_list)->next = handler;
+	while((*tmp)->next)
+		tmp = &(*tmp)->next;
+	(*tmp)->next = handler;
 }
 
 
 //Need test & debug
 static void unregister_msg_handler(struct single_msg_handler ** handler_list, msg_handler_func func)
 {
+	if(handler_list == NULL || func == NULL)
+	{
+		perror("Handler list is NULL or Func is NULL");
+		exit(0);
+	}
 	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
 		return;
@@ -54,12 +65,14 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 			{
 				(*tmp)->next = NULL;
 			}
-			free(*handler_list);
+			free(*tmp);
 			return;
 		}
 		tmp = &((*tmp)->next);
 	}
 }
+
+
 
 void msg_handlers_init()
 {
@@ -73,7 +86,17 @@ void msg_handlers_init()
 
 struct single_msg_handler * single_msg_handler_create(msg_handler_func func)
 {
+	if(func == NULL)
+	{
+		perror("func is NULL");
+		exit(0);
+	}
 	struct single_msg_handler * handler = (struct single_msg_handler *) malloc(sizeof(*handler));
+	if(handler == NULL)
+	{
+		perror("malloc failed");
+		exit(0);
+	}
 	handler->handler_func = func;
 	handler->next = NULL;
 	return handler;
@@ -98,6 +121,11 @@ void msg_handler_func_register(enum MSG_HANDLER_TYPE type, msg_handler_func func
 
 void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func func)
 {
+	if(func == NULL)
+	{
+		perror("func is NULL");
+		exit(0);
+	}
 	switch(type)
 	{
 		case HELLO_MSG_HANDLER_FUNC:
@@ -115,7 +143,10 @@ void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func fu
 static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_node * qn)
 {
 	if(handler_head == NULL)
-		return;
+	{
+		perror("handler head is NULL");
+		exit(0);
+	}
 	struct single_msg_handler * tmp = handler_head;
 	while(tmp)
 	{
