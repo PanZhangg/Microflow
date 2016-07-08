@@ -119,7 +119,7 @@ void msg_handler_func_register(enum MSG_HANDLER_TYPE type, msg_handler_func func
 			regist_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, handler);break;
 		case PACKET_IN_MSG_HANDLER_FUNC:
 			regist_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, handler);break;
-		default: printf("wrong type\n"); break;
+		default:perror("wrong handler type"); break;
 	}
 }
 
@@ -140,7 +140,7 @@ void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func fu
 			unregister_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, func);break;
 		case PACKET_IN_MSG_HANDLER_FUNC:
 			unregister_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, func);break;
-		default: printf("wrong type\n"); break;
+		default: perror("wrong handler type"); break;
 	}
 }
 
@@ -167,7 +167,7 @@ void hello_msg_stopwatch_callback(void* arg) //for timer function test
 {
 	if(arg == NULL)
 	{
-		printf("stopwatch callback arg is null\n");
+		perror("stopwatch callback arg is null");
 		return;
 	}
 	else
@@ -336,6 +336,7 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
 		case 0x8cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
+		default:perror("wrong ether type");
 	}
 }
 
@@ -360,11 +361,11 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 			case 6: feature_reply_handler(qn); break;
 			case 10: packet_in_msg_handler(qn); break;
 			case 19: multipart_reply_handler(qn); break;
-			default: printf("Invalid msg type\n"); break;
+			default: perror("Invalid msg type\n"); break;
 		}
 	}
 	else
-		perror("Msg is not Openflow Version 1.3\n");
+		perror("Msg is not Openflow Version 1.3");
 }
 
 void hello_msg_handler(struct q_node* qn)
