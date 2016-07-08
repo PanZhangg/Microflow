@@ -14,13 +14,17 @@
 
 /*=====================================
 Global variables
+TODO:
+Use global variables as little as possible
+For the performance's sake
+in a multi thread environment
 ======================================*/
 
 struct msg_handlers * MSG_HANDLERS;
 
 
 /*=====================================
-Function register 
+Function registers 
 ======================================*/
 
 static void regist_msg_handler(struct single_msg_handler ** handler_list, struct single_msg_handler * handler)
@@ -41,8 +45,6 @@ static void regist_msg_handler(struct single_msg_handler ** handler_list, struct
 	(*tmp)->next = handler;
 }
 
-
-//Need test & debug
 static void unregister_msg_handler(struct single_msg_handler ** handler_list, msg_handler_func func)
 {
 	if(handler_list == NULL || func == NULL)
@@ -52,7 +54,11 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 	}
 	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
+	{
+		perror("handler list is NULL");
+		exit(0);
 		return;
+	}
 	while(*tmp)
 	{
 		if((*tmp)->handler_func == func)
@@ -71,8 +77,6 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 		tmp = &((*tmp)->next);
 	}
 }
-
-
 
 void msg_handlers_init()
 {
@@ -159,14 +163,15 @@ static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_
 Functions for msg handlers
 ======================================*/
 
-
 void hello_msg_stopwatch_callback(void* arg) //for timer function test
 {
 	if(arg == NULL)
 	{
 		printf("stopwatch callback arg is null\n");
 		return;
-	}else{
+	}
+	else
+	{
 		//struct q_node * qn = (struct q_node *)arg;
 		printf("Print this msg every 1 sec\n");
 	}
@@ -175,6 +180,11 @@ void hello_msg_stopwatch_callback(void* arg) //for timer function test
 static void send_switch_features_request(struct q_node* qn)
 {
 	uint32_t xid = generate_random();
+	/*
+TODO:
+1.hide the xid to msg constructor
+2.what is the purpose of feature_request_xid in the sw struct?
+	 */
 	qn->sw->feature_request_xid = xid;
 	struct ofp_header oh = of13_switch_feature_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
@@ -227,6 +237,7 @@ static void port_desc_reply_handler(struct q_node* qn)
 		inverse_memcpy(&(qn->sw->ports[i++]), pkt_ptr, 64);
 		len += 64; //64 is the length of the port structure
 		pkt_ptr += 64;
+		i++;
 	}
 	qn->sw->port_num = i;
 }
@@ -257,9 +268,6 @@ static void send_LLDP_packet(void * arg)
 		send_lldp_packet_out(sw, &pkt, sw->ports[i].port_no);
 	}
 }
-
-
-
 
 /*
 static uint32_t packet_in_msg_get_bufferid(struct q_node* qn)
@@ -318,6 +326,11 @@ static uint16_t get_ether_type(char * buffer)
 
 static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uint16_t total_len)
 {
+	if(qn == NULL || buffer == NULL)
+	{
+		perror("qn is NULL or buffer is NULL");
+		return;
+	}
 	uint16_t ether_type = *(buffer + 12) << 8 | *(buffer + 13);
 	switch(ether_type)
 	{
@@ -333,7 +346,11 @@ Msg handler functions
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
-	//printf("msg received\n");
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
 	if(version == 4)
 	{
 		switch(type)
@@ -347,11 +364,16 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 		}
 	}
 	else
-		printf("Msg is not Openflow Version 1.3\n");
+		perror("Msg is not Openflow Version 1.3\n");
 }
 
 void hello_msg_handler(struct q_node* qn)
 {
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
 	static uint8_t is_timer_added;
 	if(is_timer_added == 0)
 	{
@@ -383,7 +405,12 @@ void hello_msg_handler(struct q_node* qn)
 }
 
 void echo_request_handler(struct q_node* qn)
-{
+{	
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
@@ -393,17 +420,26 @@ void echo_request_handler(struct q_node* qn)
 
 void feature_reply_handler(struct q_node* qn)
 {
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
 	mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
 	inverse_memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
 	inverse_memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
 	memcpy(&qn->sw->n_tables, qn->rx_packet + 20, 1);
 	memcpy(&qn->sw->auxiliary_id, qn->rx_packet + 21, 1);
 	inverse_memcpy(&qn->sw->capabilities, qn->rx_packet + 24, 4);
-	//printf("feature_reply message handling\n");
 }
 
 void packet_in_msg_handler(struct q_node* qn)
 {
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	uint16_t total_len = *(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
@@ -413,6 +449,11 @@ void packet_in_msg_handler(struct q_node* qn)
 
 void multipart_reply_handler(struct q_node* qn)
 {
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
 	uint16_t type = *(qn->rx_packet + 8) << 8 | *(qn->rx_packet + 9);
 	if(type == 13)
 		port_desc_reply_handler(qn);
@@ -420,6 +461,11 @@ void multipart_reply_handler(struct q_node* qn)
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
 	uint64_t mac_addr = get_src_mac_addr(buffer);
 	host_hash_value_add(qn->sw, 5, mac_addr);
 	send_packet_out(qn, xid, 0, buffer, total_len);
