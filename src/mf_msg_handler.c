@@ -14,7 +14,6 @@
 
 /*=====================================
 Global variables
-TODO:
 Use global variables as little as possible
 For the performance's sake
 in a multi thread environment
@@ -181,9 +180,9 @@ static void send_switch_features_request(struct q_node* qn)
 {
 	uint32_t xid = generate_random();
 	/*
-TODO:
-1.hide the xid to msg constructor
-2.what is the purpose of feature_request_xid in the sw struct?
+		TODO:
+			1.hide the xid to msg constructor
+			2.what is the purpose of feature_request_xid in the sw struct?
 	 */
 	qn->sw->feature_request_xid = xid;
 	struct ofp_header oh = of13_switch_feature_msg_constructor(xid);
@@ -205,8 +204,9 @@ void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* 
 	struct ofp_header oh = ofp13_msg_header_constructor(xid, 13, data_length + 16 + 8 + sizeof(pkt));
 	struct ofp_action_output oao = ofp13_action_output_constructor(1);
 	/*TODO:
-	 *quick code for testing purpose 
-	 *need to be improved*/
+		 *quick code for testing purpose 
+		 *need to be improved
+	*/
 	memcpy(packet_out_buffer, &oh, sizeof(oh));
 	memcpy(packet_out_buffer+sizeof(oh), &pkt, sizeof(pkt));
 	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt), &oao, sizeof(oao));
@@ -214,7 +214,7 @@ void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* 
 	send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
 }
 
-static void send_lldp_packet_out(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)
+static void send_lldp_packet_out_per_switch(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)
 {
 	char packet_out_buffer[1024];
 	struct ofp11_packet_out pkt_out = of13_packet_out_msg_constructor(0, 16);
@@ -250,11 +250,11 @@ static uint64_t get_src_mac_addr(char* data)
 }
 
 /*
-TODO :
-1. LLDP packet constructor --Done
-2. Send LLDP to sw_ports with timer 
-3. LLDP msg handler
-4. Path calculate algorithm
+	TODO :
+		1. LLDP packet constructor --Done
+		2. Send LLDP to sw_ports with timer --Done 
+		3. LLDP msg handler
+		4. Path calculate algorithm
 */
 
 static void send_LLDP_packet(void * arg)
@@ -262,10 +262,10 @@ static void send_LLDP_packet(void * arg)
 	struct mf_switch * sw = (struct mf_switch*)arg;
 	lldp_t pkt;
 	int i = 0;
-	for(; i < sw->port_num; i ++)
+	for(; i < sw->port_num; i++)
 	{
 		create_lldp_pkt((void *)&(sw->ports[i].hw_addr), sw->datapath_id, sw->ports[i].port_no, &pkt);
-		send_lldp_packet_out(sw, &pkt, sw->ports[i].port_no);
+		send_lldp_packet_out_per_switch(sw, &pkt, sw->ports[i].port_no);
 	}
 }
 
@@ -361,7 +361,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 			case 6: feature_reply_handler(qn); break;
 			case 10: packet_in_msg_handler(qn); break;
 			case 19: multipart_reply_handler(qn); break;
-			default: perror("Invalid msg type\n"); break;
+			default: perror("Invalid msg type"); break;
 		}
 	}
 	else
@@ -370,6 +370,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 
 void hello_msg_handler(struct q_node* qn)
 {
+	static int if_LLDP_timer_exist = 0;
 	if(qn == NULL)
 	{
 		perror("qn is NULL");
@@ -399,8 +400,13 @@ void hello_msg_handler(struct q_node* qn)
 	if(qn->sw->is_port_desc_request_sent == 0)
 	{
 		send_multipart_port_desc_request(qn);
-		struct stopwatch * spw = stopwatch_create(1.0, &send_LLDP_packet, PERMANENT, (void*)(qn->sw));
 		qn->sw->is_port_desc_request_sent = 1;
+	}
+	if(if_LLDP_timer_exist == 0)
+	{
+
+		struct stopwatch * spw = stopwatch_create(1.0, &send_LLDP_packet, PERMANENT, (void*)(qn->sw));
+		if_LLDP_timer_exist = 1;
 	}
 	printf("Hello msg handling\n");
 }
