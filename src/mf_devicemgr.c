@@ -54,15 +54,18 @@ void delete_switch_from_map(struct mf_switch * sw)
 	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 }
 /*The upper limit of agrument loop_index
-is decided by the MAX_SWITCH_NUM
+is decided by the the outer loop 
 
 e.g.
-int i = 0; //where 0 is the start index, could be any other value less than MAX_SWITCH_NUM
-
-struct mf_switch * sw = get_next_switch(&i);
-
-returns the next valid sw pointer after i
-also changes i to the this new location of index 
+int i = 0;
+int intr_index = 0;
+for(i = 0; i < curr_sw_number; i++)
+{
+	struct mf_switch * sw = get_next_switch(&intr_index);
+	//Dosomething(sw);
+}
+This loop will return all the valid switches in the device manager storage.
+And execute the Dosomething function to all the switches.
 */
 struct mf_switch * get_next_switch(uint32_t* loop_index)
 {
