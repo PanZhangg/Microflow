@@ -154,7 +154,10 @@ static void push_to_array(struct host_hash_value * value, struct host_hash_value
 static struct host_hash_value* pop_from_array(struct host_hash_value * value, struct host_hash_value ** array)
 {
 	if(array == NULL || *array == NULL)
+	{
+		perror("Array is NULL"); 
 		return NULL;
+	}
 	struct host_hash_value * tmp = * array;
 	while(tmp)
 	{
@@ -222,6 +225,7 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 		host_add_to_hash_map(value);
 		return value;
 	}
+	perror("Value slot is NULL");
 	return NULL;
 }
 
@@ -254,6 +258,7 @@ void host_add_to_hash_map(struct host_hash_value* value)
 			if(is_struct_hash_value_identical(tmp, value))
 			{
 				value->is_occupied = 0;
+				push_to_array(value, &(MF_DEVICE_MGR.available_slot));
 				return;
 			}
 			/*

@@ -38,15 +38,16 @@ do_something for all the valid switches
 Code template:
 func()
 {
-unit32_t i;
-pthread_mutex_lock(&MF_SWITCH_MAP.devicemgr_mutex);
-for(i = 0; i < MF_SWITCH_MAP.total_switch_number; i++)
-{
-	struct mf_switch* sw = get_switch_next_(&i);
-	check & get(sw)
+	unit32_t i,j;
+	j = 0;
+	pthread_mutex_lock(&MF_SWITCH_MAP.devicemgr_mutex);
+	for(i = 0; i < MF_SWITCH_MAP.total_switch_number; i++)
+	{
+		struct mf_switch* sw = get_switch_next_(&j);
+		check(sw);
+		do_something(sw);
+	}
 	pthread_mutex_unlock(&MF_SWITCH_MAP.devicemgr_mutex);
-	do_something(sw);
-}
 }
 */
 

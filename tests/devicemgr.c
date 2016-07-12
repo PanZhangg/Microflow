@@ -23,6 +23,11 @@ int main()
 	{
  		sw6 = get_next_switch(&j); 
 	}
+	uint64_t mac1 = 11111111111;
+	uint64_t mac2 = 1111111111;
+	mf_devicemgr_create();
+	host_hash_value_add(sw6, 5, mac1);
+	host_hash_value_add(sw6, 5, mac2);
+	host_hash_value_add(sw6, 5, mac1);
 	return 0;
-		  
 }
