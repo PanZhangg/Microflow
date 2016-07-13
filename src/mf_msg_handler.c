@@ -21,7 +21,8 @@ in a multi thread environment
 
 struct msg_handlers * MSG_HANDLERS;
 
-
+extern 
+struct mf_devicemgr MF_DEVICE_MGR;
 /*=====================================
 Function registers 
 ======================================*/
@@ -214,7 +215,7 @@ void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* 
 	send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
 }
 
-static void send_lldp_packet_out_per_switch(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)
+static void send_lldp_packet_out_per_port(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)
 {
 	char packet_out_buffer[1024];
 	struct ofp11_packet_out pkt_out = of13_packet_out_msg_constructor(0, 16);
@@ -234,12 +235,16 @@ static void port_desc_reply_handler(struct q_node* qn)
 	uint16_t len = 16; //16 is the length of ofp header and multipart reply header
 	while(len < qn->packet_length)
 	{
-		inverse_memcpy(&(qn->sw->ports[i++]), pkt_ptr, 64);
+		inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
+		inverse_memcpy((void*)&(qn->sw->ports[i].hw_addr), pkt_ptr + 8, 6);
+		i++;
 		len += 64; //64 is the length of the port structure
 		pkt_ptr += 64;
-		i++;
+		//printf("packet_length: %d/n", qn->packet_length);
+		//printf("len: %d/n", len);
 	}
 	qn->sw->port_num = i;
+	switch_print(qn->sw);
 }
 
 static uint64_t get_src_mac_addr(char* data)
@@ -261,11 +266,19 @@ static void send_LLDP_packet(void * arg)
 {
 	struct mf_switch * sw = (struct mf_switch*)arg;
 	lldp_t pkt;
-	int i = 0;
-	for(; i < sw->port_num; i++)
+	uint32_t j= 0;
+	uint32_t k = 0;
+	for(j = 0; j < MF_DEVICE_MGR.total_switch_number; j++)
 	{
-		create_lldp_pkt((void *)&(sw->ports[i].hw_addr), sw->datapath_id, sw->ports[i].port_no, &pkt);
-		send_lldp_packet_out_per_switch(sw, &pkt, sw->ports[i].port_no);
+		int i = 0;
+		sw = get_next_switch(&k);
+		if(sw == NULL)
+			break;
+		for(; i < sw->port_num; i++)
+		{
+			create_lldp_pkt((void *)&(sw->ports[i].hw_addr), sw->datapath_id, sw->ports[i].port_no, &pkt);
+			send_lldp_packet_out_per_port(sw, &pkt, sw->ports[i].port_no);
+		}
 	}
 }
 

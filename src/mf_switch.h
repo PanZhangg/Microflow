@@ -30,6 +30,8 @@ struct mf_switch
 
 struct mf_switch * mf_switch_create(uint32_t sockfd);
 void mf_switch_destory(struct mf_switch *);
+/*For debug purpose*/
+void switch_print(struct mf_switch *);
 
 
 #endif

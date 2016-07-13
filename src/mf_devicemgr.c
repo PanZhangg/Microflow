@@ -8,7 +8,7 @@
 static Global variables
 ==================*/
 
-static struct mf_devicemgr MF_DEVICE_MGR;
+struct mf_devicemgr MF_DEVICE_MGR;
 
 static struct host_hash_value * HOST_HASH_MAP[HOST_HASH_MAP_SIZE];
 

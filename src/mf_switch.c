@@ -76,3 +76,16 @@ void mf_switch_destory(struct mf_switch * sw)
 	free(sw);
 }
 
+
+void switch_print(struct mf_switch * sw)
+{
+	printf("sockfd:%d\n", sw->sockfd); 
+	printf("datapath_ID:%ld\n", sw->datapath_id); 
+	printf("port num:%d\n", sw->port_num); 
+	int i = 0;
+	for(i = 0; i < sw->port_num; i++)
+	{
+  		printf("Port %d: Port_no: %x\n", i, sw->ports[i].port_no);	
+  		printf("Port %d: hardware addr: %x\n", i, (char)sw->ports[i].hw_addr[4]);	
+	}
+}
