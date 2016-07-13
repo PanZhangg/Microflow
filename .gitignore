@@ -34,3 +34,6 @@ src/*.log
 src/microflow
 callgrind.*
 cachegrind.*
+
+#VIM files
+*.swp
