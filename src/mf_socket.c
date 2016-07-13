@@ -154,7 +154,8 @@ void handle_connection(uint32_t sock)
 					while(length > 0)
 					{
 						uint16_t msg_length = 0;
-						msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
+						//msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
+						inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
 						if(msg_length == 0)
 						{
 							perror("msg length is 0");

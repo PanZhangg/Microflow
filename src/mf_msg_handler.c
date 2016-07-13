@@ -240,8 +240,8 @@ static void port_desc_reply_handler(struct q_node* qn)
 		i++;
 		len += 64; //64 is the length of the port structure
 		pkt_ptr += 64;
-		//printf("packet_length: %d/n", qn->packet_length);
-		//printf("len: %d/n", len);
+		printf("packet_length: %d\n", qn->packet_length);
+		printf("len: %d\n", len);
 	}
 	qn->sw->port_num = i;
 	switch_print(qn->sw);
