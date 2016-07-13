@@ -161,9 +161,13 @@ void handle_connection(uint32_t sock)
 							perror("msg length is 0");
 							break;
 						}
-						seq++;
-						int index = seq % WORKER_THREADS_NUM;
-						push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[index]);
+						switch(seq)
+						{
+ 							case 0: seq = 1; break;
+							case 1: seq = 0; break;
+							default: seq = 0; break;
+						}
+						push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[seq]);
 						pkt_ptr += msg_length;
 						length -= msg_length;
 					}	

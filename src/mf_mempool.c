@@ -22,12 +22,11 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 {
 	if(mp->push == mp->pop - 1)
 	{
-		printf("Buffer is full\n");
+		perror("Queue is full");
 		return;
 	}
 	memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 	mp->push->packet_length = rx_length;
-	printf("pushed rx_length: %d\n", mp->push->packet_length);
 	mp->push->sw = sw;
 	if(mp->push == mp->tail)
 		mp->push = mp->head;
@@ -41,7 +40,6 @@ struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 	if(mp->pop == mp->push)
 		return NULL;
 	qn = mp->pop;
-	//barrier();
 	if(mp->pop == mp->tail)
 		mp->pop = mp->head;
 	else
