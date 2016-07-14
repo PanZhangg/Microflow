@@ -86,6 +86,11 @@ void switch_print(struct mf_switch * sw)
 	for(i = 0; i < sw->port_num; i++)
 	{
   		printf("Port %d: Port_no: %x\n", i, sw->ports[i].port_no);	
-  		printf("Port %d: hardware addr: %x\n", i, (char)sw->ports[i].hw_addr[4]);	
+  		printf("Port %d: hardware addr: %x", i, (char)sw->ports[i].hw_addr[5]);	
+  		printf(":%x", (char)sw->ports[i].hw_addr[4]);	
+  		printf(":%x", (char)sw->ports[i].hw_addr[3]);	
+  		printf(":%x", (char)sw->ports[i].hw_addr[2]);	
+  		printf(":%x", (char)sw->ports[i].hw_addr[1]);	
+  		printf(":%x\n", (char)sw->ports[i].hw_addr[0]);	
 	}
 }

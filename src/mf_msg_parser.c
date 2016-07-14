@@ -38,7 +38,8 @@ void parse_thread_start(uint8_t num)
 		queue_index[i] = i;
 		if((pthread_create(&thread_id, NULL, worker_thread, (void*)&queue_index[i])) < 0)
 		{
-			printf("thread create error\n");
+			perror("thread create error");
+			exit(0);
 		}
 		pthread_detach(thread_id);
 	}
@@ -48,10 +49,12 @@ static inline uint8_t parse_msg_type(struct q_node* qn)
 {
 	if(qn == NULL)
 	{
+		perror("qn is NULL when parser msg type");
 		return 0;
 	}
-	uint8_t type = (uint8_t)*(qn->rx_packet + 1);
-	//memcpy(&type, qn->rx_packet + 1, 1);
+	uint8_t type;
+	//uint8_t type = (uint8_t)*(qn->rx_packet + 1);
+	memcpy(&type, qn->rx_packet + 1, 1);
 	return type;
 }
 
@@ -59,10 +62,12 @@ static inline uint8_t parse_msg_version(struct q_node* qn)
 {
 	if(qn == NULL)
 	{
+		perror("qn is NULL when parser version"); 
 		return 0;
 	}
-	uint8_t version = (uint8_t)*qn->rx_packet;
-	//memcpy(&version, qn->rx_packet, 1);
+	uint8_t version;
+	//uint8_t version = (uint8_t)*qn->rx_packet;
+	memcpy(&version, qn->rx_packet, 1);
 	return version;
 }
 
@@ -70,6 +75,7 @@ void parse_msg(struct q_node* qn)
 {
 	if(qn == NULL)
 	{
+		perror("qn is NULL when parse msg");
 		return;
 	}
 	else

@@ -149,8 +149,9 @@ static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_
 	if(handler_head == NULL)
 	{
 		perror("handler head is NULL");
-		exit(0);
+		return;
 	}
+
 	struct single_msg_handler * tmp = handler_head;
 	while(tmp)
 	{
@@ -344,12 +345,14 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 		perror("qn is NULL or buffer is NULL");
 		return;
 	}
-	uint16_t ether_type = *(buffer + 12) << 8 | *(buffer + 13);
+	//uint16_t ether_type = *(buffer + 12) << 8 | *(buffer + 13);
+	uint16_t ether_type;
+	inverse_memcpy(&ether_type, buffer + 12, 2);
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
 		case 0x8cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
-		default:perror("wrong ether type");
+		default:perror("wrong ether type");printf("ether type: %x\n", ether_type);break;
 	}
 }
 
@@ -373,12 +376,16 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 			case 2: echo_request_handler(qn); break;
 			case 6: feature_reply_handler(qn); break;
 			case 10: packet_in_msg_handler(qn); break;
+			case 12: port_status_msg_handler(qn);break;
 			case 19: multipart_reply_handler(qn); break;
 			default: perror("Invalid msg type"); break;
 		}
 	}
 	else
+	{
 		perror("Msg is not Openflow Version 1.3");
+		printf("Msg version is: %d\n", version);
+	}
 }
 
 void hello_msg_handler(struct q_node* qn)
@@ -417,7 +424,6 @@ void hello_msg_handler(struct q_node* qn)
 	}
 	if(if_LLDP_timer_exist == 0)
 	{
-
 		struct stopwatch * spw = stopwatch_create(1.0, &send_LLDP_packet, PERMANENT, (void*)(qn->sw));
 		if_LLDP_timer_exist = 1;
 	}
@@ -462,9 +468,39 @@ void packet_in_msg_handler(struct q_node* qn)
 	}
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
-	uint16_t total_len = *(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
+	//uint16_t total_len = *(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
+	uint16_t total_len = 0;
+	inverse_memcpy(&total_len, qn->rx_packet + 12, 2);
 	char * data_pointor = qn->rx_packet + qn->packet_length - total_len;
 	parse_ether_type(qn, xid, data_pointor, total_len);
+}
+
+void port_status_msg_handler(struct q_node* qn)
+{
+	if(qn == NULL)
+	{
+		perror("qn is NULL");
+		return;
+	}
+	uint8_t reason = *(qn->rx_packet + 8);
+	if(reason == 0)
+	{
+		pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+		char* pkt_ptr = qn->rx_packet + 16;
+		uint8_t i = qn->sw->port_num;
+		uint16_t len = 16; 
+		while(len < qn->packet_length)
+		{
+			inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
+			inverse_memcpy((void*)&(qn->sw->ports[i].hw_addr), pkt_ptr + 8, 6);
+			i++;
+			len += 64; //64 is the length of the port structure
+			pkt_ptr += 64;
+		}
+		qn->sw->port_num = i;
+		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+		switch_print(qn->sw);
+	}
 }
 
 void multipart_reply_handler(struct q_node* qn)

@@ -20,7 +20,7 @@ FIRST_SOCKET_FD	tests/socket_array_test.c	5;"	d	file:
 HELLO_MSG_HANDLER_FUNC	src/mf_msg_handler.h	/^	HELLO_MSG_HANDLER_FUNC,$/;"	e	enum:MSG_HANDLER_TYPE
 HOST_CACHE_ARRAY	src/mf_devicemgr.c	/^static struct host_hash_value HOST_CACHE_ARRAY[MAX_HOST_NUM];$/;"	v	typeref:struct:host_hash_value	file:
 HOST_HASH_MAP	src/mf_devicemgr.c	/^static struct host_hash_value * HOST_HASH_MAP[HOST_HASH_MAP_SIZE];$/;"	v	typeref:struct:host_hash_value	file:
-HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	55;"	d
+HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	56;"	d
 HPL_VENDOR_ID	src/Openflow/openflow-common.h	97;"	d
 INT1	src/mf_utilities.h	/^typedef char              INT1;$/;"	t
 INT2	src/mf_utilities.h	/^typedef short             INT2;$/;"	t
@@ -49,7 +49,7 @@ MAX_NETWORK_LINK_NUM	src/mf_topomgr.h	11;"	d
 MAX_NETWORK_LINK_NUM_PER_SWITCH	src/mf_topomgr.h	12;"	d
 MAX_PKT	src/mf_utilities.h	30;"	d
 MF_API_H__	src/mf_api.h	2;"	d
-MF_DEVICE_MGR	src/mf_devicemgr.c	/^static struct mf_devicemgr MF_DEVICE_MGR;$/;"	v	typeref:struct:mf_devicemgr	file:
+MF_DEVICE_MGR	src/mf_devicemgr.c	/^struct mf_devicemgr MF_DEVICE_MGR;$/;"	v	typeref:struct:mf_devicemgr
 MF_LOG_FILE	src/mf_logger.c	/^FILE* MF_LOG_FILE;$/;"	v
 MF_MEMPOOL_H__	src/mf_mempool.h	2;"	d
 MF_QUEUE_NODE_MEMPOOL_SIZE	src/mf_mempool.h	9;"	d
@@ -844,6 +844,7 @@ lookup_count	src/Openflow/openflow-1.3.h	/^    ovs_be64 lookup_count;  \/* Numbe
 mac_addr	src/mf_devicemgr.h	/^	uint64_t mac_addr;$/;"	m	struct:host_hash_value
 mac_addr_hash	src/mf_devicemgr.c	/^inline uint32_t mac_addr_hash(uint64_t key)$/;"	f
 main	src/main.c	/^int main(int argc, char** argv){$/;"	f
+main	tests/devicemgr.c	/^int main()$/;"	f
 main	tests/host_hash_test.c	/^int main()$/;"	f
 main	tests/inverse_memcpy_test.c	/^int main()$/;"	f
 main	tests/log_test.c	/^int main()$/;"	f
@@ -1355,6 +1356,7 @@ port_no	src/Openflow/openflow-1.4.h	/^    ovs_be32 port_no;$/;"	m	struct:ofp14_p
 port_num	src/mf_devicemgr.h	/^	uint32_t port_num;$/;"	m	struct:host_hash_value
 port_num	src/mf_switch.h	/^	uint16_t port_num;$/;"	m	struct:mf_switch
 port_status_mask	src/Openflow/openflow-1.3.h	/^    ovs_be32 port_status_mask[2]; \/* Bitmasks of OFPPR_* values. *\/$/;"	m	struct:ofp13_async_config
+port_status_msg_handler	src/mf_msg_handler.c	/^void port_status_msg_handler(struct q_node* qn)$/;"	f
 port_tlv_id	src/mf_utilities.h	/^    UINT2 port_tlv_id;                \/\/send port$/;"	m	struct:st_lldp
 port_tlv_subtype	src/mf_utilities.h	/^    UINT1 port_tlv_subtype;          \/\/local assigned    7$/;"	m	struct:st_lldp
 port_tlv_type_and_len	src/mf_utilities.h	/^    UINT2 port_tlv_type_and_len;      \/\/0x0403$/;"	m	struct:st_lldp
@@ -1443,7 +1445,7 @@ rx_packets	src/Openflow/openflow-1.4.h	/^    ovs_be64 rx_packets;     \/* Number
 s	src/mf_socket_array.h	/^	struct mf_socket s;$/;"	m	struct:mf_socket_array_node	typeref:struct:mf_socket_array_node::mf_socket
 secd	src/mf_utilities.h	/^    UINT2 secd;$/;"	m	struct:st_dhcp
 send_LLDP_packet	src/mf_msg_handler.c	/^static void send_LLDP_packet(void * arg)$/;"	f	file:
-send_lldp_packet_out	src/mf_msg_handler.c	/^static void send_lldp_packet_out(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)$/;"	f	file:
+send_lldp_packet_out_per_port	src/mf_msg_handler.c	/^static void send_lldp_packet_out_per_port(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)$/;"	f	file:
 send_multipart_port_desc_request	src/mf_msg_handler.c	/^void send_multipart_port_desc_request(struct q_node* qn)$/;"	f
 send_packet_out	src/mf_msg_handler.c	/^void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* data, uint32_t data_length)$/;"	f
 send_switch_features_request	src/mf_msg_handler.c	/^static void send_switch_features_request(struct q_node* qn)$/;"	f	file:
@@ -1505,6 +1507,7 @@ sw_link_insert	src/mf_topomgr.c	/^void sw_link_insert(struct sw_link_list * list
 sw_link_list	src/mf_topomgr.h	/^struct sw_link_list$/;"	s
 sw_link_next	src/mf_topomgr.h	/^	struct network_link * sw_link_next;$/;"	m	struct:network_link	typeref:struct:network_link::network_link
 switch_addr	src/mf_socket.c	/^struct sockaddr_in controller_addr, switch_addr;$/;"	v	typeref:struct:
+switch_print	src/mf_switch.c	/^void switch_print(struct mf_switch * sw)$/;"	f
 t802_1q_t	src/mf_utilities.h	/^}t802_1q_t;$/;"	t	typeref:struct:st_t802_1q
 table_id	src/Openflow/openflow-1.0.h	/^    uint8_t table_id;         \/* ID of table flow came from. *\/$/;"	m	struct:ofp10_flow_stats
 table_id	src/Openflow/openflow-1.0.h	/^    uint8_t table_id;         \/* ID of table to read (from ofp_table_stats)$/;"	m	struct:ofp10_flow_stats_request
