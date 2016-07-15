@@ -92,6 +92,7 @@ void mf_socket_bind(uint32_t sock)
 void handle_connection(uint32_t sock)
 {
 	int i, connfd;
+	static int incompleted_packet_length = 0;
 	socklen_t clilen;
 	char rx_buffer[RX_BUFFER_SIZE];
 	epoll_init(sock);
@@ -114,8 +115,8 @@ void handle_connection(uint32_t sock)
 				mf_write_socket_log("Incoming socket connection", connfd);
 				if(connfd < 0)
 				{
-                    perror("connfd < 0");
-                    continue;
+					perror("connfd < 0");
+					continue;
 				}
 				mf_switch_create(connfd);
 				ev.data.fd = connfd;
@@ -131,7 +132,7 @@ void handle_connection(uint32_t sock)
 					continue;
 				}
 				struct mf_switch * sw = get_switch(sockfd);
-				int length = read(sockfd, rx_buffer, RX_BUFFER_SIZE);
+				int length = read(sockfd, (char*)rx_buffer + incompleted_packet_length, RX_BUFFER_SIZE);
 				if(length == 0)
 				{
 					ev.data.fd = sockfd;
@@ -151,6 +152,8 @@ void handle_connection(uint32_t sock)
 				else
 				{
 					char * pkt_ptr = rx_buffer;
+					length += incompleted_packet_length;
+					int received_length = length;
 					while(length > 0)
 					{
 						if((int)*pkt_ptr == 4)// This is a OF1.3 Msg
@@ -158,11 +161,20 @@ void handle_connection(uint32_t sock)
 							uint16_t msg_length = 0;
 							//msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
 							inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
-							if(msg_length <= 7 || msg_length > length)
+							if(length < msg_length)
+							{
+								printf("received length is: %d,current length is: %d\n,  msg length is %d\n",received_length, length, msg_length);
+								incompleted_packet_length = length;
+								memmove(rx_buffer, pkt_ptr, incompleted_packet_length);
+								break;	
+							}
+							else if(msg_length <= 7)
 							{
 								perror("msg length wrong");
+								printf("Received msg length is : %d, Msg length is: %d droped\n",length, msg_length);
 								break;
 							}
+							incompleted_packet_length = 0;
 							push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[(seq++) % WORKER_THREADS_NUM]);
 							pkt_ptr += msg_length;
 							length -= msg_length;
