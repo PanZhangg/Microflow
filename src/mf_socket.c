@@ -23,10 +23,10 @@ struct epoll_event ev, events[EPOLL_EVENTS_NUM];
 struct mf_queue_node_mempool * MSG_RX_QUEUE[WORKER_THREADS_NUM];
 uint32_t epfd, nfds;
 
-#define RX_BUFFER_SIZE 131072 
+#define RX_BUFFER_SIZE 65536 
 //When dealing with large thoughput
 //Buffer size matters....
-#define RX_BUFFER_READ_SIZE 2048
+//#define RX_BUFFER_READ_SIZE 2048
 //As the len argument for read function
 //No read len is larger than this value
 //according to large amount of experiments
@@ -131,7 +131,7 @@ void handle_connection(uint32_t sock)
 					continue;
 				}
 				struct mf_switch * sw = get_switch(sockfd);
-				int length = read(sockfd, rx_buffer, RX_BUFFER_READ_SIZE);
+				int length = read(sockfd, rx_buffer, RX_BUFFER_SIZE);
 				if(length == 0)
 				{
 					ev.data.fd = sockfd;
@@ -153,18 +153,27 @@ void handle_connection(uint32_t sock)
 					char * pkt_ptr = rx_buffer;
 					while(length > 0)
 					{
-						uint16_t msg_length = 0;
-						//msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
-						inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
-						if(msg_length == 0)
+						if((int)*pkt_ptr == 4)// This is a OF1.3 Msg
 						{
-							perror("msg length is 0");
+							uint16_t msg_length = 0;
+							//msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
+							inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
+							if(msg_length <= 7 || msg_length > length)
+							{
+								perror("msg length wrong");
+								break;
+							}
+							push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[(seq++) % WORKER_THREADS_NUM]);
+							pkt_ptr += msg_length;
+							length -= msg_length;
+						}
+						else
+						{
+							perror("Msg is not OF1.3");
+							printf("Packets drop, total length: %d\n", length);
 							break;
 						}
-						push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[(seq++) % WORKER_THREADS_NUM]);
-						pkt_ptr += msg_length;
-						length -= msg_length;
-					}	
+					}
 				}
 			}
 		}

@@ -49,7 +49,7 @@ static inline uint8_t parse_msg_type(struct q_node* qn)
 {
 	if(qn == NULL)
 	{
-		perror("qn is NULL when parser msg type");
+		perror("qn is NULL when parsing msg type");
 		return 0;
 	}
 	uint8_t type;
@@ -62,7 +62,7 @@ static inline uint8_t parse_msg_version(struct q_node* qn)
 {
 	if(qn == NULL)
 	{
-		perror("qn is NULL when parser version"); 
+		perror("qn is NULL when parsing version"); 
 		return 0;
 	}
 	uint8_t version;
@@ -75,14 +75,14 @@ void parse_msg(struct q_node* qn)
 {
 	if(qn == NULL)
 	{
-		perror("qn is NULL when parse msg");
+		perror("qn is NULL when parsing msg");
 		return;
 	}
 	else
 	{
 		uint8_t type = parse_msg_type(qn);
-		uint8_t version = parse_msg_version(qn);
-		msg_handler(type, version, qn);
+		//uint8_t version = parse_msg_version(qn);
+		msg_handler(type, 4, qn);
 	}
 
 }
