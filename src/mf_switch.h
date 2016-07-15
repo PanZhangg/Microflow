@@ -1,6 +1,7 @@
 #ifndef __MF_SWITCH_H__
 #define __MF_SWITCH_H__
 //#include "mf_rx_queue.h"
+#include "mf_socket.h"
 #include "./Openflow/openflow-1.1.h"
 #include "mf_topomgr.h"
 
@@ -10,6 +11,8 @@ struct mf_switch
 {
 	/*--socket--*/
 	uint32_t sockfd;
+	/*--rece buffer--*/
+	char rx_buffer[RX_BUFFER_SIZE];
 	/*--openflow--*/
 	uint64_t datapath_id;
 	uint32_t n_buffers;

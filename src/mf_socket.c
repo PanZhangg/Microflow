@@ -23,15 +23,6 @@ struct epoll_event ev, events[EPOLL_EVENTS_NUM];
 struct mf_queue_node_mempool * MSG_RX_QUEUE[WORKER_THREADS_NUM];
 uint32_t epfd, nfds;
 
-#define RX_BUFFER_SIZE 65536 
-//When dealing with large thoughput
-//Buffer size matters....
-//#define RX_BUFFER_READ_SIZE 2048
-//As the len argument for read function
-//No read len is larger than this value
-//according to large amount of experiments
-
-
 static void set_nonblocking(uint32_t sock)
 {
     int opts;
@@ -94,7 +85,6 @@ void handle_connection(uint32_t sock)
 	int i, connfd;
 	static int incompleted_packet_length = 0;
 	socklen_t clilen;
-	char rx_buffer[RX_BUFFER_SIZE];
 	epoll_init(sock);
 	static unsigned int seq = 0;
 	for(i = 0; i < WORKER_THREADS_NUM; i++)
@@ -132,7 +122,7 @@ void handle_connection(uint32_t sock)
 					continue;
 				}
 				struct mf_switch * sw = get_switch(sockfd);
-				int length = read(sockfd, (char*)rx_buffer + incompleted_packet_length, RX_BUFFER_SIZE);
+				int length = read(sockfd, (char*)(sw->rx_buffer) + incompleted_packet_length, RX_BUFFER_SIZE);
 				if(length == 0)
 				{
 					ev.data.fd = sockfd;
@@ -151,7 +141,7 @@ void handle_connection(uint32_t sock)
 				}
 				else
 				{
-					char * pkt_ptr = rx_buffer;
+					char * pkt_ptr = sw->rx_buffer;
 					length += incompleted_packet_length;
 					int received_length = length;
 					while(length > 0)
@@ -165,7 +155,7 @@ void handle_connection(uint32_t sock)
 							{
 								printf("received length is: %d,current length is: %d\n,  msg length is %d\n",received_length, length, msg_length);
 								incompleted_packet_length = length;
-								memmove(rx_buffer, pkt_ptr, incompleted_packet_length);
+								memmove(sw->rx_buffer, pkt_ptr, incompleted_packet_length);
 								break;	
 							}
 							else if(msg_length <= 7)

@@ -11,6 +11,7 @@ It's the threadpool capacity of Openflow Msg handler process*/
 
 #define WORKER_THREADS_NUM 2
 
+#define RX_BUFFER_SIZE 65535
 
 struct mf_rx_queue;
 
