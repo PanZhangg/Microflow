@@ -139,7 +139,7 @@ void handle_connection(uint32_t sock)
 					mf_write_socket_log("socket error", sockfd);
 					continue;
 				}
-				else
+				else if(length > 0)
 				{
 					char * pkt_ptr = sw->rx_buffer;
 					length += incompleted_packet_length;

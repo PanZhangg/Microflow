@@ -19,6 +19,9 @@ Functions
 ==================*/
 
 static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array);
+static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr);
+static uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr);
+
 
 void mf_devicemgr_create()
 {
@@ -136,6 +139,7 @@ static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct 
 
 static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)
 {
+	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	if(*array == NULL)
 	{
 		*array = value;
@@ -149,6 +153,7 @@ static void push_to_array(struct host_hash_value * value, struct host_hash_value
 		value->prev = NULL;
 		*array = value;
 	}
+	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 }
 
 static struct host_hash_value* pop_from_array(struct host_hash_value * value, struct host_hash_value ** array)
@@ -185,10 +190,14 @@ static struct host_hash_value* pop_from_array(struct host_hash_value * value, st
 			}
 		}
 		else
+{
 			if(tmp->next)
 				tmp = tmp->next;
 			else
+			{
 				return NULL;
+			}
+}
 	}
 	return NULL;
 }
@@ -213,6 +222,53 @@ static struct host_hash_value * get_available_value_slot()
 
 struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
+	uint64_t index = mac_addr_hash(mac_addr);
+	struct host_hash_value * value;
+	if(HOST_HASH_MAP[index] == NULL)
+	{
+		value = hash_value_created(sw, port_num, mac_addr); 
+		HOST_HASH_MAP[index] = value;
+		value->is_occupied = 1;
+		push_to_array(value, &(MF_DEVICE_MGR.used_slot));
+	}
+	else
+	{
+		struct host_hash_value * tmp = HOST_HASH_MAP[index];
+		while(tmp)
+		{
+			if(if_host_exist(tmp, sw, port_num, mac_addr))
+			{
+				return NULL;
+			}
+			else
+			{
+				tmp = tmp->hash_next;
+				if(tmp == NULL)
+				{
+					value = hash_value_created(sw, port_num, mac_addr); 
+					tmp->hash_next = value;
+					value->is_occupied = 1;
+					push_to_array(value, &(MF_DEVICE_MGR.used_slot));
+				}	
+			}
+		}
+	}
+	return value;
+}
+
+static uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
+{
+	if(value->mac_addr == mac_addr \
+			&& value->sw == sw \
+			&& value->port_num == port_num)
+		return 1;
+	else
+		return 0;
+
+}
+
+static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr)
+{
 	struct host_hash_value * value = get_available_value_slot();
 	if(value != NULL)
 	{
@@ -222,7 +278,6 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 		value->next = NULL;
 		value->prev = NULL;
 		value->hash_next = NULL;
-		host_add_to_hash_map(value);
 		return value;
 	}
 	perror("Value slot is NULL");

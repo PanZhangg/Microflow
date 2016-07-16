@@ -20,7 +20,7 @@ struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 
 void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_switch* sw, struct mf_queue_node_mempool* mp)
 {
-	if(mp->push == mp->pop - 1)
+	if(mp->push == mp->pop - 1 || (mp->pop == mp->head && mp->push == mp->tail))
 	{
 		perror("Queue is full");
 		return;
