@@ -242,14 +242,16 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 			}
 			else
 			{
-				tmp = tmp->hash_next;
-				if(tmp == NULL)
+				if(tmp->hash_next== NULL)
 				{
 					value = hash_value_created(sw, port_num, mac_addr); 
 					tmp->hash_next = value;
 					value->is_occupied = 1;
 					push_to_array(value, &(MF_DEVICE_MGR.used_slot));
+					break;
 				}	
+				else
+					tmp = tmp->hash_next;	
 			}
 		}
 	}

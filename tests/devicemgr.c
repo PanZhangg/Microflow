@@ -12,7 +12,7 @@ int main()
 	struct mf_switch * sw4 = mf_switch_create(7);
 	struct mf_switch * sw5 = mf_switch_create(8);
 	struct mf_switch * sw6,sw7,sw8,sw9,sw10;
-	void mf_devicemgr_create();
+	mf_devicemgr_create();
 	add_switch(sw1);
 	add_switch(sw2);
 	add_switch(sw3);
@@ -25,9 +25,11 @@ int main()
 	}
 	uint64_t mac1 = 11111111111;
 	uint64_t mac2 = 1111111111;
-	mf_devicemgr_create();
 	host_hash_value_add(sw6, 5, mac1);
 	host_hash_value_add(sw6, 5, mac2);
+	host_hash_value_add(sw6, 6, mac1);
 	host_hash_value_add(sw6, 5, mac1);
+	sw6->datapath_id = mac1;
+	struct mf_switch * p = get_switch_by_dpid(mac1);
 	return 0;
 }
