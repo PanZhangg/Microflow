@@ -104,24 +104,24 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 {
 	uint32_t i,curr_index;
 	curr_index = 0;
-	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+//	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	for(i = 0; i < MF_DEVICE_MGR.total_switch_number; i++)
 	{
 		struct mf_switch* sw = get_next_switch(&curr_index);
 		if(sw == NULL)
 		{
 			perror("No switch has this dpid");
-			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+//			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 			return NULL;
 		}
 		else if(sw->datapath_id == dpid)
 		{
-			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+//			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 			return sw;
 		}
 	}
 	perror("No switch has this dpid");
-	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+//	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
 

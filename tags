@@ -410,7 +410,7 @@ OVS_OFPRR_NONE	src/Openflow/openflow-common.h	/^    OVS_OFPRR_NONE              
 PACKET_IN_MSG_HANDLER_FUNC	src/mf_msg_handler.h	/^	PACKET_IN_MSG_HANDLER_FUNC$/;"	e	enum:MSG_HANDLER_TYPE
 PERMANENT	src/mf_timer.h	/^	PERMANENT$/;"	e	enum:STOPWATCH_TYPE
 RUN_TESTS	src/minunit.h	15;"	d
-RX_BUFFER_SIZE	src/mf_socket.h	14;"	d
+RX_BUFFER_SIZE	src/mf_socket.h	11;"	d
 RX_PACKET_SIZE	src/mf_rx_queue.h	7;"	d
 SECOND_SOCKET_FD	tests/socket_array_test.c	6;"	d	file:
 STOPWATCH_TYPE	src/mf_timer.h	/^enum  STOPWATCH_TYPE$/;"	g
@@ -420,7 +420,7 @@ UINT1	src/mf_utilities.h	/^typedef unsigned char     UINT1;$/;"	t
 UINT2	src/mf_utilities.h	/^typedef unsigned short    UINT2;$/;"	t
 UINT4	src/mf_utilities.h	/^typedef unsigned int      UINT4;$/;"	t
 UINT8	src/mf_utilities.h	/^typedef unsigned long     UINT8;$/;"	t
-WORKER_THREADS_NUM	src/mf_socket.h	12;"	d
+WORKER_THREADS_NUM	src/mf_socket.h	9;"	d
 __MF_DEVICEMGR_H__	src/mf_devicemgr.h	2;"	d
 __MF_LOGGER_H__	src/mf_logger.h	2;"	d
 __MF_MSG_HANDLER__	src/mf_msg_handler.h	2;"	d
@@ -668,6 +668,7 @@ generation_id	src/Openflow/openflow-1.4.h	/^    ovs_be64 generation_id;     \/* 
 get_asctime	src/mf_timer.c	/^char* get_asctime()$/;"	f
 get_available_value_slot	src/mf_devicemgr.c	/^static struct host_hash_value * get_available_value_slot()$/;"	f	file:
 get_available_value_slot	src/mf_topomgr.c	/^static struct link_node * get_available_value_slot()$/;"	f	file:
+get_dpid_from_LLDP_packet	src/mf_msg_handler.c	/^static uint64_t get_dpid_from_LLDP_packet(char * buffer)$/;"	f	file:
 get_next_available_index	src/mf_topomgr.c	/^static uint32_t get_next_available_index()$/;"	f	file:
 get_next_switch	src/mf_devicemgr.c	/^struct mf_switch * get_next_switch(uint32_t* loop_index)$/;"	f
 get_rx_queue	src/mf_socket_array.c	/^struct mf_rx_queue* get_rx_queue(int socket_fd, struct mf_socket_array* q){$/;"	f

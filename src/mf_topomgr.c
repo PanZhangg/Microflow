@@ -124,6 +124,11 @@ static struct link_node * get_available_value_slot()
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)
 {
 	struct link_node * node = get_available_value_slot();
+	if(node == NULL)
+	{
+  		perror("Bad value slot");
+		return NULL;
+	}
 	node->sw = sw;
 	node->port = port;
 	node->next = NULL;
