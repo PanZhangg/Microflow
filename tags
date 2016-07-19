@@ -20,7 +20,7 @@ FIRST_SOCKET_FD	tests/socket_array_test.c	5;"	d	file:
 HELLO_MSG_HANDLER_FUNC	src/mf_msg_handler.h	/^	HELLO_MSG_HANDLER_FUNC,$/;"	e	enum:MSG_HANDLER_TYPE
 HOST_CACHE_ARRAY	src/mf_devicemgr.c	/^static struct host_hash_value HOST_CACHE_ARRAY[MAX_HOST_NUM];$/;"	v	typeref:struct:host_hash_value	file:
 HOST_HASH_MAP	src/mf_devicemgr.c	/^static struct host_hash_value * HOST_HASH_MAP[HOST_HASH_MAP_SIZE];$/;"	v	typeref:struct:host_hash_value	file:
-HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	56;"	d
+HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	57;"	d
 HPL_VENDOR_ID	src/Openflow/openflow-common.h	97;"	d
 INT1	src/mf_utilities.h	/^typedef char              INT1;$/;"	t
 INT2	src/mf_utilities.h	/^typedef short             INT2;$/;"	t
@@ -44,7 +44,7 @@ LONGEST_PATH_LINK_NUM	src/mf_topomgr.h	13;"	d
 MAXLINE	tests/socket_client.c	9;"	d	file:
 MAX_HOST_NUM	src/mf_devicemgr.h	11;"	d
 MAX_MF_SWITCH_NUM	src/mf_devicemgr.h	9;"	d
-MAX_MF_SWITCH_PORT_NUM	src/mf_switch.h	7;"	d
+MAX_MF_SWITCH_PORT_NUM	src/mf_switch.h	8;"	d
 MAX_NETWORK_LINK_NUM	src/mf_topomgr.h	11;"	d
 MAX_NETWORK_LINK_NUM_PER_SWITCH	src/mf_topomgr.h	12;"	d
 MAX_PKT	src/mf_utilities.h	30;"	d
@@ -410,8 +410,7 @@ OVS_OFPRR_NONE	src/Openflow/openflow-common.h	/^    OVS_OFPRR_NONE              
 PACKET_IN_MSG_HANDLER_FUNC	src/mf_msg_handler.h	/^	PACKET_IN_MSG_HANDLER_FUNC$/;"	e	enum:MSG_HANDLER_TYPE
 PERMANENT	src/mf_timer.h	/^	PERMANENT$/;"	e	enum:STOPWATCH_TYPE
 RUN_TESTS	src/minunit.h	15;"	d
-RX_BUFFER_READ_SIZE	src/mf_socket.c	29;"	d	file:
-RX_BUFFER_SIZE	src/mf_socket.c	26;"	d	file:
+RX_BUFFER_SIZE	src/mf_socket.h	14;"	d
 RX_PACKET_SIZE	src/mf_rx_queue.h	7;"	d
 SECOND_SOCKET_FD	tests/socket_array_test.c	6;"	d	file:
 STOPWATCH_TYPE	src/mf_timer.h	/^enum  STOPWATCH_TYPE$/;"	g
@@ -676,6 +675,7 @@ get_src_mac_addr	src/mf_msg_handler.c	/^static uint64_t get_src_mac_addr(char* d
 get_switch	src/mf_devicemgr.c	/^struct mf_switch * get_switch(uint32_t sock)$/;"	f
 get_switch_by_dpid	src/mf_devicemgr.c	/^struct mf_switch * get_switch_by_dpid(uint64_t dpid)$/;"	f
 get_switch_by_host_mac	src/mf_devicemgr.c	/^struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr)$/;"	f
+get_switch_port_by_port_num	src/mf_devicemgr.c	/^struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num)$/;"	f
 gipaddr	src/mf_utilities.h	/^    UINT4 gipaddr;  \/\/agent ip addr;$/;"	m	struct:st_dhcp
 gn_htonll	src/mf_utilities.c	/^static UINT8 gn_htonll(UINT8 n)$/;"	f	file:
 group_id	src/Openflow/openflow-1.1.h	/^    ovs_be32 group_id;            \/* Group identifier. *\/$/;"	m	struct:ofp11_group_mod
@@ -695,6 +695,7 @@ hard_timeout	src/Openflow/openflow-1.2.h	/^    ovs_be16 hard_timeout;    \/* Har
 hardwaresize	src/mf_utilities.h	/^    UINT1 hardwaresize;$/;"	m	struct:st_arp
 hardwaretype	src/mf_utilities.h	/^    UINT2 hardwaretype;$/;"	m	struct:st_arp
 hash_next	src/mf_devicemgr.h	/^	struct host_hash_value * hash_next;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::host_hash_value
+hash_value_created	src/mf_devicemgr.c	/^static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr)$/;"	f	file:
 head	src/mf_mempool.h	/^	struct q_node * head;$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
 head	src/mf_rx_queue.h	/^	struct q_node* head;$/;"	m	struct:mf_rx_queue	typeref:struct:mf_rx_queue::q_node
 head	src/mf_socket_array.h	/^	struct mf_socket_array_node* head;$/;"	m	struct:mf_socket_array	typeref:struct:mf_socket_array::mf_socket_array_node
@@ -739,6 +740,7 @@ idle_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 idle_timeout;       \/* 
 idle_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 idle_timeout;     \/* Number of seconds idle before expiration. *\/$/;"	m	struct:ofp11_flow_stats
 idle_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 idle_timeout;    \/* Idle timeout from original flow mod. *\/$/;"	m	struct:ofp11_flow_removed
 idle_timeout	src/Openflow/openflow-1.2.h	/^    ovs_be16 idle_timeout;    \/* Idle timeout from original flow mod. *\/$/;"	m	struct:ofp12_flow_removed
+if_host_exist	src/mf_devicemgr.c	/^static uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)$/;"	f	file:
 ifindex	src/mf_utilities.h	/^    UINT1 ifindex;$/;"	m	struct:st_ethpkt_info
 importance	src/Openflow/openflow-1.1.h	/^    ovs_be16 importance;         \/* Eviction precedence (OF1.4+). *\/$/;"	m	struct:ofp11_flow_mod
 importance	src/Openflow/openflow-1.1.h	/^    ovs_be16 importance;       \/* Eviction precedence (OF1.4+). *\/$/;"	m	struct:ofp11_flow_stats
@@ -1229,6 +1231,7 @@ packet_count	src/Openflow/openflow-1.2.h	/^    ovs_be64 packet_count;$/;"	m	stru
 packet_count	src/Openflow/openflow-common.h	/^    ovs_32aligned_be64 packet_count; \/* Number of packets in flows. *\/$/;"	m	struct:ofp_aggregate_stats_reply
 packet_in_count	src/Openflow/openflow-1.3.h	/^    ovs_be64  packet_in_count;   \/* Number of packets in input. *\/$/;"	m	struct:ofp13_meter_stats
 packet_in_mask	src/Openflow/openflow-1.3.h	/^    ovs_be32 packet_in_mask[2];   \/* Bitmasks of OFPR_* values. *\/$/;"	m	struct:ofp13_async_config
+packet_in_msg_get_in_port_num	src/mf_msg_handler.c	/^static ovs_be32 packet_in_msg_get_in_port_num(struct q_node *qn)$/;"	f	file:
 packet_in_msg_handler	src/mf_msg_handler.c	/^void packet_in_msg_handler(struct q_node* qn)$/;"	f
 packet_in_msg_handler_list_head	src/mf_msg_handler.h	/^	struct single_msg_handler * packet_in_msg_handler_list_head;$/;"	m	struct:msg_handlers	typeref:struct:msg_handlers::single_msg_handler
 packet_length	src/mf_rx_queue.h	/^	uint16_t packet_length;$/;"	m	struct:q_node
@@ -1420,6 +1423,7 @@ register_msg_handler	src/mf_api.h	/^void register_msg_handler(enum MSG_HANDLER_T
 reserved	src/Openflow/openflow-common.h	/^    ovs_be32 reserved;       \/* Bitmap of supported "ofp_action_type"s.$/;"	m	struct:ofp_switch_features
 role	src/Openflow/openflow-1.2.h	/^    ovs_be32 role;            \/* One of OFPCR12_ROLE_*. *\/$/;"	m	struct:ofp12_role_request
 role	src/Openflow/openflow-1.4.h	/^    ovs_be32 role;              \/* One of OFPCR_ROLE_*. *\/$/;"	m	struct:ofp14_role_status
+rx_buffer	src/mf_switch.h	/^	char rx_buffer[RX_BUFFER_SIZE];$/;"	m	struct:mf_switch
 rx_bytes	src/Openflow/openflow-1.0.h	/^    ovs_32aligned_be64 rx_bytes;       \/* Number of received bytes. *\/$/;"	m	struct:ofp10_port_stats
 rx_bytes	src/Openflow/openflow-1.1.h	/^    ovs_be64 rx_bytes;        \/* Number of received bytes. *\/$/;"	m	struct:ofp11_port_stats
 rx_bytes	src/Openflow/openflow-1.4.h	/^    ovs_be64 rx_bytes;       \/* Number of received bytes. *\/$/;"	m	struct:ofp14_port_stats

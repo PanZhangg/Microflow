@@ -52,6 +52,7 @@ func()
 */
 
 struct mf_switch * get_switch_by_dpid(uint64_t dpid);
+struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num);
 
 #define HOST_HASH_MAP_SIZE 2048
 

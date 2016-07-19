@@ -125,6 +125,22 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 	return NULL;
 }
 
+struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num)
+{
+	if(sw == NULL)
+	{
+  		perror("sw is NULL");
+		return NULL;
+	}
+	int i = 0;
+	for(; i < sw->port_num; i++)	  
+	{
+ 		if(sw->ports[i].port_no == port_num) 
+			return &(sw->ports[i]);
+	}
+	perror("No port has the port num");
+	return NULL;
+}
 
 static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)
 {

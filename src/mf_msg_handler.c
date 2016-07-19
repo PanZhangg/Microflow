@@ -329,7 +329,10 @@ static void get_ether_src_mac(char * buffer)
 
 }
 
-
+static void packet_in_msg_get_data(struct q_node* qn, char* buffer, uint16_t total_len)
+{
+	memcpy(buffer, qn->rx_packet + qn->packet_length - total_len, total_len);
+}
 static uint16_t get_ether_type(char * buffer)
 {
 	uint16_t ether_type;
@@ -337,6 +340,16 @@ static uint16_t get_ether_type(char * buffer)
 	return ether_type;
 }
 */
+
+static ovs_be32 packet_in_msg_get_in_port_num(struct q_node *qn)
+{
+	ovs_be32 port_num = 0;
+	uint16_t match_length = 0;
+	inverse_memcpy(&match_length, qn->rx_packet + 27, 2);
+	printf("Match length is : %d\n", match_length);
+	return port_num;  
+}
+
 
 static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uint16_t total_len)
 {
@@ -351,7 +364,7 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
-		case 0x8cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
+		case 0x88cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
 		default:perror("wrong ether type");printf("ether type: %x\n", ether_type);break;
 	}
 }
@@ -530,4 +543,16 @@ void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t tot
 void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
 	printf("lldp msg received\n");
+	ovs_be32 in_port_num = 0;	
+	in_port_num = packet_in_msg_get_in_port_num(qn);
+	struct ofp11_port * port = get_switch_port_by_port_num(qn->sw, in_port_num);
+	if(port == NULL)
+	{
+		perror("Bad Port");
+		return;
+	}
+	struct link_node * right_node = link_node_create(qn->sw, port);
+	//	struct link_node * left_node = 
+	//	struct network_link * netlink = network_link_create(left_node, right_node);
+
 }
