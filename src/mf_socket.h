@@ -5,9 +5,6 @@
 
 #define DEFAULT_PORT 6633
 #define EPOLL_EVENTS_NUM 1024
-/*pthread_cond should be broadcast instead of signal if there are more than 1 worker threads
-Code of push_queue_node_to_mempool in mf_mempool.c
-It's the threadpool capacity of Openflow Msg handler process*/
 
 #define WORKER_THREADS_NUM 2
 

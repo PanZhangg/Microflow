@@ -49,7 +49,11 @@ uint32_t mf_listen_socket_create()
 		exit(0);
 	}
 	int enable = 1;
-    setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (void*)&enable, sizeof(enable));
+	if(setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (void*)&enable, sizeof(enable)) != 0)
+	{
+		perror("set sock option failed");
+		exit(0);
+	}
 	mf_write_socket_log("controller socket created",sock);
 	return sock;
 }
@@ -84,14 +88,13 @@ void handle_connection(uint32_t sock)
 {
 	int i, connfd;
 	static int incompleted_packet_length = 0;
-	socklen_t clilen;
+	socklen_t clilen = sizeof(switch_addr);
 	epoll_init(sock);
 	static unsigned int seq = 0;
 	for(i = 0; i < WORKER_THREADS_NUM; i++)
 	{
 		MSG_RX_QUEUE[i] = mf_queue_node_mempool_create();
 	}
-	//MSG_RX_QUEUE = mf_queue_node_mempool_create();
 	mf_controller_init();
 	while(1)
 	{
