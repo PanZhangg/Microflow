@@ -65,15 +65,15 @@ void mf_switch_destory(struct mf_switch * sw)
 {
 	if(sw == NULL)
 	{
-		printf("error: switch to destory is NULL\n");
+		perror("error: switch to destory is NULL");
 		exit(0);
 	}
 	if(close(sw->sockfd) < 0)
 	{
-		printf("socket close error\n");
+		perror("socket close error");
 	}
 	delete_switch_from_map(sw);
-	free(sw);
+	//free(sw);
 }
 
 

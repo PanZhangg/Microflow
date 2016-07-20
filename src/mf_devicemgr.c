@@ -43,10 +43,10 @@ struct mf_switch * get_switch(uint32_t sock)
 
 void add_switch(struct mf_switch* sw)
 {
-	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+//	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	MF_DEVICE_MGR.mf_switch_map[sw->sockfd] = sw;
 	MF_DEVICE_MGR.total_switch_number++;
-	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+//	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 }
 
 void delete_switch_from_map(struct mf_switch * sw)
@@ -77,7 +77,7 @@ struct mf_switch * get_next_switch(uint32_t* loop_index)
 		perror("Bad loop_index");
 		return NULL;
 	}
-	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+//	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	for(; *loop_index < MAX_MF_SWITCH_NUM; (*loop_index)++)
 	{ 
 		if(MF_DEVICE_MGR.mf_switch_map[*loop_index] != NULL)
@@ -85,18 +85,18 @@ struct mf_switch * get_next_switch(uint32_t* loop_index)
 			if(*loop_index < MAX_MF_SWITCH_NUM - 1)
 			{
 				(*loop_index)++; 
-				pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+//				pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 				return MF_DEVICE_MGR.mf_switch_map[*loop_index - 1];
 			}
 			else
 			{
-				pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+//				pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 				return MF_DEVICE_MGR.mf_switch_map[*loop_index];
 			}
 		}
 	}
 	perror("No valid switch");
-	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+//	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
 
@@ -104,24 +104,24 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 {
 	uint32_t i,curr_index;
 	curr_index = 0;
-//	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	for(i = 0; i < MF_DEVICE_MGR.total_switch_number; i++)
 	{
 		struct mf_switch* sw = get_next_switch(&curr_index);
 		if(sw == NULL)
 		{
 			perror("No switch has this dpid");
-//			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 			return NULL;
 		}
 		else if(sw->datapath_id == dpid)
 		{
-//			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 			return sw;
 		}
 	}
 	perror("No switch has this dpid");
-//	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
 
@@ -131,6 +131,7 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	if(sw == NULL)
 	{
 		perror("sw is NULL");
+		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 		return NULL;
 	}
 	int i = 0;
@@ -139,7 +140,6 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	{
 		if(sw->ports[i].port_no == port_num) 
 		{
-
 			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 			return &(sw->ports[i]);
 		}
@@ -213,14 +213,14 @@ static struct host_hash_value* pop_from_array(struct host_hash_value * value, st
 			}
 		}
 		else
-{
+		{
 			if(tmp->next)
 				tmp = tmp->next;
 			else
 			{
 				return NULL;
 			}
-}
+		}
 	}
 	return NULL;
 }

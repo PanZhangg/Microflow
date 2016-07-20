@@ -146,10 +146,10 @@ static struct link_node * get_available_value_slot()
 
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)
 {
-	if(port->is_node_created == 1)
+	if(port->node != NULL)
 	{
 		perror("Node already exists");
-		return NULL;
+		return (port->node);
 	}
 	struct link_node * node = get_available_value_slot();
 	if(node == NULL)
@@ -159,7 +159,7 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 	}
 	node->sw = sw;
 	node->port = port;
-	port->is_node_created = 1;
+	port->node= node;
 	node->next = NULL;
 	node->prev = NULL;
 	node->is_occupied = 1;

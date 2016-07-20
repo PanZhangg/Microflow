@@ -53,6 +53,7 @@
 #define OPENFLOW_11_H 1
 
 #include "openflow-common.h"
+#include "../mf_topomgr.h"
 
 /* OpenFlow 1.1 uses 32-bit port numbers.  Open vSwitch, for now, uses OpenFlow
  * 1.0 port numbers internally.  We map them to OpenFlow 1.0 as follows:
@@ -126,7 +127,9 @@ struct ofp11_port {
 
 	ovs_be32 curr_speed;    /* Current port bitrate in kbps. */
 	ovs_be32 max_speed;     /* Max port bitrate in kbps */
-	uint8_t is_node_created;/* is a link node associated with this port exists*/
+//	uint8_t is_node_created;/* is a link node associated with this port exists*/
+	struct link_node * node;
+	
 };
 //OFP_ASSERT(sizeof(struct ofp11_port) == 64);
 
