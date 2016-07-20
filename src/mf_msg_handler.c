@@ -585,5 +585,5 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 		return;
 	}
 	struct link_node * left_node = link_node_create(sw, port_out); 
-	struct network_link * netlink = network_link_create(left_node, right_node);
+	//struct network_link * netlink = network_link_create(left_node, right_node);
 }

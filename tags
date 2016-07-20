@@ -27,6 +27,7 @@ INT2	src/mf_utilities.h	/^typedef short             INT2;$/;"	t
 INT4	src/mf_utilities.h	/^typedef int               INT4;$/;"	t
 INT8	src/mf_utilities.h	/^typedef long              INT8;$/;"	t
 LINK_NODE_CACHE_ARRAY	src/mf_topomgr.c	/^static struct link_node * LINK_NODE_CACHE_ARRAY; $/;"	v	typeref:struct:link_node	file:
+LINK_NODE_NUM	src/mf_topomgr.h	14;"	d
 LLDP_CHASSIS_ID_LOCALLY_ASSIGNED	src/mf_utilities.h	/^    LLDP_CHASSIS_ID_LOCALLY_ASSIGNED = 7$/;"	e	enum:lldp_chassis_id_subtype
 LLDP_CHASSIS_ID_TLV	src/mf_utilities.h	/^    LLDP_CHASSIS_ID_TLV = 1,$/;"	e	enum:lldp_tlv_type
 LLDP_CHASSIS_IP_MAC	src/mf_utilities.h	/^    LLDP_CHASSIS_IP_MAC              = 4,$/;"	e	enum:lldp_chassis_id_subtype
@@ -66,7 +67,7 @@ NTR_VENDOR_ID	src/Openflow/openflow-common.h	98;"	d
 NX_VENDOR_ID	src/Openflow/openflow-common.h	99;"	d
 ODP_PORT_C	src/Openflow/types.h	106;"	d
 OFP10_VLAN_NONE	src/Openflow/openflow-1.0.h	231;"	d
-OFP11_INSTRUCTION_ALIGN	src/Openflow/openflow-1.1.h	261;"	d
+OFP11_INSTRUCTION_ALIGN	src/Openflow/openflow-1.1.h	262;"	d
 OFP11_PORT_C	src/Openflow/types.h	107;"	d
 OFPACPT_FLOW_REMOVED_MASTER	src/Openflow/openflow-1.4.h	/^    OFPACPT_FLOW_REMOVED_MASTER   = 5, \/* Flow removed mask for master. *\/$/;"	e	enum:ofp14_async_config_prop_type
 OFPACPT_FLOW_REMOVED_SLAVE	src/Openflow/openflow-1.4.h	/^    OFPACPT_FLOW_REMOVED_SLAVE    = 4, \/* Flow removed mask for slave. *\/$/;"	e	enum:ofp14_async_config_prop_type
@@ -248,7 +249,7 @@ OFPMF13_PKTPS	src/Openflow/openflow-1.3.h	/^    OFPMF13_PKTPS   = 1 << 1,   \/* 
 OFPMF13_STATS	src/Openflow/openflow-1.3.h	/^    OFPMF13_STATS   = 1 << 3    \/* Collect statistics. *\/$/;"	e	enum:ofp13_meter_flags
 OFPMPF13_REQ_MORE	src/Openflow/openflow-1.3.h	/^    OFPMPF13_REQ_MORE = 1 << 0 \/* More requests to follow. *\/$/;"	e	enum:ofp13_multipart_request_flags
 OFPMT11_STANDARD_LENGTH	src/Openflow/openflow-1.1.h	/^OFP_ASSERT(sizeof(struct ofp11_match) == OFPMT11_STANDARD_LENGTH);$/;"	v
-OFPMT11_STANDARD_LENGTH	src/Openflow/openflow-1.1.h	184;"	d
+OFPMT11_STANDARD_LENGTH	src/Openflow/openflow-1.1.h	185;"	d
 OFPMT_OXM	src/Openflow/openflow-common.h	/^    OFPMT_OXM = 1,              \/* OpenFlow Extensible Match *\/$/;"	e	enum:ofp_match_type
 OFPMT_STANDARD	src/Openflow/openflow-common.h	/^    OFPMT_STANDARD = 0,         \/* The match fields defined in the ofp11_match$/;"	e	enum:ofp_match_type
 OFPP11_MAX	src/Openflow/openflow-1.1.h	70;"	d
@@ -448,7 +449,7 @@ advertise	src/Openflow/openflow-1.0.h	/^    ovs_be32 advertise;     \/* Bitmap o
 advertise	src/Openflow/openflow-1.1.h	/^    ovs_be32 advertise;     \/* Bitmap of OFPPF_* and OFPPF11_*.  Zero all bits$/;"	m	struct:ofp11_port_mod
 advertise	src/Openflow/openflow-1.4.h	/^    ovs_be32      advertise;  \/* Bitmap of OFPPF_*.  Zero all bits to prevent$/;"	m	struct:ofp14_port_mod_prop_ethernet
 advertised	src/Openflow/openflow-1.0.h	/^    ovs_be32 advertised;    \/* Features being advertised by the port. *\/$/;"	m	struct:ofp10_phy_port
-advertised	src/Openflow/openflow-1.1.h	/^    ovs_be32 advertised;    \/* Features being advertised by the port. *\/$/;"	m	struct:ofp11_port
+advertised	src/Openflow/openflow-1.1.h	/^	ovs_be32 advertised;    \/* Features being advertised by the port. *\/$/;"	m	struct:ofp11_port
 advertised	src/Openflow/openflow-1.4.h	/^    ovs_be32 advertised;    \/* Features being advertised by the port. *\/$/;"	m	struct:ofp14_port_desc_prop_ethernet
 all_tests	tests/queue_test.c	/^ char *all_tests() $/;"	f
 all_tests	tests/queue_test.c	/^RUN_TESTS(all_tests);$/;"	v
@@ -526,8 +527,8 @@ command	src/Openflow/openflow-1.5.h	/^    ovs_be16 command;             \/* One 
 command_bucket_id	src/Openflow/openflow-1.5.h	/^    ovs_be32 command_bucket_id;   \/* Bucket Id used as part of$/;"	m	struct:ofp15_group_mod
 config	src/Openflow/openflow-1.0.h	/^    ovs_be32 config;        \/* Bitmap of OFPPC_* and OFPPC10_* flags. *\/$/;"	m	struct:ofp10_phy_port
 config	src/Openflow/openflow-1.0.h	/^    ovs_be32 config;        \/* Bitmap of OFPPC_* flags. *\/$/;"	m	struct:ofp10_port_mod
+config	src/Openflow/openflow-1.1.h	/^	ovs_be32 config;        \/* Bitmap of OFPPC_* flags. *\/$/;"	m	struct:ofp11_port
 config	src/Openflow/openflow-1.1.h	/^    ovs_be32 config;         \/* Bitmap of OFPTC_* values *\/$/;"	m	struct:ofp11_table_stats
-config	src/Openflow/openflow-1.1.h	/^    ovs_be32 config;        \/* Bitmap of OFPPC_* flags. *\/$/;"	m	struct:ofp11_port
 config	src/Openflow/openflow-1.1.h	/^    ovs_be32 config;        \/* Bitmap of OFPPC_* flags. *\/$/;"	m	struct:ofp11_port_mod
 config	src/Openflow/openflow-1.1.h	/^    ovs_be32 config;        \/* Bitmap of OFPTC_* flags *\/$/;"	m	struct:ofp11_table_mod
 config	src/Openflow/openflow-1.2.h	/^    ovs_be32 config;         \/* Bitmap of OFPTC_* values *\/$/;"	m	struct:ofp12_table_stats
@@ -549,9 +550,9 @@ cookie_mask	src/Openflow/openflow-1.1.h	/^    ovs_be64 cookie_mask;        \/* M
 cookie_mask	src/Openflow/openflow-1.1.h	/^    ovs_be64 cookie_mask;     \/* Mask used to restrict the cookie bits that$/;"	m	struct:ofp11_flow_stats_request
 create_lldp_pkt	src/mf_utilities.c	/^void create_lldp_pkt(void *src_addr, UINT8 id, ovs_be32 port, lldp_t *buffer)$/;"	f
 curr	src/Openflow/openflow-1.0.h	/^    ovs_be32 curr;          \/* Current features. *\/$/;"	m	struct:ofp10_phy_port
-curr	src/Openflow/openflow-1.1.h	/^    ovs_be32 curr;          \/* Current features. *\/$/;"	m	struct:ofp11_port
+curr	src/Openflow/openflow-1.1.h	/^	ovs_be32 curr;          \/* Current features. *\/$/;"	m	struct:ofp11_port
 curr	src/Openflow/openflow-1.4.h	/^    ovs_be32 curr;          \/* Current features. *\/$/;"	m	struct:ofp14_port_desc_prop_ethernet
-curr_speed	src/Openflow/openflow-1.1.h	/^    ovs_be32 curr_speed;    \/* Current port bitrate in kbps. *\/$/;"	m	struct:ofp11_port
+curr_speed	src/Openflow/openflow-1.1.h	/^	ovs_be32 curr_speed;    \/* Current port bitrate in kbps. *\/$/;"	m	struct:ofp11_port
 curr_speed	src/Openflow/openflow-1.4.h	/^    ovs_be32 curr_speed;    \/* Current port bitrate in kbps. *\/$/;"	m	struct:ofp14_port_desc_prop_ethernet
 data	src/Openflow/openflow-1.0.h	/^    uint8_t data[0];        \/* Ethernet frame, halfway through 32-bit word,$/;"	m	struct:ofp10_packet_in
 data	src/Openflow/openflow-common.h	/^    uint8_t data[0];          \/* Variable-length data.  Interpreted based$/;"	m	struct:ofp_error_msg
@@ -671,6 +672,7 @@ get_available_value_slot	src/mf_topomgr.c	/^static struct link_node * get_availa
 get_dpid_from_LLDP_packet	src/mf_msg_handler.c	/^static uint64_t get_dpid_from_LLDP_packet(char * buffer)$/;"	f	file:
 get_next_available_index	src/mf_topomgr.c	/^static uint32_t get_next_available_index()$/;"	f	file:
 get_next_switch	src/mf_devicemgr.c	/^struct mf_switch * get_next_switch(uint32_t* loop_index)$/;"	f
+get_outport_from_LLDP_packet	src/mf_msg_handler.c	/^static uint16_t get_outport_from_LLDP_packet(char * buffer)$/;"	f	file:
 get_rx_queue	src/mf_socket_array.c	/^struct mf_rx_queue* get_rx_queue(int socket_fd, struct mf_socket_array* q){$/;"	f
 get_src_mac_addr	src/mf_msg_handler.c	/^static uint64_t get_src_mac_addr(char* data)$/;"	f	file:
 get_switch	src/mf_devicemgr.c	/^struct mf_switch * get_switch(uint32_t sock)$/;"	f
@@ -727,8 +729,8 @@ hostname	src/mf_utilities.h	/^    UINT1 hostname[64];$/;"	m	struct:st_dhcp
 htype	src/mf_utilities.h	/^    UINT1 htype;$/;"	m	struct:st_dhcp
 hw_addr	src/Openflow/openflow-1.0.h	/^    uint8_t hw_addr[OFP_ETH_ALEN]; \/* The hardware address is not$/;"	m	struct:ofp10_port_mod
 hw_addr	src/Openflow/openflow-1.0.h	/^    uint8_t hw_addr[OFP_ETH_ALEN];$/;"	m	struct:ofp10_phy_port
+hw_addr	src/Openflow/openflow-1.1.h	/^	uint8_t hw_addr[OFP_ETH_ALEN];$/;"	m	struct:ofp11_port
 hw_addr	src/Openflow/openflow-1.1.h	/^    uint8_t hw_addr[OFP_ETH_ALEN]; \/* The hardware address is not$/;"	m	struct:ofp11_port_mod
-hw_addr	src/Openflow/openflow-1.1.h	/^    uint8_t hw_addr[OFP_ETH_ALEN];$/;"	m	struct:ofp11_port
 hw_addr	src/Openflow/openflow-1.4.h	/^    uint8_t hw_addr[OFP_ETH_ALEN];$/;"	m	struct:ofp14_port
 hw_addr	src/Openflow/openflow-1.4.h	/^    uint8_t hw_addr[OFP_ETH_ALEN];$/;"	m	struct:ofp14_port_mod
 icmp_t	src/mf_utilities.h	/^}icmp_t;$/;"	t	typeref:struct:st_imcp
@@ -761,6 +763,7 @@ ip_t	src/mf_utilities.h	/^}ip_t;$/;"	t	typeref:struct:st_ip
 ipid	src/mf_utilities.h	/^    UINT2 ipid;$/;"	m	struct:st_ip
 is_feature_request_sent	src/mf_switch.h	/^	uint8_t is_feature_request_sent;$/;"	m	struct:mf_switch
 is_hello_sent	src/mf_switch.h	/^	uint8_t is_hello_sent;$/;"	m	struct:mf_switch
+is_node_created	src/Openflow/openflow-1.1.h	/^	uint8_t is_node_created;\/* is a link node associated with this port exists*\/$/;"	m	struct:ofp11_port
 is_occupied	src/mf_devicemgr.h	/^	uint8_t is_occupied;$/;"	m	struct:host_hash_value
 is_occupied	src/mf_rx_queue.h	/^	uint8_t is_occupied;$/;"	m	struct:q_node
 is_occupied	src/mf_topomgr.h	/^	uint8_t is_occupied;$/;"	m	struct:link_node
@@ -879,7 +882,7 @@ max_entries	src/Openflow/openflow-1.3.h	/^    ovs_be32 max_entries;     \/* Max 
 max_groups	src/Openflow/openflow-1.2.h	/^    ovs_be32  max_groups[OFPGT12_N_TYPES]; \/* Max number of groups. *\/$/;"	m	struct:ofp12_group_features_stats
 max_len	src/Openflow/openflow-common.h	/^    uint16_t max_len; \/* Max length to send to controller. *\/$/;"	m	struct:ofp_action_output
 max_meter	src/Openflow/openflow-1.3.h	/^    ovs_be32   max_meter;     \/* Maximum number of meters. *\/$/;"	m	struct:ofp13_meter_features
-max_speed	src/Openflow/openflow-1.1.h	/^    ovs_be32 max_speed;     \/* Max port bitrate in kbps *\/$/;"	m	struct:ofp11_port
+max_speed	src/Openflow/openflow-1.1.h	/^	ovs_be32 max_speed;     \/* Max port bitrate in kbps *\/$/;"	m	struct:ofp11_port
 max_speed	src/Openflow/openflow-1.4.h	/^    ovs_be32 max_speed;     \/* Max port bitrate in kbps *\/$/;"	m	struct:ofp14_port_desc_prop_ethernet
 metadata	src/Openflow/openflow-1.1.h	/^    ovs_be64 metadata;          \/* Metadata value to write *\/$/;"	m	struct:ofp11_instruction_write_metadata
 metadata	src/Openflow/openflow-1.1.h	/^    ovs_be64 metadata;         \/* Metadata passed between tables. *\/$/;"	m	struct:ofp11_match
@@ -939,7 +942,7 @@ n_tables	src/Openflow/openflow-common.h	/^    uint8_t n_tables;       \/* Number
 n_tables	src/mf_switch.h	/^	uint8_t n_tables;$/;"	m	struct:mf_switch
 name	src/Openflow/openflow-1.0.h	/^    char name[OFP_MAX_PORT_NAME_LEN]; \/* Null-terminated *\/$/;"	m	struct:ofp10_phy_port
 name	src/Openflow/openflow-1.0.h	/^    char name[OFP_MAX_TABLE_NAME_LEN];$/;"	m	struct:ofp10_table_stats
-name	src/Openflow/openflow-1.1.h	/^    char name[OFP_MAX_PORT_NAME_LEN]; \/* Null-terminated *\/$/;"	m	struct:ofp11_port
+name	src/Openflow/openflow-1.1.h	/^	char name[OFP_MAX_PORT_NAME_LEN]; \/* Null-terminated *\/$/;"	m	struct:ofp11_port
 name	src/Openflow/openflow-1.1.h	/^    char name[OFP_MAX_TABLE_NAME_LEN];$/;"	m	struct:ofp11_table_stats
 name	src/Openflow/openflow-1.2.h	/^    char name[OFP_MAX_TABLE_NAME_LEN];$/;"	m	struct:ofp12_table_stats
 name	src/Openflow/openflow-1.3.h	/^    char name[OFP_MAX_TABLE_NAME_LEN];$/;"	m	struct:ofp13_table_features
@@ -1250,6 +1253,7 @@ pad	src/Openflow/openflow-1.0.h	/^    uint8_t pad[4];         \/* Pad to 64-bits
 pad	src/Openflow/openflow-1.0.h	/^    uint8_t pad[6];          \/* Align to 64-bits. *\/$/;"	m	struct:ofp10_port_stats
 pad	src/Openflow/openflow-1.0.h	/^    uint8_t pad[6];$/;"	m	struct:ofp10_port_stats_request
 pad	src/Openflow/openflow-1.0.h	/^    uint8_t pad[6];$/;"	m	struct:ofp10_queue_get_config_reply
+pad	src/Openflow/openflow-1.1.h	/^	uint8_t pad[4];$/;"	m	struct:ofp11_port
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad;                  \/* Pad to 64 bits. *\/$/;"	m	struct:ofp11_group_mod
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad;                \/* Pad to 64 bits. *\/$/;"	m	struct:ofp11_group_desc_stats
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad;$/;"	m	struct:ofp11_flow_stats
@@ -1263,7 +1267,6 @@ pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];             \/* Align to 6
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];            \/* Align to 64 bits. *\/$/;"	m	struct:ofp11_group_stats_request
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];           \/* Align to 64-bits. *\/$/;"	m	struct:ofp11_port_stats
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];$/;"	m	struct:ofp11_bucket
-pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];$/;"	m	struct:ofp11_port
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];$/;"	m	struct:ofp11_port_mod
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];$/;"	m	struct:ofp11_port_stats_request
 pad	src/Openflow/openflow-1.1.h	/^    uint8_t pad[4];$/;"	m	struct:ofp11_queue_get_config_reply
@@ -1306,8 +1309,8 @@ pad1	src/Openflow/openflow-1.5.h	/^    uint8_t pad1[2];              \/* Pad to 
 pad2	src/Openflow/openflow-1.0.h	/^    uint8_t pad2[2];           \/* Align to 64-bits. *\/$/;"	m	struct:ofp10_match
 pad2	src/Openflow/openflow-1.0.h	/^    uint8_t pad2[2];          \/* Align to 64-bits. *\/$/;"	m	struct:ofp10_flow_removed
 pad2	src/Openflow/openflow-1.0.h	/^    uint8_t pad2[6];          \/* Align to 64 bits. *\/$/;"	m	struct:ofp10_flow_stats
+pad2	src/Openflow/openflow-1.1.h	/^	uint8_t pad2[2];                  \/* Align to 64 bits. *\/$/;"	m	struct:ofp11_port
 pad2	src/Openflow/openflow-1.1.h	/^    uint8_t  pad2[2];          \/* Align to 64-bits. *\/$/;"	m	struct:ofp11_flow_stats
-pad2	src/Openflow/openflow-1.1.h	/^    uint8_t pad2[2];                  \/* Align to 64 bits. *\/$/;"	m	struct:ofp11_port
 pad2	src/Openflow/openflow-1.1.h	/^    uint8_t pad2[2];          \/* Align to 64-bits. *\/$/;"	m	struct:ofp11_flow_removed
 pad2	src/Openflow/openflow-1.1.h	/^    uint8_t pad2[2];        \/* Pad to 64 bits. *\/$/;"	m	struct:ofp11_port_mod
 pad2	src/Openflow/openflow-1.1.h	/^    uint8_t pad2[3];           \/* Align to 64-bits *\/$/;"	m	struct:ofp11_match
@@ -1327,7 +1330,7 @@ path_link_list	src/mf_topomgr.h	/^struct path_link_list$/;"	s
 path_link_list_create	src/mf_topomgr.c	/^struct path_link_list * path_link_list_create()$/;"	f
 path_link_list_free	src/mf_topomgr.c	/^void path_link_list_free(struct path_link_list * list)$/;"	f
 peer	src/Openflow/openflow-1.0.h	/^    ovs_be32 peer;          \/* Features advertised by peer. *\/$/;"	m	struct:ofp10_phy_port
-peer	src/Openflow/openflow-1.1.h	/^    ovs_be32 peer;          \/* Features advertised by peer. *\/$/;"	m	struct:ofp11_port
+peer	src/Openflow/openflow-1.1.h	/^	ovs_be32 peer;          \/* Features advertised by peer. *\/$/;"	m	struct:ofp11_port
 peer	src/Openflow/openflow-1.4.h	/^    ovs_be32 peer;          \/* Features advertised by peer. *\/$/;"	m	struct:ofp14_port_desc_prop_ethernet
 pi	src/Openflow/openflow-1.3.h	/^    struct ofp12_packet_in pi;$/;"	m	struct:ofp13_packet_in	typeref:struct:ofp13_packet_in::ofp12_packet_in
 pop	src/mf_mempool.h	/^	struct q_node * pop;$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
@@ -1348,9 +1351,9 @@ port_no	src/Openflow/openflow-1.0.h	/^    ovs_be16 port_no;$/;"	m	struct:ofp10_p
 port_no	src/Openflow/openflow-1.0.h	/^    ovs_be16 port_no;$/;"	m	struct:ofp10_port_mod
 port_no	src/Openflow/openflow-1.0.h	/^    ovs_be16 port_no;$/;"	m	struct:ofp10_port_stats
 port_no	src/Openflow/openflow-1.0.h	/^    ovs_be16 port_no;$/;"	m	struct:ofp10_queue_stats
+port_no	src/Openflow/openflow-1.1.h	/^	ovs_be32 port_no;$/;"	m	struct:ofp11_port
 port_no	src/Openflow/openflow-1.1.h	/^    ovs_be32 port_no;         \/* All ports if OFPP_ANY. *\/$/;"	m	struct:ofp11_queue_stats_request
 port_no	src/Openflow/openflow-1.1.h	/^    ovs_be32 port_no;        \/* OFPST_PORT message must request statistics$/;"	m	struct:ofp11_port_stats_request
-port_no	src/Openflow/openflow-1.1.h	/^    ovs_be32 port_no;$/;"	m	struct:ofp11_port
 port_no	src/Openflow/openflow-1.1.h	/^    ovs_be32 port_no;$/;"	m	struct:ofp11_port_mod
 port_no	src/Openflow/openflow-1.1.h	/^    ovs_be32 port_no;$/;"	m	struct:ofp11_port_stats
 port_no	src/Openflow/openflow-1.1.h	/^    ovs_be32 port_no;$/;"	m	struct:ofp11_queue_stats
@@ -1487,7 +1490,7 @@ st_tlv	src/mf_utilities.h	/^typedef struct st_tlv$/;"	s
 st_udp	src/mf_utilities.h	/^typedef struct st_udp$/;"	s
 start_stopwatch_thread	src/mf_timer.c	/^void start_stopwatch_thread(struct q_node * qn)$/;"	f
 state	src/Openflow/openflow-1.0.h	/^    ovs_be32 state;         \/* Bitmap of OFPPS_* and OFPPS10_* flags. *\/$/;"	m	struct:ofp10_phy_port
-state	src/Openflow/openflow-1.1.h	/^    ovs_be32 state;         \/* Bitmap of OFPPS_* and OFPPS11_* flags. *\/$/;"	m	struct:ofp11_port
+state	src/Openflow/openflow-1.1.h	/^	ovs_be32 state;         \/* Bitmap of OFPPS_* and OFPPS11_* flags. *\/$/;"	m	struct:ofp11_port
 state	src/Openflow/openflow-1.4.h	/^    ovs_be32 state;         \/* Bitmap of OFPPS_* flags. *\/$/;"	m	struct:ofp14_port
 stop_sec	src/mf_timer.h	/^	float stop_sec;$/;"	m	struct:stopwatch
 stopwatch	src/mf_timer.h	/^struct stopwatch$/;"	s
@@ -1501,7 +1504,7 @@ stopwatch_num	src/mf_timer.h	/^	uint8_t stopwatch_num;$/;"	m	struct:stopwatch_li
 stopwatch_switch_callback	src/mf_timer.h	/^typedef void (*stopwatch_switch_callback)(void* );$/;"	t
 stopwatch_worker	src/mf_timer.c	/^void* stopwatch_worker(void* arg)$/;"	f
 supported	src/Openflow/openflow-1.0.h	/^    ovs_be32 supported;     \/* Features supported by the port. *\/$/;"	m	struct:ofp10_phy_port
-supported	src/Openflow/openflow-1.1.h	/^    ovs_be32 supported;     \/* Features supported by the port. *\/$/;"	m	struct:ofp11_port
+supported	src/Openflow/openflow-1.1.h	/^	ovs_be32 supported;     \/* Features supported by the port. *\/$/;"	m	struct:ofp11_port
 supported	src/Openflow/openflow-1.4.h	/^    ovs_be32 supported;     \/* Features supported by the port. *\/$/;"	m	struct:ofp14_port_desc_prop_ethernet
 sw	src/mf_devicemgr.h	/^	struct mf_switch * sw;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::mf_switch
 sw	src/mf_rx_queue.h	/^	struct mf_switch* sw;$/;"	m	struct:q_node	typeref:struct:q_node::mf_switch

@@ -127,6 +127,7 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 
 struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num)
 {
+	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	if(sw == NULL)
 	{
 		perror("sw is NULL");
@@ -137,11 +138,14 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	for(; i < sw->port_num; i++)	  
 	{
 		if(sw->ports[i].port_no == port_num) 
+		{
+
 			pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
-		return &(sw->ports[i]);
+			return &(sw->ports[i]);
+		}
 	}
 	perror("No port has the port num");
-	//pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
 

@@ -16,15 +16,15 @@ static void push_to_array(struct link_node * value, struct link_node ** array);
 void mf_topomgr_create()
 {
 	MF_TOPO_MGR.total_node_number = 0;
-	MF_TOPO_MGR.node_cache_array_size = 1024;
+	MF_TOPO_MGR.node_cache_array_size = LINK_NODE_NUM;
 	pthread_mutex_init(&(MF_TOPO_MGR.topomgr_mutex), NULL);
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)malloc(MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
-	memset(LINK_NODE_CACHE_ARRAY, 0 , sizeof(*LINK_NODE_CACHE_ARRAY));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
 	{
 		printf("topo mgr malloc failed\n");
 		exit(0);
 	}
+	memset(LINK_NODE_CACHE_ARRAY, 0 , MF_TOPO_MGR.node_cache_array_size * sizeof(*LINK_NODE_CACHE_ARRAY));
 	int i = 0;
 	for(; i< MF_TOPO_MGR.node_cache_array_size; i++)
 		push_to_array(LINK_NODE_CACHE_ARRAY + i, &(MF_TOPO_MGR.available_slot));
@@ -34,6 +34,7 @@ void mf_topomgr_create()
 
 static inline void push_to_array(struct link_node * value, struct link_node ** array)
 {
+	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	if(*array == NULL)
 	{
 		*array = value;
@@ -47,12 +48,18 @@ static inline void push_to_array(struct link_node * value, struct link_node ** a
 		value->prev = NULL;
 		*array = value;
 	}
+	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 }
 
 static inline struct link_node* pop_from_array(struct link_node * value, struct link_node ** array)
 {
+	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	if(array == NULL || *array == NULL)
+	{
+		perror("Pop array is NULL");
+		pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 		return NULL;
+	}
 	struct link_node * tmp = * array;
 	while(tmp)
 	{
@@ -70,43 +77,57 @@ static inline struct link_node* pop_from_array(struct link_node * value, struct 
 					* array = NULL;
 				}
 				tmp->next = NULL;
+				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 				return tmp;
 			}
 			if(tmp->next == NULL)
 			{
 				tmp->prev->next = NULL;
 				tmp->prev = NULL;
+				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 				return tmp;
 			}
 			if(tmp->prev && tmp->next)
 			{
 				tmp->prev->next = tmp->next;
 				tmp->next->prev = tmp->prev;
+				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 				return tmp;
 			}
 		}
 		else
+		{
+
 			if(tmp->next)
 				tmp = tmp->next;
 			else
+			{
+
+				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 				return NULL;
+			}
+		}
 	}
+	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 	return NULL;
 }
 
 static void realloc_cache_array()
 {
+	//pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)realloc(LINK_NODE_CACHE_ARRAY, 2 * MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
 	{
-		printf("realloc cache array failed\n");
+		perror("realloc cache array failed");
 		exit(0);
 	}
 	memset(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size, 0, MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	int i;
+	MF_TOPO_MGR.node_cache_array_size *= 2;
 	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
 		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));
-	MF_TOPO_MGR.node_cache_array_size *= 2;
+	//MF_TOPO_MGR.node_cache_array_size *= 2;
+	//pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 }
 
 static struct link_node * get_available_value_slot()
@@ -116,25 +137,35 @@ static struct link_node * get_available_value_slot()
 	if(MF_TOPO_MGR.available_slot->is_occupied == 0)
 	{
 		struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));
+		//push_to_array(node, &(MF_TOPO_MGR.used_slot));
 		return value;
 	}
+	perror("No available value slot");
 	return NULL;
 }
 
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)
 {
+	if(port->is_node_created == 1)
+	{
+		perror("Node already exists");
+		return NULL;
+	}
 	struct link_node * node = get_available_value_slot();
 	if(node == NULL)
 	{
-  		perror("Bad value slot");
+		perror("Bad value slot");
 		return NULL;
 	}
 	node->sw = sw;
 	node->port = port;
+	port->is_node_created = 1;
 	node->next = NULL;
 	node->prev = NULL;
 	node->is_occupied = 1;
 	push_to_array(node, &(MF_TOPO_MGR.used_slot));
+	MF_TOPO_MGR.total_node_number++;
+	printf("Node number is now: %ld\n", MF_TOPO_MGR.total_node_number);
 	return node;
 }
 
