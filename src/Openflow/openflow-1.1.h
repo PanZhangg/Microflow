@@ -129,7 +129,7 @@ struct ofp11_port {
 	ovs_be32 max_speed;     /* Max port bitrate in kbps */
 //	uint8_t is_node_created;/* is a link node associated with this port exists*/
 	struct link_node * node;
-	
+	struct network_link * link;
 };
 //OFP_ASSERT(sizeof(struct ofp11_port) == 64);
 

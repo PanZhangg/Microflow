@@ -67,7 +67,7 @@ NTR_VENDOR_ID	src/Openflow/openflow-common.h	98;"	d
 NX_VENDOR_ID	src/Openflow/openflow-common.h	99;"	d
 ODP_PORT_C	src/Openflow/types.h	106;"	d
 OFP10_VLAN_NONE	src/Openflow/openflow-1.0.h	231;"	d
-OFP11_INSTRUCTION_ALIGN	src/Openflow/openflow-1.1.h	262;"	d
+OFP11_INSTRUCTION_ALIGN	src/Openflow/openflow-1.1.h	265;"	d
 OFP11_PORT_C	src/Openflow/types.h	107;"	d
 OFPACPT_FLOW_REMOVED_MASTER	src/Openflow/openflow-1.4.h	/^    OFPACPT_FLOW_REMOVED_MASTER   = 5, \/* Flow removed mask for master. *\/$/;"	e	enum:ofp14_async_config_prop_type
 OFPACPT_FLOW_REMOVED_SLAVE	src/Openflow/openflow-1.4.h	/^    OFPACPT_FLOW_REMOVED_SLAVE    = 4, \/* Flow removed mask for slave. *\/$/;"	e	enum:ofp14_async_config_prop_type
@@ -249,16 +249,16 @@ OFPMF13_PKTPS	src/Openflow/openflow-1.3.h	/^    OFPMF13_PKTPS   = 1 << 1,   \/* 
 OFPMF13_STATS	src/Openflow/openflow-1.3.h	/^    OFPMF13_STATS   = 1 << 3    \/* Collect statistics. *\/$/;"	e	enum:ofp13_meter_flags
 OFPMPF13_REQ_MORE	src/Openflow/openflow-1.3.h	/^    OFPMPF13_REQ_MORE = 1 << 0 \/* More requests to follow. *\/$/;"	e	enum:ofp13_multipart_request_flags
 OFPMT11_STANDARD_LENGTH	src/Openflow/openflow-1.1.h	/^OFP_ASSERT(sizeof(struct ofp11_match) == OFPMT11_STANDARD_LENGTH);$/;"	v
-OFPMT11_STANDARD_LENGTH	src/Openflow/openflow-1.1.h	185;"	d
+OFPMT11_STANDARD_LENGTH	src/Openflow/openflow-1.1.h	188;"	d
 OFPMT_OXM	src/Openflow/openflow-common.h	/^    OFPMT_OXM = 1,              \/* OpenFlow Extensible Match *\/$/;"	e	enum:ofp_match_type
 OFPMT_STANDARD	src/Openflow/openflow-common.h	/^    OFPMT_STANDARD = 0,         \/* The match fields defined in the ofp11_match$/;"	e	enum:ofp_match_type
-OFPP11_MAX	src/Openflow/openflow-1.1.h	70;"	d
-OFPP11_OFFSET	src/Openflow/openflow-1.1.h	71;"	d
+OFPP11_MAX	src/Openflow/openflow-1.1.h	71;"	d
+OFPP11_OFFSET	src/Openflow/openflow-1.1.h	72;"	d
 OFPPC10_ALL	src/Openflow/openflow-1.0.h	65;"	d
 OFPPC10_NO_FLOOD	src/Openflow/openflow-1.0.h	/^    OFPPC10_NO_FLOOD     = 1 << 4, \/* Do not include port when flooding. *\/$/;"	e	enum:ofp10_port_config
 OFPPC10_NO_RECV_STP	src/Openflow/openflow-1.0.h	/^    OFPPC10_NO_RECV_STP  = 1 << 3, \/* Drop received 802.1D STP packets. *\/$/;"	e	enum:ofp10_port_config
 OFPPC10_NO_STP	src/Openflow/openflow-1.0.h	/^    OFPPC10_NO_STP       = 1 << 1, \/* Disable 802.1D spanning tree on port. *\/$/;"	e	enum:ofp10_port_config
-OFPPC11_ALL	src/Openflow/openflow-1.1.h	82;"	d
+OFPPC11_ALL	src/Openflow/openflow-1.1.h	83;"	d
 OFPPC_NO_FWD	src/Openflow/openflow-common.h	/^    OFPPC_NO_FWD       = 1 << 5,  \/* Drop packets forwarded to port. *\/$/;"	e	enum:ofp_port_config
 OFPPC_NO_PACKET_IN	src/Openflow/openflow-common.h	/^    OFPPC_NO_PACKET_IN = 1 << 6   \/* Do not send packet-in msgs for port. *\/$/;"	e	enum:ofp_port_config
 OFPPC_NO_RECV	src/Openflow/openflow-common.h	/^    OFPPC_NO_RECV      = 1 << 2,  \/* Drop all packets received by port. *\/$/;"	e	enum:ofp_port_config
@@ -274,7 +274,7 @@ OFPPF10_PAUSE_ASYM	src/Openflow/openflow-1.0.h	/^    OFPPF10_PAUSE_ASYM = 1 << 1
 OFPPF11_100GB_FD	src/Openflow/openflow-1.1.h	/^    OFPPF11_100GB_FD   = 1 << 8,  \/* 100 Gb full-duplex rate support. *\/$/;"	e	enum:ofp11_port_features
 OFPPF11_1TB_FD	src/Openflow/openflow-1.1.h	/^    OFPPF11_1TB_FD     = 1 << 9,  \/* 1 Tb full-duplex rate support. *\/$/;"	e	enum:ofp11_port_features
 OFPPF11_40GB_FD	src/Openflow/openflow-1.1.h	/^    OFPPF11_40GB_FD    = 1 << 7,  \/* 40 Gb full-duplex rate support. *\/$/;"	e	enum:ofp11_port_features
-OFPPF11_ALL	src/Openflow/openflow-1.1.h	106;"	d
+OFPPF11_ALL	src/Openflow/openflow-1.1.h	107;"	d
 OFPPF11_AUTONEG	src/Openflow/openflow-1.1.h	/^    OFPPF11_AUTONEG    = 1 << 13, \/* Auto-negotiation. *\/$/;"	e	enum:ofp11_port_features
 OFPPF11_COPPER	src/Openflow/openflow-1.1.h	/^    OFPPF11_COPPER     = 1 << 11, \/* Copper medium. *\/$/;"	e	enum:ofp11_port_features
 OFPPF11_FIBER	src/Openflow/openflow-1.1.h	/^    OFPPF11_FIBER      = 1 << 12, \/* Fiber medium. *\/$/;"	e	enum:ofp11_port_features
@@ -300,7 +300,7 @@ OFPPS10_STP_FORWARD	src/Openflow/openflow-1.0.h	/^    OFPPS10_STP_FORWARD = 2 <<
 OFPPS10_STP_LEARN	src/Openflow/openflow-1.0.h	/^    OFPPS10_STP_LEARN   = 1 << 8, \/* Learning but not relaying frames. *\/$/;"	e	enum:ofp10_port_state
 OFPPS10_STP_LISTEN	src/Openflow/openflow-1.0.h	/^    OFPPS10_STP_LISTEN  = 0 << 8, \/* Not learning or relaying frames. *\/$/;"	e	enum:ofp10_port_state
 OFPPS10_STP_MASK	src/Openflow/openflow-1.0.h	/^    OFPPS10_STP_MASK    = 3 << 8  \/* Bit mask for OFPPS10_STP_* values. *\/$/;"	e	enum:ofp10_port_state
-OFPPS11_ALL	src/Openflow/openflow-1.1.h	91;"	d
+OFPPS11_ALL	src/Openflow/openflow-1.1.h	92;"	d
 OFPPS11_BLOCKED	src/Openflow/openflow-1.1.h	/^    OFPPS11_BLOCKED      = 1 << 1,  \/* Port is blocked *\/$/;"	e	enum:ofp11_port_state
 OFPPS11_LIVE	src/Openflow/openflow-1.1.h	/^    OFPPS11_LIVE         = 1 << 2,  \/* Live for Fast Failover Group. *\/$/;"	e	enum:ofp11_port_state
 OFPPSPT14_ETHERNET	src/Openflow/openflow-1.4.h	/^    OFPPSPT14_ETHERNET          = 0,      \/* Ethernet property. *\/$/;"	e	enum:ofp14_port_stats_prop_type
@@ -308,7 +308,7 @@ OFPPSPT14_EXPERIMENTER	src/Openflow/openflow-1.4.h	/^    OFPPSPT14_EXPERIMENTER 
 OFPPSPT14_OPTICAL	src/Openflow/openflow-1.4.h	/^    OFPPSPT14_OPTICAL           = 1,      \/* Optical property. *\/$/;"	e	enum:ofp14_port_stats_prop_type
 OFPPS_LINK_DOWN	src/Openflow/openflow-common.h	/^    OFPPS_LINK_DOWN    = 1 << 0,  \/* No physical link present. *\/$/;"	e	enum:ofp_port_state
 OFPP_ALL	src/Openflow/openflow-1.0.h	44;"	d
-OFPP_ANY	src/Openflow/openflow-1.1.h	79;"	d
+OFPP_ANY	src/Openflow/openflow-1.1.h	80;"	d
 OFPP_CONTROLLER	src/Openflow/openflow-1.0.h	45;"	d
 OFPP_FIRST_RESV	src/Openflow/openflow-1.0.h	34;"	d
 OFPP_IN_PORT	src/Openflow/openflow-1.0.h	39;"	d
@@ -763,7 +763,6 @@ ip_t	src/mf_utilities.h	/^}ip_t;$/;"	t	typeref:struct:st_ip
 ipid	src/mf_utilities.h	/^    UINT2 ipid;$/;"	m	struct:st_ip
 is_feature_request_sent	src/mf_switch.h	/^	uint8_t is_feature_request_sent;$/;"	m	struct:mf_switch
 is_hello_sent	src/mf_switch.h	/^	uint8_t is_hello_sent;$/;"	m	struct:mf_switch
-is_node_created	src/Openflow/openflow-1.1.h	/^	uint8_t is_node_created;\/* is a link node associated with this port exists*\/$/;"	m	struct:ofp11_port
 is_occupied	src/mf_devicemgr.h	/^	uint8_t is_occupied;$/;"	m	struct:host_hash_value
 is_occupied	src/mf_rx_queue.h	/^	uint8_t is_occupied;$/;"	m	struct:q_node
 is_occupied	src/mf_topomgr.h	/^	uint8_t is_occupied;$/;"	m	struct:link_node
@@ -958,6 +957,7 @@ next	src/mf_topomgr.h	/^	struct link_node * next; \/\/pointers for available\/us
 next_available_index	src/mf_topomgr.h	/^	uint32_t next_available_index;$/;"	m	struct:mf_topomgr
 next_node	src/mf_socket_array.h	/^	struct mf_socket_array_node * next_node;$/;"	m	struct:mf_socket_array_node	typeref:struct:mf_socket_array_node::mf_socket_array_node
 nfds	src/mf_socket.c	/^uint32_t epfd, nfds;$/;"	v
+node	src/Openflow/openflow-1.1.h	/^	struct link_node * node;$/;"	m	struct:ofp11_port	typeref:struct:ofp11_port::link_node
 node_cache_array_size	src/mf_topomgr.h	/^	uint64_t node_cache_array_size;$/;"	m	struct:mf_topomgr
 node_pool	src/mf_mempool.h	/^	struct q_node node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE];$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
 nw_dst	src/Openflow/openflow-1.0.h	/^    ovs_be32 nw_dst;           \/* IP destination address. *\/$/;"	m	struct:ofp10_match

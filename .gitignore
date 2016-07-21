@@ -38,3 +38,4 @@ core
 
 #VIM files
 *.swp
+*.swo
