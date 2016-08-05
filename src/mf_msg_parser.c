@@ -17,7 +17,19 @@
 int queue_index[WORKER_THREADS_NUM];
 
 void * worker_thread(void* arg)
-{
+{ 
+	static int cpu_id = 1;
+	int ccpu_id = 0;
+	cpu_set_t my_set;
+	if(__sync_bool_compare_and_swap(&cpu_id, 1, 2))
+		ccpu_id = 2;
+	else
+		ccpu_id = 1;
+	CPU_ZERO(&my_set);
+	CPU_SET(ccpu_id, &my_set);
+	printf("Set CPU affinity: %d\n", ccpu_id);
+	if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
+		perror("Set CPU affinity failed");
 	int index = *(int*)arg;
 	while(1)
 	{

@@ -1,5 +1,6 @@
 #include "mf_socket_array.h"
 
+#include <sched.h>
 #include "stdlib.h"
 #include <pthread.h>
 

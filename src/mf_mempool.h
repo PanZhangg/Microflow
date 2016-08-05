@@ -1,6 +1,7 @@
 #ifndef MF_MEMPOOL_H__
 #define MF_MEMPOOL_H__
 
+#include <sched.h>
 #include "mf_rx_queue.h"
 #include <pthread.h>
 

@@ -1,6 +1,7 @@
 #ifndef __MF_DEVICEMGR_H__
 #define __MF_DEVICEMGR_H__
 
+#include <sched.h>
 #include "Openflow/types.h"
 #include <pthread.h>
 

@@ -1,3 +1,4 @@
+#include <sched.h>
 #include "../src/mf_socket.h"
 #include "../src/mf_logger.h"
 #include "stdio.h"
