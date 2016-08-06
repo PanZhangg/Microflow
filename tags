@@ -20,7 +20,8 @@ FIRST_SOCKET_FD	tests/socket_array_test.c	5;"	d	file:
 HELLO_MSG_HANDLER_FUNC	src/mf_msg_handler.h	/^	HELLO_MSG_HANDLER_FUNC,$/;"	e	enum:MSG_HANDLER_TYPE
 HOST_CACHE_ARRAY	src/mf_devicemgr.c	/^static struct host_hash_value HOST_CACHE_ARRAY[MAX_HOST_NUM];$/;"	v	typeref:struct:host_hash_value	file:
 HOST_HASH_MAP	src/mf_devicemgr.c	/^static struct host_hash_value * HOST_HASH_MAP[HOST_HASH_MAP_SIZE];$/;"	v	typeref:struct:host_hash_value	file:
-HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	57;"	d
+HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	15;"	d
+HOST_MUTEX_SLOT_SIZE	src/mf_devicemgr.h	13;"	d
 HPL_VENDOR_ID	src/Openflow/openflow-common.h	97;"	d
 INT1	src/mf_utilities.h	/^typedef char              INT1;$/;"	t
 INT2	src/mf_utilities.h	/^typedef short             INT2;$/;"	t
@@ -53,7 +54,7 @@ MF_API_H__	src/mf_api.h	2;"	d
 MF_DEVICE_MGR	src/mf_devicemgr.c	/^struct mf_devicemgr MF_DEVICE_MGR;$/;"	v	typeref:struct:mf_devicemgr
 MF_LOG_FILE	src/mf_logger.c	/^FILE* MF_LOG_FILE;$/;"	v
 MF_MEMPOOL_H__	src/mf_mempool.h	2;"	d
-MF_QUEUE_NODE_MEMPOOL_SIZE	src/mf_mempool.h	9;"	d
+MF_QUEUE_NODE_MEMPOOL_SIZE	src/mf_mempool.h	10;"	d
 MF_STOPWATCH_LIST	src/mf_timer.c	/^struct stopwatch_list * MF_STOPWATCH_LIST;$/;"	v	typeref:struct:stopwatch_list
 MF_TOPOMGR_H__	src/mf_topomgr.h	2;"	d
 MF_TOPO_MGR	src/mf_topomgr.c	/^static struct mf_topomgr MF_TOPO_MGR;$/;"	v	typeref:struct:mf_topomgr	file:
@@ -412,7 +413,7 @@ PACKET_IN_MSG_HANDLER_FUNC	src/mf_msg_handler.h	/^	PACKET_IN_MSG_HANDLER_FUNC$/;
 PERMANENT	src/mf_timer.h	/^	PERMANENT$/;"	e	enum:STOPWATCH_TYPE
 RUN_TESTS	src/minunit.h	15;"	d
 RX_BUFFER_SIZE	src/mf_socket.h	11;"	d
-RX_PACKET_SIZE	src/mf_rx_queue.h	7;"	d
+RX_PACKET_SIZE	src/mf_rx_queue.h	8;"	d
 SECOND_SOCKET_FD	tests/socket_array_test.c	6;"	d	file:
 STOPWATCH_TYPE	src/mf_timer.h	/^enum  STOPWATCH_TYPE$/;"	g
 THIRD_SOCKET_FD	tests/socket_array_test.c	7;"	d	file:
@@ -697,6 +698,7 @@ hard_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 hard_timeout;     \/* Nu
 hard_timeout	src/Openflow/openflow-1.2.h	/^    ovs_be16 hard_timeout;    \/* Hard timeout from original flow mod. *\/$/;"	m	struct:ofp12_flow_removed
 hardwaresize	src/mf_utilities.h	/^    UINT1 hardwaresize;$/;"	m	struct:st_arp
 hardwaretype	src/mf_utilities.h	/^    UINT2 hardwaretype;$/;"	m	struct:st_arp
+hash_mutex	src/mf_devicemgr.h	/^	pthread_mutex_t hash_mutex[HOST_HASH_MAP_SIZE \/ HOST_MUTEX_SLOT_SIZE];$/;"	m	struct:mf_devicemgr
 hash_next	src/mf_devicemgr.h	/^	struct host_hash_value * hash_next;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::host_hash_value
 hash_value_created	src/mf_devicemgr.c	/^static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr)$/;"	f	file:
 head	src/mf_mempool.h	/^	struct q_node * head;$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
@@ -825,6 +827,7 @@ length	src/Openflow/openflow-1.5.h	/^    ovs_be16         length;  \/* 8. *\/$/;
 length	src/Openflow/openflow-1.5.h	/^    ovs_be16 length;              \/* Length of this entry. *\/$/;"	m	struct:ofp15_group_desc_stats
 length	src/Openflow/openflow-common.h	/^    ovs_be16    length;      \/* Length in bytes of this element. *\/$/;"	m	struct:ofp_hello_elem_header
 length	src/Openflow/openflow-common.h	/^    ovs_be16 length;    \/* Length including this ofp_header. *\/$/;"	m	struct:ofp_header
+link	src/Openflow/openflow-1.1.h	/^	struct network_link * link;$/;"	m	struct:ofp11_port	typeref:struct:ofp11_port::network_link
 link_list	src/mf_switch.h	/^	struct sw_link_list link_list;$/;"	m	struct:mf_switch	typeref:struct:mf_switch::sw_link_list
 link_node	src/mf_topomgr.h	/^struct link_node$/;"	s
 link_node_create	src/mf_topomgr.c	/^struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)$/;"	f

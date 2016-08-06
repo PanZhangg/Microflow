@@ -1,7 +1,6 @@
 #ifndef __MF_DEVICEMGR_H__
 #define __MF_DEVICEMGR_H__
 
-#include <sched.h>
 #include "Openflow/types.h"
 #include <pthread.h>
 
@@ -10,6 +9,10 @@ struct mf_switch;
 #define MAX_MF_SWITCH_NUM 4096
 
 #define MAX_HOST_NUM 4096
+
+#define HOST_MUTEX_SLOT_SIZE 5
+
+#define HOST_HASH_MAP_SIZE 2048
 
 struct mf_devicemgr
 {
@@ -23,6 +26,7 @@ struct mf_devicemgr
 	*/
 	struct host_hash_value * available_slot; //* available_slot head of the list
 	struct host_hash_value * used_slot;
+	pthread_mutex_t hash_mutex[HOST_HASH_MAP_SIZE / HOST_MUTEX_SLOT_SIZE];
 };
 
 void mf_devicemgr_create();
@@ -55,7 +59,6 @@ func()
 struct mf_switch * get_switch_by_dpid(uint64_t dpid);
 struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num);
 
-#define HOST_HASH_MAP_SIZE 2048
 
 /*
 Hash map to store host information

@@ -34,6 +34,8 @@ void mf_devicemgr_create()
 		push_to_array(&HOST_CACHE_ARRAY[i],&(MF_DEVICE_MGR.available_slot));
 	}
 	MF_DEVICE_MGR.used_slot = NULL;
+	for(i = 0; i < HOST_HASH_MAP_SIZE / HOST_MUTEX_SLOT_SIZE; i++)
+		pthread_mutex_init(&(MF_DEVICE_MGR.hash_mutex[i]), NULL);
 }
 
 struct mf_switch * get_switch(uint32_t sock)
