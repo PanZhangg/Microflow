@@ -114,7 +114,6 @@ static inline struct link_node* pop_from_array(struct link_node * value, struct 
 
 static void realloc_cache_array()
 {
-	//pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)realloc(LINK_NODE_CACHE_ARRAY, 2 * MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
 	{
@@ -126,8 +125,6 @@ static void realloc_cache_array()
 	MF_TOPO_MGR.node_cache_array_size *= 2;
 	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
 		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));
-	//MF_TOPO_MGR.node_cache_array_size *= 2;
-	//pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 }
 
 static struct link_node * get_available_value_slot()
@@ -165,7 +162,7 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 	node->is_occupied = 1;
 	push_to_array(node, &(MF_TOPO_MGR.used_slot));
 	MF_TOPO_MGR.total_node_number++;
-	printf("Node number is now: %ld\n", MF_TOPO_MGR.total_node_number);
+	//printf("Node number is now: %ld\n", MF_TOPO_MGR.total_node_number);
 	return node;
 }
 

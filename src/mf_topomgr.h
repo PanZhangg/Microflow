@@ -1,6 +1,5 @@
 #ifndef MF_TOPOMGR_H__
 #define MF_TOPOMGR_H__
-#include <sched.h>
 #include "Openflow/types.h"
 #include "./Openflow/openflow-1.1.h"
 #include <pthread.h>

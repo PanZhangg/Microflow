@@ -24,10 +24,6 @@ e.g. src = "abcd", dst = "dcba"
 ===========================*/
 void inline inverse_memcpy(void* dst, void* src, uint16_t len)
 {
-	if(len <= 0 || dst == NULL || src == NULL)
-		return;
-	else
-	{
 		uint16_t i = 0;
 		src = (char*)src + len - 1;
 		while(i < len)
@@ -35,7 +31,6 @@ void inline inverse_memcpy(void* dst, void* src, uint16_t len)
 			*(char*)dst++ = *(char*)src--;
 			i++;
 		}
-	}
 }
 
 static UINT8 gn_htonll(UINT8 n)
