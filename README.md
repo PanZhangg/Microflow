@@ -1,3 +1,4 @@
+![](docs/Microflow.png)
 # Microflow
 The light-weighted, lightning fast OpenFlow SDN controller capable of multi-threads and clustering.
 
@@ -21,14 +22,16 @@ Shared information among workers
 ###Socket/epoll communication                        DONE    
 Enable non-blocking & Async socket interface  
 
-###Multithread implementation                        DONE
+###Multi-thread implementation                        DONE
 Separated thread for socket\worker\timer\others  
 Allows full-utilization of CPU time when busy and zero CPU usage when free  
-Upgrade to lock-free in the future    
-
+Lock-Free msg recv queue implementation
+CPU affinity allows to take the full advantage of multi-core CPUs
+ 
 ###Memory pool implementation                        DONE
 Memory pool for received msg  
 Eliminate time-consumption malloc/free operations    
+Used and available chains make it easy to manage
 
 ###Timer & Logger implementation                     DONE
 Implement particular function in a cycled way  
@@ -43,17 +46,24 @@ Pre-alloced memory cells, eliminate malloc/free
 ###OpenFlow msg handler implementation Phase I&II       DONE  
 Hello & Echo & Feature_request handler  
 Packet out sender  
-Packet_in (Arp) handler  
+Packet_in handler  
+Multipart reply msg handler
+ARP msg handler
+LLDP msg handler
+Port statistic msg handler
 Register/unregister customized handler according to different msg type   
 
-###Topology manager implementation Phase I
+###Topology manager implementation Phase I DONE
 Maintain network links  
 Maintain switch links  
 Pre-alloced memory cells, eliminate malloc/free  
+
+###Logo Design  DONE
+:D Thanks to Miss Hong :p
+
 #TODO List  
 
 ###OpenFlow msg handler implementation Phase II  
-LLDP handler  
 Statistic msgs handler  
 Flow-mod msgs  
 
@@ -67,7 +77,6 @@ Web GUI based on html & css(bootstrap)
 ###cluster
 A cluster service based on network games' mechanism  
   
-
 ###Documents  
 An introduction doc & manual  
 Architecture design doc  
