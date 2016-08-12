@@ -8,6 +8,7 @@
 #include "mf_msg_parser.h"
 #include "mf_timer.h"
 #include "mf_msg_handler.h"
+#include "./httpserver/cgi.h"
 
 void mf_controller_init()
 {
@@ -16,6 +17,7 @@ void mf_controller_init()
 	mf_devicemgr_create();
 	mf_topomgr_create();
 	msg_handlers_init();
+	wr_init();
 }
 
 void register_msg_handler(enum MSG_HANDLER_TYPE type, msg_handler_func func)

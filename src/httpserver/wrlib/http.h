@@ -9,7 +9,7 @@ extern "C"{
 #include "wrhash.h"
 
 static const char *IndexFile = "index.html" ;
-static const char *RootPath = "www" ;
+static const char *RootPath = "../webui" ;
 static const char *CgiExt = ".cgi" ;
 
 /*for cache use ,default is ony-day ,if not expire ,we

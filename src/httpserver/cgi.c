@@ -75,9 +75,9 @@ int cgi_page_login(WrHttp *pHttp)
 
 void cgi_init()
 {
-	cgi_page_add("sum.cgi" ,cgi_page_sum);
+	/*cgi_page_add("sum.cgi" ,cgi_page_sum);
 	cgi_page_add("txt.cgi" ,cgi_page_txt);
-	cgi_page_add("login.cgi" ,cgi_page_login);
+	cgi_page_add("login.cgi" ,cgi_page_login);*/
 }
 
 void cgi_uninit()
