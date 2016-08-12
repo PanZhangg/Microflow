@@ -495,6 +495,7 @@ _MISC_H__	src/httpserver/wrlib/misc.h	2;"	d
 __ANALYSIS_H__	src/httpserver/wrlib/analysis.h	4;"	d
 __CGI_H__	src/httpserver/cgi.h	2;"	d
 __HTTP_H__	src/httpserver/wrlib/http.h	2;"	d
+__MF_CONTROLLER_H__	src/mf_controller.h	2;"	d
 __MF_DEVICEMGR_H__	src/mf_devicemgr.h	2;"	d
 __MF_LOGGER_H__	src/mf_logger.h	2;"	d
 __MF_MSG_HANDLER__	src/mf_msg_handler.h	2;"	d
@@ -642,6 +643,7 @@ config	src/Openflow/openflow-1.4.h	/^    ovs_be32 config;        \/* Bitmap of O
 content-type	webui/vtn_terminal.js	/^	vtn_coord_hdr = {$/;"	p	class:vtn_coord_hdr
 content-type	webui/vtn_terminal.js	/^var vtn_coord_hdr = {$/;"	p	class:vtn_coord_hdr
 controller_addr	src/mf_socket.c	/^struct sockaddr_in controller_addr, switch_addr;$/;"	v	typeref:struct:sockaddr_in
+controller_start	src/mf_controller.c	/^void controller_start(uint32_t sock)$/;"	f
 cookie	src/Openflow/openflow-1.0.h	/^    ovs_32aligned_be64 cookie;       \/* Opaque controller-issued identifier. *\/$/;"	m	struct:ofp10_flow_stats
 cookie	src/Openflow/openflow-1.0.h	/^    ovs_be64 cookie;             \/* Opaque controller-issued identifier. *\/$/;"	m	struct:ofp10_flow_mod
 cookie	src/Openflow/openflow-1.0.h	/^    ovs_be64 cookie;          \/* Opaque controller-issued identifier. *\/$/;"	m	struct:ofp10_flow_removed
@@ -826,7 +828,7 @@ group_id	src/Openflow/openflow-1.1.h	/^    ovs_be32 group_id;         \/* Group 
 group_id	src/Openflow/openflow-1.5.h	/^    ovs_be32 group_id;            \/* Group identifier. *\/$/;"	m	struct:ofp15_group_desc_stats
 group_id	src/Openflow/openflow-1.5.h	/^    ovs_be32 group_id;            \/* Group identifier. *\/$/;"	m	struct:ofp15_group_mod
 gs	src/Openflow/openflow-1.3.h	/^    struct ofp11_group_stats gs;$/;"	m	struct:ofp13_group_stats	typeref:struct:ofp13_group_stats::ofp11_group_stats
-handle_connection	src/mf_socket.c	/^void handle_connection(uint32_t sock)$/;"	f
+handle_connection	src/mf_socket.c	/^void* handle_connection(void* arg)$/;"	f
 handler_func	src/mf_msg_handler.h	/^	msg_handler_func handler_func;$/;"	m	struct:single_msg_handler
 hard_timeout	src/Openflow/openflow-1.0.h	/^    ovs_be16 hard_timeout;        \/* Max time before discarding (seconds). *\/$/;"	m	struct:ofp10_flow_mod
 hard_timeout	src/Openflow/openflow-1.0.h	/^    ovs_be16 hard_timeout;    \/* Number of seconds before expiration. *\/$/;"	m	struct:ofp10_flow_stats
@@ -1011,7 +1013,7 @@ lst_vtns	webui/vtn_terminal.js	/^	crt_vtn:    	vtn_crt_vtn,$/;"	p	class:vtn_cli_
 mac_addr	src/mf_devicemgr.h	/^	uint64_t mac_addr;$/;"	m	struct:host_hash_value
 mac_addr_hash	src/mf_devicemgr.c	/^inline uint32_t mac_addr_hash(uint64_t key)$/;"	f
 main	src/httpserver/main.c	/^int main(){$/;"	f
-main	src/main.c	/^int main(int argc, char** argv){$/;"	f
+main	src/main.c	/^int main(int argc, char** argv)$/;"	f
 main	tests/devicemgr.c	/^int main()$/;"	f
 main	tests/host_hash_test.c	/^int main()$/;"	f
 main	tests/inverse_memcpy_test.c	/^int main()$/;"	f
@@ -1062,8 +1064,6 @@ meter_id	src/Openflow/openflow-1.3.h	/^    ovs_be32 meter_id;          \/* Meter
 meter_id	src/Openflow/openflow-1.3.h	/^    ovs_be32 meter_id;  \/* Meter instance, or OFPM_ALL. *\/$/;"	m	struct:ofp13_meter_multipart_request
 method	src/httpserver/wrlib/http.h	/^	char * method;$/;"	m	struct:__anon10
 methods	src/httpserver/wrlib/misc.h	/^static const char *methods[3]={"HEAD" ,"GET" ,"POST"};$/;"	v
-mf_controller	src/mf_controller.h	/^typedef struct mf_controller{} mf_controller;$/;"	s
-mf_controller	src/mf_controller.h	/^typedef struct mf_controller{} mf_controller;$/;"	t	typeref:struct:mf_controller
 mf_controller_init	src/mf_api.h	/^void mf_controller_init()$/;"	f
 mf_default_log_path	src/mf_logger.h	9;"	d
 mf_devicemgr	src/mf_devicemgr.h	/^struct mf_devicemgr$/;"	s
@@ -1559,6 +1559,7 @@ prev	src/mf_devicemgr.h	/^	struct host_hash_value * prev;$/;"	m	struct:host_hash
 prev	src/mf_topomgr.h	/^	struct link_node * prev;$/;"	m	struct:link_node	typeref:struct:link_node::link_node
 previous_node	src/mf_socket_array.h	/^	struct mf_socket_array_node * previous_node;$/;"	m	struct:mf_socket_array_node	typeref:struct:mf_socket_array_node::mf_socket_array_node
 print_header	src/httpserver/wrlib/analysis.c	/^void print_header(const WrHttp *pHttp)$/;"	f
+print_info	src/main.c	/^static void print_info()$/;"	f	file:
 print_param	src/httpserver/wrlib/analysis.c	/^void print_param(const WrHttp *pHttp)$/;"	f
 print_welcome	src/main.c	/^void print_welcome()$/;"	f
 priority	src/Openflow/openflow-1.0.h	/^    ovs_be16 priority;            \/* Priority level of flow entry. *\/$/;"	m	struct:ofp10_flow_mod

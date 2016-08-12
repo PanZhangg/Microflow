@@ -84,8 +84,20 @@ void mf_socket_bind(uint32_t sock)
 }
 
 
-void handle_connection(uint32_t sock)
+void* handle_connection(void* arg)
 {
+	uint32_t sock = *(uint32_t*)arg;
+	//printf("fd in connection is: %d\n",sock);
+	int cpunum = sysconf(_SC_NPROCESSORS_ONLN);
+	if(cpunum >= 4)
+	{
+		int ccpu_id = 0;
+		cpu_set_t my_set;
+		CPU_ZERO(&my_set);
+		CPU_SET(ccpu_id, &my_set);
+		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
+			perror("Set CPU affinity failed");
+	}
 	int i, connfd;
 	static int incompleted_packet_length = 0;
 	socklen_t clilen = sizeof(switch_addr);

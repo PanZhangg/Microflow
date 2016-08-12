@@ -16,7 +16,7 @@ extern struct mf_queue_node_mempool * MSG_RX_QUEUE[WORKER_THREADS_NUM];
 
 uint32_t mf_listen_socket_create();
 void mf_socket_bind(uint32_t);
-void handle_connection(uint32_t);
+void* handle_connection(void*);
 
 #endif
 

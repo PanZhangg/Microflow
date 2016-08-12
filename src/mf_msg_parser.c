@@ -30,7 +30,7 @@ void * worker_thread(void* arg)
 			ccpu_id = 1;
 		CPU_ZERO(&my_set);
 		CPU_SET(ccpu_id, &my_set);
-		printf("Set CPU affinity: %d\n", ccpu_id);
+		//printf("Set CPU affinity: %d\n", ccpu_id);
 		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
 			perror("Set CPU affinity failed");
 	}
