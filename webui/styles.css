@@ -1,0 +1,77 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    width: calc(100% - 0px);
+    height: calc(100% - 0px);
+}
+
+body {
+    overflow:hidden;
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+    margin: 16px;
+}
+
+line.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+.node text {
+  pointer-events: none;
+  font: 12px sans-serif;
+}
+
+.node.fixed text {
+  pointer-events: none;
+  font: 12px sans-serif;
+  font-weight: bold;
+}
+
+.outline {
+    border: 4px solid #4682B4;
+    border-style: ridge;
+    width: calc(100% - 20px - 4px * 2);
+    height: calc(100% - 20px - 4px * 2);
+}
+
+.demo {
+    position: absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    height: calc(65%);
+    z-index: -1;
+}
+
+.logo {
+    position: absolute;
+    left: 30px;
+    top: 20px;
+    z-index: -1;
+}
+
+.graph {
+    position: relative;
+}
+
+.controller {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    z-index: -1;
+}
+
+.layer1 {
+    position: relative;
+}
+
+.layer2 {
+    position: absolute;
+    top: 20px;
+}
