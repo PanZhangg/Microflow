@@ -3,88 +3,82 @@
 <head>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-	<!--script src="terminal/js/jquery.terminal-src.js"></script-->
 	<link type="text/css" rel="stylesheet" href="styles.css"/>
-	<!--link href="terminal/css/jquery.terminal.css" rel="stylesheet"/-->
 	<link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-	<!--img class="logo" src="icons/Microflow.png" alt="logo" height="64"-->
-	<!--img id="demo" class="demo" src="icons/demo.png" alt="demo"-->
 
 </head>
 
-
-
-
 <body>
-
-	<div id="top-nav" class="navbar navbar-inverse navbar-static-top">
-		<div class="container">
+	<nav id="top-nav" class="navbar navbar-default">
+		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="icon-toggle"></span>
-				</button>
-				<a class="navbar-brand" href="#">Microflow</a>
+				<!--a class="navbar-brand" href="#"-->
+					<img class="img-responsive" alt="Brand" src="icons/Microflow_logo.png" height="40" width="160">
+				<!--/a-->
 			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">  
-					<li class="dropdown">
-					<a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-					<i class="glyphicon glyphicon-user"></i> Admin <span class="caret"></span></a>
-						<ul id="g-account-menu" class="dropdown-menu" role="menu">
-							<li><a href="#">My Profile</a></li>
-							<li><a href="#"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div><!-- /container -->
-	</div>
-	<div class="media">
-		<a class="pull-right" herf="#">
-		<img class="media-object" src="icons/Microflow.png" height="100">
-		</a>
-	</div>
-
+		</div>
+	</nav>
+	
 	<div class="container">
-		<div style="width: 100%; height:100%;">
 			<div class="row">
-				<div class = "col-sm-3">
-				<!--div id="server" class="graph" style="float:left; width:15%; height:70%"-->
-				<!--/div-->
+				<div class = "col-sm-2">
 					<h3><i class="glyphicon glyphicon-briefcase"></i> Toolbox</h3>
 					<hr>
-					
 					<ul class="nav nav-stacked">
 						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-flash"></i> Alerts</a></li>
 						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-link"></i> Links</a></li>
 						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-list-alt"></i> Reports</a></li>
-						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-book"></i> Books</a></li>
+						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-book"></i> Logs</a></li>
 						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-briefcase"></i> Tools</a></li>
 						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-time"></i> Real-time</a></li>
 						<li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-plus"></i> Advanced..</a></li>
 					</ul>
-					
 					<hr>
+				</div>
 					
-				</div><!-- /span-3 -->
-					
-				<div class="col-sm-9">
-					<div id="graph-diagram" class="graph" style="float:left; width:85%; height:70%">
+				<div class="col-sm-7">
+					<div id="graph-diagram" class="graph" style="float:left; width:100%; height:90%">
 					</div>  
 				</div>
-				<!-- <div style="clear:both; width:100%; height:30%">
-				<div id="vtn_term" class="outline"></div>
-				</div> -->
-				
+				<div class="col-md-3">
+					<div class="well">Inbox Messages<span class="badge pull-right">3</span></div>
+					<ul class="nav nav-justified">
+					<li><a href="#"><i class="glyphicon glyphicon-cog"></i></a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-heart"></i></a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-comment"></i><span class="count">3</span></a>
+					<ul class="dropdown-menu" role="menu"><li><a href="#">1. Is there a way..</a></li><li><a href="#">2. Hello, admin. I would..</a></li><li><a href="#">
+					<strong>All messages</strong></a></li></ul></li>
+					<li><a href="#"><i class="glyphicon glyphicon-user"></i></a></li>
+					<li><a title="Add Widget" data-toggle="modal" href="#addWidgetModal"><span class="glyphicon glyphicon-plus-sign"></span></a></li>
+					</ul>
+					<hr>
+					<div class="btn-group btn-group-justified">
+						<a href="#" class="btn btn-info col-sm-3">
+						<i class="glyphicon glyphicon-plus"></i><br>
+						Service
+						</a>
+						<a href="#" class="btn btn-info col-sm-3">
+						<i class="glyphicon glyphicon-cloud"></i><br>
+						Cloud	
+						</a>
+						<a href="#" class="btn btn-info col-sm-3">
+						<i class="glyphicon glyphicon-cog"></i><br>
+						Tools	
+						</a>
+						<a href="#" class="btn btn-info col-sm-3">
+						<i class="glyphicon glyphicon-question-sign"></i><br>
+						Help	
+						</a>
+					</div>
+				</div>
 			</div>
-		<footer class="text-center"><strong>Microflow</strong> WebUI</footer>
-		</div>
 	</div>
-</body>
+	<div class="container">
+		<footer class="text-center"><strong>Microflow</strong> WebUI</footer>
+	</div>
 
+</body>
 	<script type="text/javascript" src="odl-rest.js"></script>
-	<!--script type="text/javascript" src="vtn_terminal.js"></script-->
-	<!--script type="text/javascript" src="odl-serv.js"></script-->
 	<script type="text/javascript" src="odl-webui.js"></script>
 </html>
 
