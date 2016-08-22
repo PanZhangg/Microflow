@@ -7,7 +7,7 @@
 
 struct mf_switch;
 
-#define MAX_NETWORK_LINK_NUM 5 
+#define MAX_NETWORK_LINK_NUM 4096
 #define MAX_NETWORK_LINK_NUM_PER_SWITCH 256 //identical to MAX SWITCH PORT NUM
 #define LONGEST_PATH_LINK_NUM 64
 #define LINK_NODE_NUM (MAX_NETWORK_LINK_NUM) * (2) 
@@ -56,7 +56,7 @@ void mf_topomgr_create();
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port);
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst);
 struct path_link_list * path_link_list_create();
-void sw_link_insert(struct sw_link_list * list, struct network_link * link);
+uint32_t sw_link_insert(struct sw_link_list * list, struct network_link * link);
 void network_path_insert(struct path_link_list * list, struct network_link * link);
 void sw_link_delete(struct sw_link_list * list, struct network_link * link);
 void path_link_list_free(struct path_link_list * );

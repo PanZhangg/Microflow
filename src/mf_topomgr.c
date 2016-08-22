@@ -223,8 +223,9 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 		return (src->port->link);
 	}
 	uint32_t index = get_next_available_index();
-	if(index = MAX_NETWORK_LINK_NUM + 1)
+	if(index == MAX_NETWORK_LINK_NUM + 1)
 	{
+		printf(" Network link num:%d\n", MF_TOPO_MGR.total_network_link_number);
 		return NULL;
 	}
 	NETWORK_LINK_CACHE_ARRAY[index].src = src;
@@ -232,7 +233,7 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	NETWORK_LINK_CACHE_ARRAY[index].sw_link_next = NULL;
 	src->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
 	dst->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
-	printf(" Network link num:%d\n", MF_TOPO_MGR.total_network_link_number);
+	printf(" Network link num :%d\n", MF_TOPO_MGR.total_network_link_number);
 	return (& NETWORK_LINK_CACHE_ARRAY[index]);
 }
 
@@ -244,20 +245,25 @@ struct path_link_list * path_link_list_create()
 	return list;
 }
 
-void sw_link_insert(struct sw_link_list * list, struct network_link * link)
+uint32_t sw_link_insert(struct sw_link_list * sw_list, struct network_link * link)
 {
-	if(list == NULL || link == NULL)
-		return;
-	if(list->link_num == 0 && list->head == NULL)
+	if(link == NULL)
 	{
-		list->head = link;
+		printf("return!\n");
+		return 0;
+	}
+	if(sw_list->link_num == 0 && sw_list->head == NULL)
+	{
+		sw_list->head = link;
 	}
 	else
 	{
-		link->sw_link_next = list->head;
-		list->head = link;
+		link->sw_link_next = sw_list->head;
+		sw_list->head = link;
 	}
-	list->link_num++;
+	printf(" link inserted\n");
+	sw_list->link_num++;
+	return 1;
 }
 
 void network_path_insert(struct path_link_list * list, struct network_link * link)

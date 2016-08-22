@@ -4,15 +4,9 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-"	webui/terminal/js/jquery.terminal-src.js	/^                '\\\\\\\\': '\\\\\\\\',$/;"	p	class:$.json_stringify.repl
-$.fn.cmd	webui/terminal/js/jquery.terminal-src.js	/^    }$/;"	f
-$.json_stringify	webui/terminal/js/jquery.terminal-src.js	/^    }$/;"	f
-/	webui/terminal/js/jquery.terminal-src.js	/^                '"': '\\\\"',$/;"	p	class:$.json_stringify.repl
-Array	webui/terminal/js/jquery.terminal-src.js	/^                        if (match.length > 1 && match.index < str.length) {$/;"	c
 BOOL	src/mf_utilities.h	/^typedef signed   char     BOOL;$/;"	t
 COPT	src/httpserver/Makefile	/^COPT=	-W -Os -s -D_POSIX_SOURCE -D_BSD_SOURCE$/;"	m
 CgiExt	src/httpserver/wrlib/http.h	/^static const char *CgiExt = ".cgi" ;$/;"	v
-Cycle	webui/terminal/js/jquery.terminal-src.js	/^    function Cycle(init) {$/;"	f
 DBG	src/httpserver/wrlib/misc.c	/^void DBG(const char *fmt, ...)$/;"	f
 DEFAULT_PORT	src/mf_socket.h	6;"	d
 DIRSEP	src/httpserver/wrlib/mg_compat.h	66;"	d
@@ -40,7 +34,6 @@ HOST_SIZE	webui/odl-webui.js	/^var HOST_SIZE = 40;$/;"	v
 HOST_X	webui/odl-webui.js	/^var HOST_X = -8;$/;"	v
 HOST_Y	webui/odl-webui.js	/^var HOST_Y = -8;$/;"	v
 HPL_VENDOR_ID	src/Openflow/openflow-common.h	97;"	d
-History	webui/terminal/js/jquery.terminal-src.js	/^    function History(name, size) {$/;"	f
 INT1	src/mf_utilities.h	/^typedef char              INT1;$/;"	t
 INT2	src/mf_utilities.h	/^typedef short             INT2;$/;"	t
 INT4	src/mf_utilities.h	/^typedef int               INT4;$/;"	t
@@ -455,16 +448,11 @@ RX_PACKET_SIZE	src/mf_rx_queue.h	8;"	d
 RootPath	src/httpserver/wrlib/http.h	/^static const char *RootPath = "..\/webui" ;$/;"	v
 SECOND_SOCKET_FD	tests/socket_array_test.c	6;"	d	file:
 SERVER	src/httpserver/wrlib/http.h	20;"	d
-SERV_IMG	webui/odl-serv.js	/^var SERV_IMG = "icons\/server-ok.png";$/;"	v
-SERV_OFF_IMG	webui/odl-serv.js	/^var SERV_OFF_IMG = "icons\/server-fail.png";$/;"	v
-SERV_SIZE	webui/odl-serv.js	/^var SERV_SIZE = 54;$/;"	v
 SKIP	src/httpserver/wrlib/wrstring.h	32;"	d
 SOCKET	src/httpserver/wrlib/mg_compat.h	/^typedef int SOCKET;$/;"	t
 SRCS	src/httpserver/Makefile	/^SRCS=	wrlib\/wrmpool.c wrlib\/wrhash.c wrlib\/wrstring.c wrlib\/misc.c wrlib\/wrio.c \\$/;"	m
 STOPWATCH_TYPE	src/mf_timer.h	/^enum  STOPWATCH_TYPE$/;"	g
 S_ISDIR	src/httpserver/wrlib/mg_compat.h	37;"	d
-Stack	webui/terminal/js/jquery.terminal-src.js	/^    function Stack(init) {$/;"	f
-String	webui/terminal/js/jquery.terminal-src.js	/^        };$/;"	c
 THIRD_SOCKET_FD	tests/socket_array_test.c	7;"	d	file:
 TRIMI_LB_TAIL	src/httpserver/wrlib/wrstring.h	49;"	d
 TRIM_HEAD	src/httpserver/wrlib/wrstring.h	41;"	d
@@ -487,10 +475,6 @@ WR_SOCK_RTT	src/httpserver/wrlib/http.h	27;"	d
 WR_TCP_QUAN	src/httpserver/wrlib/http.h	55;"	d
 WrContext	src/httpserver/wrlib/http.h	/^}WrContext;$/;"	v	typeref:struct:__anon12
 WrHttp	src/httpserver/wrlib/http.h	/^}WrHttp;$/;"	t	typeref:struct:__anon10
-\\	webui/terminal/js/jquery.terminal-src.js	/^            var repl = {$/;"	p	class:$.json_stringify.repl
-\n	webui/terminal/js/jquery.terminal-src.js	/^                '\/': '\\\\\/',$/;"	p	class:$.json_stringify.repl
-\r	webui/terminal/js/jquery.terminal-src.js	/^                '\\\\n': '\\\\n',$/;"	p	class:$.json_stringify.repl
-\t	webui/terminal/js/jquery.terminal-src.js	/^                '\\\\r': '\\\\r',$/;"	p	class:$.json_stringify.repl
 _MISC_H__	src/httpserver/wrlib/misc.h	2;"	d
 __ANALYSIS_H__	src/httpserver/wrlib/analysis.h	4;"	d
 __CGI_H__	src/httpserver/cgi.h	2;"	d
@@ -545,11 +529,11 @@ auxiliary_id	src/Openflow/openflow-common.h	/^    uint8_t auxiliary_id;   \/* OF
 auxiliary_id	src/mf_switch.h	/^	uint8_t auxiliary_id;$/;"	m	struct:mf_switch
 available_slot	src/mf_devicemgr.h	/^	struct host_hash_value * available_slot; \/\/* available_slot head of the list$/;"	m	struct:mf_devicemgr	typeref:struct:mf_devicemgr::host_hash_value
 available_slot	src/mf_topomgr.h	/^	struct link_node * available_slot;$/;"	m	struct:mf_topomgr	typeref:struct:mf_topomgr::link_node
+available_slot_num	src/mf_devicemgr.h	/^	uint32_t available_slot_num;$/;"	m	struct:mf_devicemgr
 band_stats	src/Openflow/openflow-1.3.h	/^    struct ofp13_meter_band_stats band_stats[0];  \/* The band_stats length is$/;"	m	struct:ofp13_meter_stats	typeref:struct:ofp13_meter_stats::ofp13_meter_band_stats
 band_types	src/Openflow/openflow-1.3.h	/^    ovs_be32   band_types;    \/* Bitmaps of OFPMBT13_* values supported. *\/$/;"	m	struct:ofp13_meter_features
 barrier	src/mf_mempool.c	8;"	d	file:
 begin	src/httpserver/wrlib/wrmpool.h	/^	char *begin;\/*start pos*\/$/;"	m	struct:__anon7
-blink	webui/terminal/js/jquery.terminal-src.js	/^        function blink(i) {$/;"	f	function:$.fn.cmd
 bucket_array_len	src/Openflow/openflow-1.5.h	/^    ovs_be16 bucket_array_len;    \/* Length of action buckets data. *\/$/;"	m	struct:ofp15_group_mod
 bucket_id	src/Openflow/openflow-1.5.h	/^    ovs_be32 bucket_id;             \/* Bucket Id used to identify bucket*\/$/;"	m	struct:ofp15_bucket
 bucket_list_len	src/Openflow/openflow-1.5.h	/^    ovs_be16 bucket_list_len;     \/* Length of action buckets data. *\/$/;"	m	struct:ofp15_group_desc_stats
@@ -592,7 +576,6 @@ cgi_page_login	src/httpserver/cgi.c	/^int cgi_page_login(WrHttp *pHttp)$/;"	f
 cgi_page_sum	src/httpserver/cgi.c	/^int cgi_page_sum(WrHttp *pHttp)$/;"	f
 cgi_page_txt	src/httpserver/cgi.c	/^int cgi_page_txt(WrHttp *pHttp)$/;"	f
 cgi_uninit	src/httpserver/cgi.c	/^void cgi_uninit()$/;"	f
-change_num_chars	webui/terminal/js/jquery.terminal-src.js	/^        function change_num_chars() {$/;"	f	function:$.fn.cmd
 chassis_tlv_id	src/mf_utilities.h	/^    UINT8 chassis_tlv_id;            \/\/dpid$/;"	m	struct:st_lldp
 chassis_tlv_subtype	src/mf_utilities.h	/^    UINT1 chassis_tlv_subtype;       \/\/MAC             4$/;"	m	struct:st_lldp
 chassis_tlv_type_and_len	src/mf_utilities.h	/^    UINT2 chassis_tlv_type_and_len;   \/\/0x0207$/;"	m	struct:st_lldp
@@ -610,7 +593,6 @@ cksum	src/mf_utilities.h	/^    UINT2 cksum;$/;"	m	struct:st_udp
 clas	src/mf_utilities.h	/^    UINT2 clas;         \/\/ class$/;"	m	struct:st_dns_a
 clean_errno	src/dbg.h	14;"	d
 clearHttp	src/httpserver/wrlib/request.c	/^static void clearHttp(WrHttp *pHttp)$/;"	f	file:
-clear_reverse_state	webui/terminal/js/jquery.terminal-src.js	/^        function clear_reverse_state() {$/;"	f	function:$.fn.cmd
 close	src/httpserver/wrlib/mg_compat.h	46;"	d
 closesocket	src/httpserver/wrlib/mg_compat.h	69;"	d
 cmcaddr	src/mf_utilities.h	/^    UINT1 cmcaddr[16];$/;"	m	struct:st_dhcp
@@ -621,7 +603,6 @@ codeSet	src/httpserver/wrlib/request.c	/^static int codeSet(char *pBuf ,int code
 collisions	src/Openflow/openflow-1.0.h	/^    ovs_32aligned_be64 collisions;   \/* Number of collisions. *\/$/;"	m	struct:ofp10_port_stats
 collisions	src/Openflow/openflow-1.1.h	/^    ovs_be64 collisions;      \/* Number of collisions. *\/$/;"	m	struct:ofp11_port_stats
 collisions	src/Openflow/openflow-1.4.h	/^    ovs_be64 collisions;     \/* Number of collisions. *\/$/;"	m	struct:ofp14_port_stats_prop_ethernet
-color_hex_re	webui/terminal/js/jquery.terminal-src.js	/^    var color_hex_re = \/#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})\/;$/;"	v
 command	src/Openflow/openflow-1.0.h	/^    ovs_be16 command;             \/* One of OFPFC_*. *\/$/;"	m	struct:ofp10_flow_mod
 command	src/Openflow/openflow-1.1.h	/^    ovs_be16 command;             \/* One of OFPGC11_*. *\/$/;"	m	struct:ofp11_group_mod
 command	src/Openflow/openflow-1.1.h	/^    uint8_t command;             \/* One of OFPFC_*. *\/$/;"	m	struct:ofp11_flow_mod
@@ -640,10 +621,8 @@ config	src/Openflow/openflow-1.3.h	/^    ovs_be32 config;          \/* Bitmap of
 config	src/Openflow/openflow-1.4.h	/^    ovs_be32 config;        \/* Bitmap of OFPPC_* flags. *\/$/;"	m	struct:ofp14_port
 config	src/Openflow/openflow-1.4.h	/^    ovs_be32 config;        \/* Bitmap of OFPPC_* flags. *\/$/;"	m	struct:ofp14_port_mod
 config	src/Openflow/openflow-1.4.h	/^    ovs_be32 config;        \/* Bitmap of OFPTC_* flags *\/$/;"	m	struct:ofp14_table_mod
-content-type	webui/vtn_terminal.js	/^	vtn_coord_hdr = {$/;"	p	class:vtn_coord_hdr
-content-type	webui/vtn_terminal.js	/^var vtn_coord_hdr = {$/;"	p	class:vtn_coord_hdr
 controller_addr	src/mf_socket.c	/^struct sockaddr_in controller_addr, switch_addr;$/;"	v	typeref:struct:sockaddr_in
-controller_start	src/mf_controller.c	/^void controller_start(uint32_t sock)$/;"	f
+controller_start	src/mf_controller.c	/^void controller_start(uint32_t * sock)$/;"	f
 cookie	src/Openflow/openflow-1.0.h	/^    ovs_32aligned_be64 cookie;       \/* Opaque controller-issued identifier. *\/$/;"	m	struct:ofp10_flow_stats
 cookie	src/Openflow/openflow-1.0.h	/^    ovs_be64 cookie;             \/* Opaque controller-issued identifier. *\/$/;"	m	struct:ofp10_flow_mod
 cookie	src/Openflow/openflow-1.0.h	/^    ovs_be64 cookie;          \/* Opaque controller-issued identifier. *\/$/;"	m	struct:ofp10_flow_removed
@@ -658,10 +637,6 @@ cookieSet	src/httpserver/wrlib/request.c	/^static int cookieSet(char *buf)$/;"	f
 cookie_mask	src/Openflow/openflow-1.1.h	/^    ovs_be64 cookie_mask;        \/* Mask used to restrict the cookie bits$/;"	m	struct:ofp11_flow_mod
 cookie_mask	src/Openflow/openflow-1.1.h	/^    ovs_be64 cookie_mask;     \/* Mask used to restrict the cookie bits that$/;"	m	struct:ofp11_flow_stats_request
 create_lldp_pkt	src/mf_utilities.c	/^void create_lldp_pkt(void *src_addr, UINT8 id, ovs_be32 port, lldp_t *buffer)$/;"	f
-crt_ctl	webui/vtn_terminal.js	/^	lst_ctls: 		vtn_list_ctls,$/;"	p	class:vtn_cli_commands
-crt_vbr	webui/vtn_terminal.js	/^	lst_vtns:		vtn_list_vtns,$/;"	p	class:vtn_cli_commands
-crt_vbr_if	webui/vtn_terminal.js	/^	lst_vbrs:		vtn_list_vbrs,$/;"	p	class:vtn_cli_commands
-crt_vtn	webui/vtn_terminal.js	/^	dlt_ctl: 		vtn_dlt_ctl,$/;"	p	class:vtn_cli_commands
 curPos	src/httpserver/wrlib/http.h	/^	char *curPos;$/;"	m	struct:__anon10
 curr	src/Openflow/openflow-1.0.h	/^    ovs_be32 curr;          \/* Current features. *\/$/;"	m	struct:ofp10_phy_port
 curr	src/Openflow/openflow-1.1.h	/^	ovs_be32 curr;          \/* Current features. *\/$/;"	m	struct:ofp11_port
@@ -685,12 +660,11 @@ data	src/mf_utilities.h	/^    char  data[0];$/;"	m	struct:st_tlv
 datapath_id	src/Openflow/openflow-common.h	/^    ovs_be64 datapath_id;   \/* Datapath unique ID.  The lower 48-bits are for$/;"	m	struct:ofp_switch_features
 datapath_id	src/mf_switch.h	/^	uint64_t datapath_id;$/;"	m	struct:mf_switch
 dblclick	webui/odl-webui.js	/^function dblclick(d) {$/;"	f
-dc	webui/terminal/js/jquery.terminal-src.js	/^    function dc(n) {$/;"	f
 debug	src/dbg.h	11;"	d
 debug	src/dbg.h	9;"	d
 decodeParam	src/httpserver/wrlib/analysis.c	/^int decodeParam(WrHttp *pHttp)$/;"	f
 delCookie	webui/odl-rest.js	/^function delCookie(name) {$/;"	f
-delete_host_hash_value	src/mf_devicemgr.c	/^void delete_host_hash_value(struct host_hash_value * value)$/;"	f
+delete_host_hash_value	src/mf_devicemgr.c	/^void delete_host_hash_value(struct host_hash_value *value)$/;"	f
 delete_socket_array_node	src/mf_socket_array.c	/^uint8_t delete_socket_array_node(int socket_fd, struct mf_socket_array* q){$/;"	f
 delete_switch_from_map	src/mf_devicemgr.c	/^void delete_switch_from_map(struct mf_switch * sw)$/;"	f
 dest	src/mf_utilities.h	/^    UINT1 dest[6];$/;"	m	struct:st_ether
@@ -709,8 +683,6 @@ dl_vlan	src/Openflow/openflow-1.0.h	/^    ovs_be16 dl_vlan;          \/* Input V
 dl_vlan	src/Openflow/openflow-1.1.h	/^    ovs_be16 dl_vlan;          \/* Input VLAN id. *\/$/;"	m	struct:ofp11_match
 dl_vlan_pcp	src/Openflow/openflow-1.0.h	/^    uint8_t dl_vlan_pcp;       \/* Input VLAN priority. *\/$/;"	m	struct:ofp10_match
 dl_vlan_pcp	src/Openflow/openflow-1.1.h	/^    uint8_t dl_vlan_pcp;       \/* Input VLAN priority. *\/$/;"	m	struct:ofp11_match
-dls	webui/terminal/js/jquery.terminal-src.js	/^    function dls(n) {$/;"	f
-dlt_ctl	webui/vtn_terminal.js	/^	crt_ctl:  		vtn_crt_ctl,$/;"	p	class:vtn_cli_commands
 dns_a_t	src/mf_utilities.h	/^}dns_a_t;$/;"	t	typeref:struct:st_dns_a
 dns_q	src/mf_utilities.h	/^    dns_q_t  *dns_q;$/;"	m	struct:st_dns
 dns_q_t	src/mf_utilities.h	/^}dns_q_t;$/;"	t	typeref:struct:st_dns_q
@@ -719,7 +691,6 @@ dport	src/mf_utilities.h	/^    UINT2 dport;$/;"	m	struct:st_tcp
 dport	src/mf_utilities.h	/^    UINT2 dport;$/;"	m	struct:st_udp
 drag	webui/odl-webui.js	/^var drag = topo.drag().on("dragend", dragend);$/;"	v
 dragend	webui/odl-webui.js	/^function dragend(d) {$/;"	f
-draw_reverse_prompt	webui/terminal/js/jquery.terminal-src.js	/^        function draw_reverse_prompt() {$/;"	f	function:$.fn.cmd
 dst	src/mf_topomgr.h	/^	struct link_node* dst;$/;"	m	struct:network_link	typeref:struct:network_link::link_node
 duration_nsec	src/Openflow/openflow-1.0.h	/^    ovs_be32 duration_nsec;   \/* Time flow has been alive in nanoseconds$/;"	m	struct:ofp10_flow_stats
 duration_nsec	src/Openflow/openflow-1.0.h	/^    ovs_be32 duration_nsec;   \/* Time flow was alive in nanoseconds beyond$/;"	m	struct:ofp10_flow_removed
@@ -741,14 +712,12 @@ duration_sec	src/Openflow/openflow-1.3.h	/^    ovs_be32 duration_sec;    \/* Tim
 duration_sec	src/Openflow/openflow-1.3.h	/^    ovs_be32 duration_sec;    \/* Time port has been alive in seconds. *\/$/;"	m	struct:ofp13_port_stats
 duration_sec	src/Openflow/openflow-1.3.h	/^    ovs_be32 duration_sec;    \/* Time queue has been alive in seconds. *\/$/;"	m	struct:ofp13_queue_stats
 duration_sec	src/Openflow/openflow-1.4.h	/^    ovs_be32 duration_sec;   \/* Time port has been alive in seconds. *\/$/;"	m	struct:ofp14_port_stats
-echo	webui/vtn_terminal.js	/^	help:       	vtn_help,$/;"	p	class:vtn_cli_commands
 echo_request_handler	src/mf_msg_handler.c	/^void echo_request_handler(struct q_node* qn)$/;"	f
 echo_request_handler_list_head	src/mf_msg_handler.h	/^	struct single_msg_handler * echo_request_handler_list_head;$/;"	m	struct:msg_handlers	typeref:struct:msg_handlers::single_msg_handler
 endof_lldpdu_tlv_type_and_len	src/mf_utilities.h	/^    UINT2 endof_lldpdu_tlv_type_and_len;$/;"	m	struct:st_lldp
 epfd	src/mf_socket.c	/^uint32_t epfd, nfds;$/;"	v
 epoll_init	src/mf_socket.c	/^static void epoll_init(uint32_t sock)$/;"	f	file:
 errorLog	src/httpserver/cgi.c	/^int errorLog(WrHttp *pHttp ,const char *mess)$/;"	f
-escape_regex	webui/terminal/js/jquery.terminal-src.js	/^    function escape_regex(string) {$/;"	f
 eth_head	src/mf_utilities.h	/^    ether_t eth_head;$/;"	m	struct:st_arp
 eth_head	src/mf_utilities.h	/^    ether_t eth_head;$/;"	m	struct:st_ip
 eth_head	src/mf_utilities.h	/^    ether_t eth_head;$/;"	m	struct:st_lldp
@@ -792,10 +761,6 @@ flg	src/mf_utilities.h	/^    UINT2 flg;$/;"	m	struct:st_dhcp
 flow_count	src/Openflow/openflow-1.3.h	/^    ovs_be32  flow_count;        \/* Number of flows bound to meter. *\/$/;"	m	struct:ofp13_meter_stats
 flow_count	src/Openflow/openflow-common.h	/^    ovs_be32 flow_count;      \/* Number of flows. *\/$/;"	m	struct:ofp_aggregate_stats_reply
 flow_removed_mask	src/Openflow/openflow-1.3.h	/^    ovs_be32 flow_removed_mask[2];\/* Bitmasks of OFPRR_* values. *\/$/;"	m	struct:ofp13_async_config
-format_parts_re	webui/terminal/js/jquery.terminal-src.js	/^    var format_parts_re = \/\\[\\[([gbiuso]*);([^;]*);([^;\\]]*);?([^;\\]]*);?([^\\]]*)\\]([^\\]]*\\\\\\][^\\]]*|[^\\]]*|[^\\[]*\\[[^\\]]*)\\]?\/g;$/;"	v
-format_re	webui/terminal/js/jquery.terminal-src.js	/^    var format_re = \/\\[\\[([gbiuso]*;[^;\\]]*;[^;\\]]*(?:;|[^\\]()]*);?[^\\]]*)\\]([^\\]]*\\\\\\][^\\]]*|[^\\]]*|[^\\[]*\\[[^\\]]*)\\]?\/gi;$/;"	v
-format_split_re	webui/terminal/js/jquery.terminal-src.js	/^    var format_split_re = \/(\\[\\[[gbiuso]*;[^;]*;[^\\]]*\\](?:[^\\]]*\\\\\\][^\\]]*|[^\\]]*|[^\\[]*\\[[^\\]]*)\\]?)\/;$/;"	v
-formattingCount	webui/terminal/js/jquery.terminal-src.js	/^    function formattingCount(string) {$/;"	f
 fragoff	src/mf_utilities.h	/^    UINT2 fragoff;$/;"	m	struct:st_ip
 generate_random	src/mf_utilities.c	/^uint32_t generate_random()$/;"	f
 generation_id	src/Openflow/openflow-1.2.h	/^    ovs_be64 generation_id;   \/* Master Election Generation Id *\/$/;"	m	struct:ofp12_role_request
@@ -812,7 +777,6 @@ get_next_switch	src/mf_devicemgr.c	/^struct mf_switch * get_next_switch(uint32_t
 get_outport_from_LLDP_packet	src/mf_msg_handler.c	/^static uint16_t get_outport_from_LLDP_packet(char * buffer)$/;"	f	file:
 get_param_info	src/httpserver/wrlib/analysis.c	/^const char *get_param_info(const WrHttp *pHttp ,const char *key)$/;"	f
 get_rx_queue	src/mf_socket_array.c	/^struct mf_rx_queue* get_rx_queue(int socket_fd, struct mf_socket_array* q){$/;"	f
-get_splited_command_line	webui/terminal/js/jquery.terminal-src.js	/^        function get_splited_command_line(string) {$/;"	f	function:$.fn.cmd
 get_src_mac_addr	src/mf_msg_handler.c	/^static uint64_t get_src_mac_addr(char* data)$/;"	f	file:
 get_switch	src/mf_devicemgr.c	/^struct mf_switch * get_switch(uint32_t sock)$/;"	f
 get_switch_by_dpid	src/mf_devicemgr.c	/^struct mf_switch * get_switch_by_dpid(uint64_t dpid)$/;"	f
@@ -820,7 +784,6 @@ get_switch_by_host_mac	src/mf_devicemgr.c	/^struct mf_switch * get_switch_by_hos
 get_switch_port_by_port_num	src/mf_devicemgr.c	/^struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num)$/;"	f
 gipaddr	src/mf_utilities.h	/^    UINT4 gipaddr;  \/\/agent ip addr;$/;"	m	struct:st_dhcp
 gn_htonll	src/mf_utilities.c	/^static UINT8 gn_htonll(UINT8 n)$/;"	f	file:
-greetings	webui/vtn_terminal.js	/^	prompt: 'VTN > ', $/;"	p	class:term_cfg
 group_id	src/Openflow/openflow-1.1.h	/^    ovs_be32 group_id;            \/* Group identifier. *\/$/;"	m	struct:ofp11_group_mod
 group_id	src/Openflow/openflow-1.1.h	/^    ovs_be32 group_id;          \/* Group identifier. *\/$/;"	m	struct:ofp11_group_desc_stats
 group_id	src/Openflow/openflow-1.1.h	/^    ovs_be32 group_id;         \/* All groups if OFPG_ALL. *\/$/;"	m	struct:ofp11_group_stats_request
@@ -837,6 +800,7 @@ hard_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 hard_timeout;     \/* Nu
 hard_timeout	src/Openflow/openflow-1.2.h	/^    ovs_be16 hard_timeout;    \/* Hard timeout from original flow mod. *\/$/;"	m	struct:ofp12_flow_removed
 hardwaresize	src/mf_utilities.h	/^    UINT1 hardwaresize;$/;"	m	struct:st_arp
 hardwaretype	src/mf_utilities.h	/^    UINT2 hardwaretype;$/;"	m	struct:st_arp
+hash_map_slot_index	src/mf_devicemgr.h	/^	uint32_t hash_map_slot_index;$/;"	m	struct:host_hash_value
 hash_mutex	src/mf_devicemgr.h	/^	pthread_mutex_t hash_mutex[HOST_HASH_MAP_SIZE \/ HOST_MUTEX_SLOT_SIZE];$/;"	m	struct:mf_devicemgr
 hash_next	src/mf_devicemgr.h	/^	struct host_hash_value * hash_next;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::host_hash_value
 hash_value_created	src/mf_devicemgr.c	/^static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr)$/;"	f	file:
@@ -856,7 +820,6 @@ header	src/Openflow/openflow-common.h	/^    struct ofp_header header;$/;"	m	stru
 hello_msg_handler	src/mf_msg_handler.c	/^void hello_msg_handler(struct q_node* qn)$/;"	f
 hello_msg_handler_list_head	src/mf_msg_handler.h	/^	struct single_msg_handler * hello_msg_handler_list_head;$/;"	m	struct:msg_handlers	typeref:struct:msg_handlers::single_msg_handler
 hello_msg_stopwatch_callback	src/mf_msg_handler.c	/^void hello_msg_stopwatch_callback(void* arg) \/\/for timer function test$/;"	f
-help	webui/vtn_terminal.js	/^var vtn_cli_commands = {$/;"	p	class:vtn_cli_commands
 hi	src/Openflow/types.h	/^        ovs_be16 hi, lo;$/;"	m	struct:__anon2
 hi	src/Openflow/types.h	/^        ovs_be32 hi, lo;$/;"	m	struct:__anon6
 hi	src/Openflow/types.h	/^        uint16_t hi, lo;$/;"	m	struct:__anon1
@@ -866,10 +829,9 @@ hlen	src/mf_utilities.h	/^    UINT1 hlen;$/;"	m	struct:st_dhcp
 hlen	src/mf_utilities.h	/^    UINT1 hlen;$/;"	m	struct:st_ip
 hop_num	src/mf_topomgr.h	/^	uint16_t hop_num;$/;"	m	struct:path_link_list
 hops	src/mf_utilities.h	/^    UINT1 hops;$/;"	m	struct:st_dhcp
-host_add_to_hash_map	src/mf_devicemgr.c	/^void host_add_to_hash_map(struct host_hash_value* value)$/;"	f
+host_array_slot_index	src/mf_devicemgr.h	/^	uint32_t host_array_slot_index;$/;"	m	struct:host_hash_value
 host_hash_value	src/mf_devicemgr.h	/^struct host_hash_value$/;"	s
 host_hash_value_add	src/mf_devicemgr.c	/^struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)$/;"	f
-host_hash_value_destory	src/mf_devicemgr.c	/^void host_hash_value_destory(struct host_hash_value* value)$/;"	f
 hostname	src/mf_utilities.h	/^    UINT1 hostname[64];$/;"	m	struct:st_dhcp
 htype	src/mf_utilities.h	/^    UINT1 htype;$/;"	m	struct:st_dhcp
 hw_addr	src/Openflow/openflow-1.0.h	/^    uint8_t hw_addr[OFP_ETH_ALEN]; \/* The hardware address is not$/;"	m	struct:ofp10_port_mod
@@ -889,7 +851,7 @@ idle_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 idle_timeout;       \/* 
 idle_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 idle_timeout;     \/* Number of seconds idle before expiration. *\/$/;"	m	struct:ofp11_flow_stats
 idle_timeout	src/Openflow/openflow-1.1.h	/^    ovs_be16 idle_timeout;    \/* Idle timeout from original flow mod. *\/$/;"	m	struct:ofp11_flow_removed
 idle_timeout	src/Openflow/openflow-1.2.h	/^    ovs_be16 idle_timeout;    \/* Idle timeout from original flow mod. *\/$/;"	m	struct:ofp12_flow_removed
-if_host_exist	src/mf_devicemgr.c	/^static uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)$/;"	f	file:
+if_host_exist	src/mf_devicemgr.c	/^static inline uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)$/;"	f	file:
 ifindex	src/mf_utilities.h	/^    UINT1 ifindex;$/;"	m	struct:st_ethpkt_info
 importance	src/Openflow/openflow-1.1.h	/^    ovs_be16 importance;         \/* Eviction precedence (OF1.4+). *\/$/;"	m	struct:ofp11_flow_mod
 importance	src/Openflow/openflow-1.1.h	/^    ovs_be16 importance;       \/* Eviction precedence (OF1.4+). *\/$/;"	m	struct:ofp11_flow_stats
@@ -907,11 +869,8 @@ instructions	src/Openflow/openflow-1.1.h	/^    ovs_be32 instructions;   \/* Bitm
 instructions	src/Openflow/openflow-1.2.h	/^    ovs_be32 instructions;   \/* Bitmap of OFPIT_* values supported. *\/$/;"	m	struct:ofp12_table_stats
 inverse_memcpy	src/mf_utilities.c	/^void inline inverse_memcpy(void* dst, void* src, uint16_t len)$/;"	f
 ip_t	src/mf_utilities.h	/^}ip_t;$/;"	t	typeref:struct:st_ip
-ipaddr	webui/vtn_terminal.js	/^		'password': 'adminpass',$/;"	p	class:vtn_coord_hdr
-ipaddr	webui/vtn_terminal.js	/^	'password': 'adminpass',$/;"	p	class:vtn_coord_hdr
 ipid	src/mf_utilities.h	/^    UINT2 ipid;$/;"	m	struct:st_ip
 isHeadEnd	src/httpserver/wrlib/wrio.c	/^static int isHeadEnd(char *pBuf ,char *cPos ,int len)$/;"	f	file:
-isLS	webui/terminal/js/jquery.terminal-src.js	/^    var isLS = typeof window.localStorage !== 'undefined';$/;"	v
 is_feature_request_sent	src/mf_switch.h	/^	uint8_t is_feature_request_sent;$/;"	m	struct:mf_switch
 is_hello_sent	src/mf_switch.h	/^	uint8_t is_hello_sent;$/;"	m	struct:mf_switch
 is_occupied	src/mf_devicemgr.h	/^	uint8_t is_occupied;$/;"	m	struct:host_hash_value
@@ -921,7 +880,6 @@ is_occupied	src/mf_topomgr.h	/^	uint8_t is_occupied;$/;"	m	struct:network_link
 is_port_desc_request_sent	src/mf_switch.h	/^	uint8_t is_port_desc_request_sent;$/;"	m	struct:mf_switch
 is_struct_hash_value_identical	src/mf_devicemgr.c	/^static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)$/;"	f	file:
 key	src/httpserver/wrlib/wrhash.h	/^	void *key;$/;"	m	struct:_slist
-keydown_event	webui/terminal/js/jquery.terminal-src.js	/^        function keydown_event(e) {$/;"	f	function:$.fn.cmd
 label_ptr	src/mf_utilities.h	/^    UINT2 label_ptr;$/;"	m	struct:st_dns_a
 len	src/Openflow/openflow-1.0.h	/^    ovs_be16 len;               \/* Length in bytes of this queue desc. *\/$/;"	m	struct:ofp10_packet_queue
 len	src/Openflow/openflow-1.1.h	/^    ovs_be16 len;                    \/* Length the bucket in bytes, including$/;"	m	struct:ofp11_bucket
@@ -1005,11 +963,6 @@ lookup_count	src/Openflow/openflow-1.1.h	/^    ovs_be64 lookup_count;   \/* Numb
 lookup_count	src/Openflow/openflow-1.2.h	/^    ovs_be64 lookup_count;   \/* Number of packets looked up in table. *\/$/;"	m	struct:ofp12_table_stats
 lookup_count	src/Openflow/openflow-1.3.h	/^    ovs_be64 lookup_count;  \/* Number of packets looked up in table. *\/$/;"	m	struct:ofp13_table_stats
 lseek	src/httpserver/wrlib/mg_compat.h	45;"	d
-lst_ctls	webui/vtn_terminal.js	/^	set_demo:	vtn_set_demo,$/;"	p	class:vtn_cli_commands
-lst_lports	webui/vtn_terminal.js	/^	lst_vbr_ifs:	vtn_list_vbr_ifs,$/;"	p	class:vtn_cli_commands
-lst_vbr_ifs	webui/vtn_terminal.js	/^	crt_vbr_if: 	vtn_crt_vbr_if,$/;"	p	class:vtn_cli_commands
-lst_vbrs	webui/vtn_terminal.js	/^	crt_vbr:		vtn_crt_vbr,$/;"	p	class:vtn_cli_commands
-lst_vtns	webui/vtn_terminal.js	/^	crt_vtn:    	vtn_crt_vtn,$/;"	p	class:vtn_cli_commands
 mac_addr	src/mf_devicemgr.h	/^	uint64_t mac_addr;$/;"	m	struct:host_hash_value
 mac_addr_hash	src/mf_devicemgr.c	/^inline uint32_t mac_addr_hash(uint64_t key)$/;"	f
 main	src/httpserver/main.c	/^int main(){$/;"	f
@@ -1023,7 +976,6 @@ main	tests/socket_client.c	/^int main(int argc, char** argv)$/;"	f
 main	tests/socket_test.c	/^int main(int argc, char** argv){$/;"	f
 main	tests/timer_test.c	/^int main()$/;"	f
 main	tests/topomgr_test.c	/^int main()$/;"	f
-map_vif2lport	webui/vtn_terminal.js	/^	lst_lports:		vtn_list_lports,$/;"	p	class:vtn_cli_commands
 mask	src/Openflow/openflow-1.0.h	/^    ovs_be32 mask;          \/* Bitmap of OFPPC_* flags to be changed. *\/$/;"	m	struct:ofp10_port_mod
 mask	src/Openflow/openflow-1.1.h	/^    ovs_be32 mask;          \/* Bitmap of OFPPC_* flags to be changed. *\/$/;"	m	struct:ofp11_port_mod
 mask	src/Openflow/openflow-1.4.h	/^    ovs_be32    mask;   \/* Bitmasks of reason values. *\/$/;"	m	struct:ofp14_async_config_prop_reasons
@@ -1065,6 +1017,7 @@ meter_id	src/Openflow/openflow-1.3.h	/^    ovs_be32 meter_id;  \/* Meter instanc
 method	src/httpserver/wrlib/http.h	/^	char * method;$/;"	m	struct:__anon10
 methods	src/httpserver/wrlib/misc.h	/^static const char *methods[3]={"HEAD" ,"GET" ,"POST"};$/;"	v
 mf_controller_init	src/mf_api.h	/^void mf_controller_init()$/;"	f
+mf_controller_run	src/mf_api.h	/^void mf_controller_run()$/;"	f
 mf_default_log_path	src/mf_logger.h	9;"	d
 mf_devicemgr	src/mf_devicemgr.h	/^struct mf_devicemgr$/;"	s
 mf_devicemgr_create	src/mf_devicemgr.c	/^void mf_devicemgr_create()$/;"	f
@@ -1118,7 +1071,6 @@ name	src/Openflow/openflow-1.1.h	/^    char name[OFP_MAX_TABLE_NAME_LEN];$/;"	m	
 name	src/Openflow/openflow-1.2.h	/^    char name[OFP_MAX_TABLE_NAME_LEN];$/;"	m	struct:ofp12_table_stats
 name	src/Openflow/openflow-1.3.h	/^    char name[OFP_MAX_TABLE_NAME_LEN];$/;"	m	struct:ofp13_table_features
 name	src/Openflow/openflow-1.4.h	/^    char name[OFP_MAX_PORT_NAME_LEN]; \/* Null-terminated *\/$/;"	m	struct:ofp14_port
-nativeSplit	webui/terminal/js/jquery.terminal-src.js	/^        var nativeSplit = String.prototype.split,$/;"	v
 network_link	src/mf_topomgr.h	/^struct network_link$/;"	s
 network_link_create	src/mf_topomgr.c	/^struct network_link * network_link_create(struct link_node* src, struct link_node* dst)$/;"	f
 network_link_free	src/mf_topomgr.c	/^void network_link_free(struct network_link * link)$/;"	f
@@ -1338,7 +1290,6 @@ ofp_switch_features	src/Openflow/openflow-common.h	/^struct ofp_switch_features 
 ofp_table	src/Openflow/openflow-common.h	/^enum ofp_table {$/;"	g
 ofp_table_config	src/Openflow/openflow-common.h	/^enum ofp_table_config {$/;"	g
 ofp_vendor_header	src/Openflow/openflow-common.h	/^struct ofp_vendor_header {$/;"	s
-omap	webui/terminal/js/jquery.terminal-src.js	/^\/**@license$/;"	f
 omh	src/Openflow/openflow-1.1.h	/^    struct ofp11_match_header omh;$/;"	m	struct:ofp11_match	typeref:struct:ofp11_match::ofp11_match_header
 opcode	src/mf_utilities.h	/^    UINT2 opcode;$/;"	m	struct:st_arp
 open	src/httpserver/wrlib/mg_compat.h	44;"	d
@@ -1353,7 +1304,6 @@ out_port	src/Openflow/openflow-1.0.h	/^    ovs_be16 out_port;        \/* Require
 out_port	src/Openflow/openflow-1.1.h	/^    ovs_be32 out_port;           \/* For OFPFC_DELETE* commands, require$/;"	m	struct:ofp11_flow_mod
 out_port	src/Openflow/openflow-1.1.h	/^    ovs_be32 out_port;        \/* Require matching entries to include this$/;"	m	struct:ofp11_flow_stats_request
 out_port	src/Openflow/openflow-1.4.h	/^    ovs_be32 out_port;          \/* Required output port, if not OFPP_ANY. *\/$/;"	m	struct:ofp14_flow_monitor_request
-outputLimit	webui/vtn_terminal.js	/^	greetings: 'ODL VTN Coordinator CLI\\n\\r-----------------------', $/;"	p	class:term_cfg
 ovs_16aligned_be32	src/Openflow/types.h	/^} ovs_16aligned_be32;$/;"	t	typeref:struct:__anon2
 ovs_16aligned_u32	src/Openflow/types.h	/^} ovs_16aligned_u32;$/;"	t	typeref:struct:__anon1
 ovs_32aligned_be64	src/Openflow/types.h	/^} ovs_32aligned_be64;$/;"	t	typeref:struct:__anon6
@@ -1507,9 +1457,6 @@ parse_msg	src/mf_msg_parser.c	/^void parse_msg(struct q_node* qn)$/;"	f
 parse_msg_type	src/mf_msg_parser.c	/^static inline uint8_t parse_msg_type(struct q_node* qn)$/;"	f	file:
 parse_msg_version	src/mf_msg_parser.c	/^static inline uint8_t parse_msg_version(struct q_node* qn)$/;"	f	file:
 parse_thread_start	src/mf_msg_parser.c	/^void parse_thread_start(uint8_t num)$/;"	f
-password	webui/vtn_terminal.js	/^		'username': 'admin',$/;"	p	class:vtn_coord_hdr
-password	webui/vtn_terminal.js	/^	'username': 'admin',$/;"	p	class:vtn_coord_hdr
-paste	webui/terminal/js/jquery.terminal-src.js	/^        function paste() {$/;"	f	function:$.fn.cmd
 path_link_list	src/mf_topomgr.h	/^	struct network_link * path_link_list[LONGEST_PATH_LINK_NUM];$/;"	m	struct:path_link_list	typeref:struct:path_link_list::network_link
 path_link_list	src/mf_topomgr.h	/^struct path_link_list$/;"	s
 path_link_list_create	src/mf_topomgr.c	/^struct path_link_list * path_link_list_create()$/;"	f
@@ -1558,9 +1505,11 @@ prec_level	src/Openflow/openflow-1.3.h	/^    uint8_t     prec_level;  \/* Number
 prev	src/mf_devicemgr.h	/^	struct host_hash_value * prev;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::host_hash_value
 prev	src/mf_topomgr.h	/^	struct link_node * prev;$/;"	m	struct:link_node	typeref:struct:link_node::link_node
 previous_node	src/mf_socket_array.h	/^	struct mf_socket_array_node * previous_node;$/;"	m	struct:mf_socket_array_node	typeref:struct:mf_socket_array_node::mf_socket_array_node
+print_all_switches	src/mf_devicemgr.c	/^void print_all_switches()$/;"	f
 print_header	src/httpserver/wrlib/analysis.c	/^void print_header(const WrHttp *pHttp)$/;"	f
 print_info	src/main.c	/^static void print_info()$/;"	f	file:
 print_param	src/httpserver/wrlib/analysis.c	/^void print_param(const WrHttp *pHttp)$/;"	f
+print_switch_link	src/mf_devicemgr.c	/^void print_switch_link(struct mf_switch *sw)$/;"	f
 print_welcome	src/main.c	/^void print_welcome()$/;"	f
 priority	src/Openflow/openflow-1.0.h	/^    ovs_be16 priority;            \/* Priority level of flow entry. *\/$/;"	m	struct:ofp10_flow_mod
 priority	src/Openflow/openflow-1.0.h	/^    ovs_be16 priority;        \/* Priority level of flow entry. *\/$/;"	m	struct:ofp10_flow_removed
@@ -1569,8 +1518,6 @@ priority	src/Openflow/openflow-1.1.h	/^    ovs_be16 priority;           \/* Prio
 priority	src/Openflow/openflow-1.1.h	/^    ovs_be16 priority;         \/* Priority of the entry. Only meaningful$/;"	m	struct:ofp11_flow_stats
 priority	src/Openflow/openflow-1.1.h	/^    ovs_be16 priority;        \/* Priority level of flow entry. *\/$/;"	m	struct:ofp11_flow_removed
 priority	src/Openflow/openflow-1.2.h	/^    ovs_be16 priority;        \/* Priority level of flow entry. *\/$/;"	m	struct:ofp12_flow_removed
-processCommand	webui/terminal/js/jquery.terminal-src.js	/^    function processCommand(string, fn) {$/;"	f
-prompt	webui/vtn_terminal.js	/^var term_cfg = {$/;"	p	class:term_cfg
 prop_header	src/Openflow/openflow-common.h	/^    struct ofp_queue_prop_header prop_header;$/;"	m	struct:ofp_queue_prop_rate	typeref:struct:ofp_queue_prop_rate::ofp_queue_prop_header
 properties	src/Openflow/openflow-1.4.h	/^    struct ofp14_async_config_prop_header properties[0];$/;"	m	struct:ofp14_async_config	typeref:struct:ofp14_async_config::ofp14_async_config_prop_header
 property	src/Openflow/openflow-common.h	/^    ovs_be16 property; \/* One of OFPQT_. *\/$/;"	m	struct:ofp_queue_prop_header
@@ -1584,7 +1531,6 @@ ps	src/Openflow/openflow-1.3.h	/^    struct ofp11_port_stats ps;$/;"	m	struct:of
 pthread_cond_t	src/httpserver/wrlib/mg_compat.h	/^typedef HANDLE pthread_cond_t;$/;"	t
 pthread_mutex_t	src/httpserver/wrlib/mg_compat.h	/^typedef HANDLE pthread_mutex_t;$/;"	t
 push	src/mf_mempool.h	/^	struct q_node * push;$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
-push	webui/terminal/js/jquery.terminal-src.js	/^                            Array.prototype.push.apply(output, match.slice(1));$/;"	m	class:Array
 push_queue_node_to_mempool	src/mf_mempool.c	/^void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_switch* sw, struct mf_queue_node_mempool* mp)$/;"	f
 push_to_array	src/mf_devicemgr.c	/^static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)$/;"	f	file:
 push_to_array	src/mf_topomgr.c	/^static inline void push_to_array(struct link_node * value, struct link_node ** array)$/;"	f	file:
@@ -1610,7 +1556,6 @@ rate	src/Openflow/openflow-1.3.h	/^    ovs_be32    rate;        \/* Rate for dro
 rate	src/Openflow/openflow-1.3.h	/^    ovs_be32    rate;        \/* Rate for remarking packets. *\/$/;"	m	struct:ofp13_meter_band_dscp_remark
 rate	src/Openflow/openflow-1.3.h	/^    ovs_be32 rate;       \/* Rate for this band. *\/$/;"	m	struct:ofp13_meter_band_header
 rate	src/Openflow/openflow-common.h	/^    ovs_be16 rate;        \/* In 1\/10 of a percent; >1000 -> disabled. *\/$/;"	m	struct:ofp_queue_prop_rate
-rc	webui/terminal/js/jquery.terminal-src.js	/^    function rc(n) {$/;"	f
 read	src/httpserver/wrlib/mg_compat.h	43;"	d
 realloc_cache_array	src/mf_topomgr.c	/^static void realloc_cache_array()$/;"	f	file:
 reason	src/Openflow/openflow-1.0.h	/^    uint8_t reason;           \/* One of OFPRR_*. *\/$/;"	m	struct:ofp10_flow_removed
@@ -1627,8 +1572,6 @@ register_msg_handler	src/mf_api.h	/^void register_msg_handler(enum MSG_HANDLER_T
 replyHandler	src/httpserver/wrlib/request.c	/^static int replyHandler(WrHttp *pHttp)$/;"	f	file:
 requestHandler	src/httpserver/wrlib/request.c	/^void  requestHandler(void * s)$/;"	f
 reserved	src/Openflow/openflow-common.h	/^    ovs_be32 reserved;       \/* Bitmap of supported "ofp_action_type"s.$/;"	m	struct:ofp_switch_features
-reverse_history_search	webui/terminal/js/jquery.terminal-src.js	/^        function reverse_history_search(next) {$/;"	f	function:$.fn.cmd
-rls	webui/terminal/js/jquery.terminal-src.js	/^    function rls(n) {$/;"	f
 role	src/Openflow/openflow-1.2.h	/^    ovs_be32 role;            \/* One of OFPCR12_ROLE_*. *\/$/;"	m	struct:ofp12_role_request
 role	src/Openflow/openflow-1.4.h	/^    ovs_be32 role;              \/* One of OFPCR_ROLE_*. *\/$/;"	m	struct:ofp14_role_status
 rx_buffer	src/mf_switch.h	/^	char rx_buffer[RX_BUFFER_SIZE];$/;"	m	struct:mf_switch
@@ -1656,7 +1599,6 @@ rx_packets	src/Openflow/openflow-1.1.h	/^    ovs_be64 rx_packets;      \/* Numbe
 rx_packets	src/Openflow/openflow-1.4.h	/^    ovs_be64 rx_packets;     \/* Number of received packets. *\/$/;"	m	struct:ofp14_port_stats
 s	src/mf_socket_array.h	/^	struct mf_socket s;$/;"	m	struct:mf_socket_array_node	typeref:struct:mf_socket_array_node::mf_socket
 secd	src/mf_utilities.h	/^    UINT2 secd;$/;"	m	struct:st_dhcp
-self	webui/terminal/js/jquery.terminal-src.js	/^        self;$/;"	f
 sendFileStream	src/httpserver/wrlib/wrio.c	/^int sendFileStream(const WrHttp *pHttp ,const char *filePath)$/;"	f
 sendFileStreamPOSIX	src/httpserver/wrlib/wrio.c	/^static int sendFileStreamPOSIX(const WrHttp *pHttp ,const char *filePath)$/;"	f	file:
 sendFileStreamWin32	src/httpserver/wrlib/wrio.c	/^static int sendFileStreamWin32(const WrHttp *pHttp ,const char *filePath)$/;"	f	file:
@@ -1671,29 +1613,17 @@ sendmac	src/mf_utilities.h	/^    UINT1 sendmac[6];$/;"	m	struct:st_arp
 sentinel	src/dbg.h	24;"	d
 seq	src/mf_utilities.h	/^    UINT2 seq;$/;"	m	struct:st_imcp
 seq	src/mf_utilities.h	/^    UINT4 seq;$/;"	m	struct:st_tcp
-serv_layout	webui/odl-serv.js	/^var serv_layout = d3.layout.force().size([serv_width, serv_height]);$/;"	v
-serv_mouseout	webui/odl-serv.js	/^function serv_mouseout(d) {$/;"	f
-serv_mouseover	webui/odl-serv.js	/^function serv_mouseover(d) {$/;"	f
-serv_node_g	webui/odl-serv.js	/^var serv_node_g = serv_svg.selectAll(".node");$/;"	v
-serv_nodes	webui/odl-serv.js	/^var serv_nodes = d3.range(servers.length).map(function(i) { return servers[i]; });$/;"	v
-serv_svg	webui/odl-serv.js	/^var serv_svg = d3.select("#server").append("svg:svg")$/;"	v
-serv_width	webui/odl-serv.js	/^var serv_width = $("#server").width(),$/;"	v
 setCookie	webui/odl-rest.js	/^function setCookie(name, value, expires, path, domain, secure) {$/;"	f
 set_close_on_exec	src/httpserver/wrlib/mg_compat.c	/^set_close_on_exec(int fd)$/;"	f
-set_co	webui/vtn_terminal.js	/^	echo:     		vtn_echo,$/;"	p	class:vtn_cli_commands
-set_demo	webui/vtn_terminal.js	/^	set_co:		vtn_set_coord,$/;"	p	class:vtn_cli_commands
 set_nonblocking	src/mf_socket.c	/^static void set_nonblocking(uint32_t sock)$/;"	f	file:
-set_serv_state	webui/odl-serv.js	/^function set_serv_state(name, on) {$/;"	f
 single_msg_handler	src/mf_msg_handler.h	/^struct single_msg_handler$/;"	s
 single_msg_handler_create	src/mf_msg_handler.c	/^struct single_msg_handler * single_msg_handler_create(msg_handler_func func)$/;"	f
 sipaddr	src/mf_utilities.h	/^    UINT4 sipaddr;  \/\/server ip addr;$/;"	m	struct:st_dhcp
 size	src/httpserver/wrlib/wrhash.h	/^	size_t size;$/;"	m	struct:__anon8
-skipFormattingCount	webui/terminal/js/jquery.terminal-src.js	/^    function skipFormattingCount(string) {$/;"	f
 sname	src/mf_utilities.h	/^    UINT4 sname;$/;"	m	struct:st_dhcp
 sock	src/httpserver/wrlib/http.h	/^	SOCKET sock;$/;"	m	struct:__anon10
 socket_array_mutex	src/mf_socket_array.c	/^pthread_mutex_t socket_array_mutex;$/;"	v
 sockfd	src/mf_switch.h	/^	uint32_t sockfd;$/;"	m	struct:mf_switch
-split	webui/terminal/js/jquery.terminal-src.js	/^        String.prototype.split = function (separator, limit) {$/;"	m	class:String
 sport	src/mf_utilities.h	/^    UINT2 sport;$/;"	m	struct:st_tcp
 sport	src/mf_utilities.h	/^    UINT2 sport;$/;"	m	struct:st_udp
 src	src/mf_topomgr.h	/^	struct link_node* src;$/;"	m	struct:network_link	typeref:struct:network_link::link_node
@@ -1731,8 +1661,6 @@ stopwatch_mutex	src/mf_timer.h	/^	pthread_mutex_t stopwatch_mutex;$/;"	m	struct:
 stopwatch_num	src/mf_timer.h	/^	uint8_t stopwatch_num;$/;"	m	struct:stopwatch_list
 stopwatch_switch_callback	src/mf_timer.h	/^typedef void (*stopwatch_switch_callback)(void* );$/;"	t
 stopwatch_worker	src/mf_timer.c	/^void* stopwatch_worker(void* arg)$/;"	f
-str_parts	webui/terminal/js/jquery.terminal-src.js	/^    function str_parts(str, length) {$/;"	f
-str_repeat	webui/terminal/js/jquery.terminal-src.js	/^        function str_repeat(str, n) {$/;"	f	function:$.fn.cmd
 supported	src/Openflow/openflow-1.0.h	/^    ovs_be32 supported;     \/* Features supported by the port. *\/$/;"	m	struct:ofp10_phy_port
 supported	src/Openflow/openflow-1.1.h	/^	ovs_be32 supported;     \/* Features supported by the port. *\/$/;"	m	struct:ofp11_port
 supported	src/Openflow/openflow-1.4.h	/^    ovs_be32 supported;     \/* Features supported by the port. *\/$/;"	m	struct:ofp14_port_desc_prop_ethernet
@@ -1742,7 +1670,7 @@ sw	src/mf_rx_queue.h	/^	struct mf_switch* sw;$/;"	m	struct:q_node	typeref:struct
 sw	src/mf_topomgr.h	/^	struct mf_switch * sw;$/;"	m	struct:link_node	typeref:struct:link_node::mf_switch
 sw_callback	src/mf_timer.h	/^	stopwatch_switch_callback sw_callback;$/;"	m	struct:stopwatch
 sw_link_delete	src/mf_topomgr.c	/^void sw_link_delete(struct sw_link_list * list, struct network_link * link)$/;"	f
-sw_link_insert	src/mf_topomgr.c	/^void sw_link_insert(struct sw_link_list * list, struct network_link * link)$/;"	f
+sw_link_insert	src/mf_topomgr.c	/^void sw_link_insert(struct sw_link_list * sw_list, struct network_link * link)$/;"	f
 sw_link_list	src/mf_topomgr.h	/^struct sw_link_list$/;"	s
 sw_link_next	src/mf_topomgr.h	/^	struct network_link * sw_link_next;$/;"	m	struct:network_link	typeref:struct:network_link::network_link
 switch_addr	src/mf_socket.c	/^struct sockaddr_in controller_addr, switch_addr;$/;"	v	typeref:struct:
@@ -1782,7 +1710,6 @@ threadCnt	src/httpserver/wrlib/http.h	/^	volatile int threadCnt;$/;"	m	struct:__
 tick	webui/odl-webui.js	/^function tick() {$/;"	f
 time_remain	src/mf_timer.h	/^	float time_remain;$/;"	m	struct:stopwatch
 tlv_t	src/mf_utilities.h	/^}tlv_t;$/;"	t	typeref:struct:st_tlv
-toggle_serv_state	webui/odl-serv.js	/^function toggle_serv_state(name) {$/;"	f
 topo	webui/odl-webui.js	/^var topo = d3.layout.force()$/;"	v
 topoResize	webui/odl-webui.js	/^function topoResize() { $/;"	f
 topomgr_mutex	src/mf_topomgr.h	/^	pthread_mutex_t topomgr_mutex;$/;"	m	struct:mf_topomgr
@@ -1790,6 +1717,7 @@ tos	src/mf_utilities.h	/^    UINT1 tos;$/;"	m	struct:st_ip
 total_len	src/Openflow/openflow-1.0.h	/^    ovs_be16 total_len;     \/* Full length of frame. *\/$/;"	m	struct:ofp10_packet_in
 total_len	src/Openflow/openflow-1.1.h	/^    ovs_be16 total_len;     \/* Full length of frame. *\/$/;"	m	struct:ofp11_packet_in
 total_len	src/Openflow/openflow-1.2.h	/^    ovs_be16 total_len;     \/* Full length of frame. *\/$/;"	m	struct:ofp12_packet_in
+total_network_link_number	src/mf_topomgr.h	/^	uint64_t total_network_link_number;$/;"	m	struct:mf_topomgr
 total_node_number	src/mf_topomgr.h	/^	uint64_t total_node_number;$/;"	m	struct:mf_topomgr
 total_switch_number	src/mf_devicemgr.h	/^	uint32_t total_switch_number;$/;"	m	struct:mf_devicemgr
 tp_dst	src/Openflow/openflow-1.0.h	/^    ovs_be16 tp_dst;           \/* TCP\/UDP destination port. *\/$/;"	m	struct:ofp10_match
@@ -1875,11 +1803,10 @@ unregister_msg_handler	src/mf_msg_handler.c	/^static void unregister_msg_handler
 urg	src/mf_utilities.h	/^    UINT2 urg;$/;"	m	struct:st_tcp
 url	src/httpserver/wrlib/http.h	/^	char *url;$/;"	m	struct:__anon10
 url_decode	src/httpserver/wrlib/misc.c	/^int url_decode(const char *src ,char *dst ,int is_form_url_encoded)$/;"	f
-url_re	webui/terminal/js/jquery.terminal-src.js	/^    var url_re = \/https?:\\\/\\\/(?:(?!&[^;]+;)[^\\s:"'<>)])+\/g;$/;"	v
 used_slot	src/mf_devicemgr.h	/^	struct host_hash_value * used_slot;$/;"	m	struct:mf_devicemgr	typeref:struct:mf_devicemgr::host_hash_value
 used_slot	src/mf_topomgr.h	/^	struct link_node * used_slot;$/;"	m	struct:mf_topomgr	typeref:struct:mf_topomgr::link_node
-username	webui/vtn_terminal.js	/^		'content-type': 'application\/json',$/;"	p	class:vtn_coord_hdr
-username	webui/vtn_terminal.js	/^	'content-type': 'application\/json',$/;"	p	class:vtn_coord_hdr
+used_slot_num	src/mf_devicemgr.h	/^	uint32_t used_slot_num;$/;"	m	struct:mf_devicemgr
+used_to_available	src/mf_devicemgr.c	/^static void used_to_available(struct host_hash_value * value)$/;"	f	file:
 vacancy	src/Openflow/openflow-1.4.h	/^    uint8_t vacancy;      \/* Current vacancy (%) - only in ofp14_table_desc. *\/$/;"	m	struct:ofp14_table_mod_prop_vacancy
 vacancy_down	src/Openflow/openflow-1.4.h	/^    uint8_t vacancy_down;    \/* Vacancy threshold when space decreases (%). *\/$/;"	m	struct:ofp14_table_mod_prop_vacancy
 vacancy_up	src/Openflow/openflow-1.4.h	/^    uint8_t vacancy_up;      \/* Vacancy threshold when space increases (%). *\/$/;"	m	struct:ofp14_table_mod_prop_vacancy
@@ -1890,28 +1817,9 @@ vendor	src/Openflow/openflow-common.h	/^    ovs_be32 vendor;            \/* Vend
 version	src/Openflow/openflow-common.h	/^    uint8_t version;    \/* An OpenFlow version number, e.g. OFP10_VERSION. *\/$/;"	m	struct:ofp_header
 vlan	src/mf_utilities.h	/^    UINT2 vlan; $/;"	m	struct:st_t802_1q
 vlan_id	src/mf_utilities.h	/^    UINT2 vlan_id;$/;"	m	struct:st_ethpkt_info
-vtn_cli_help	webui/vtn_terminal.js	/^var vtn_cli_help = {}; \/\/ Help for commands$/;"	v
-vtn_coord_base_URI	webui/vtn_terminal.js	/^var vtn_coord_base_URI = 'http:\/\/' + ODL_IP_addr + ':8080';$/;"	v
-vtn_crt_ctl	webui/vtn_terminal.js	/^function vtn_crt_ctl(param1, param2) {$/;"	f
-vtn_crt_vbr	webui/vtn_terminal.js	/^function vtn_crt_vbr(param1, param2) {$/;"	f
-vtn_crt_vbr_if	webui/vtn_terminal.js	/^function vtn_crt_vbr_if(param1, param2, param3, param4) {$/;"	f
-vtn_crt_vtn	webui/vtn_terminal.js	/^function vtn_crt_vtn(param1, param2) {$/;"	f
-vtn_dlt_ctl	webui/vtn_terminal.js	/^function vtn_dlt_ctl(param1) {$/;"	f
-vtn_echo	webui/vtn_terminal.js	/^function vtn_echo(parm1) {$/;"	f
-vtn_help	webui/vtn_terminal.js	/^function vtn_help() {$/;"	f
-vtn_list_ctls	webui/vtn_terminal.js	/^function vtn_list_ctls() {$/;"	f
-vtn_list_lports	webui/vtn_terminal.js	/^function vtn_list_lports(param1) {$/;"	f
-vtn_list_vbr_ifs	webui/vtn_terminal.js	/^function vtn_list_vbr_ifs(param1, param2) {$/;"	f
-vtn_list_vbrs	webui/vtn_terminal.js	/^function vtn_list_vbrs() {$/;"	f
-vtn_list_vtns	webui/vtn_terminal.js	/^function vtn_list_vtns() {$/;"	f
-vtn_map_vif2lport	webui/vtn_terminal.js	/^function vtn_map_vif2lport(param1, param2, param3, param4) {$/;"	f
-vtn_set_coord	webui/vtn_terminal.js	/^function vtn_set_coord(param) {$/;"	f
-vtn_set_demo	webui/vtn_terminal.js	/^function vtn_set_demo(param) {$/;"	f
-vtn_terminal	webui/vtn_terminal.js	/^var vtn_terminal = null; \/\/ VTN terminal object$/;"	v
 watch	src/Openflow/openflow-1.5.h	/^    ovs_be32         watch;   \/* The port or the group.  *\/$/;"	m	struct:ofp15_group_bucket_prop_watch
 watch_group	src/Openflow/openflow-1.1.h	/^    ovs_be32 watch_group;            \/* Group whose state affects whether this$/;"	m	struct:ofp11_bucket
 watch_port	src/Openflow/openflow-1.1.h	/^    ovs_be32 watch_port;             \/* Port whose state affects whether this$/;"	m	struct:ofp11_bucket
-wc	webui/terminal/js/jquery.terminal-src.js	/^    function wc(n, v) {$/;"	f
 weight	src/Openflow/openflow-1.1.h	/^    ovs_be16 weight;                 \/* Relative weight of bucket. Only$/;"	m	struct:ofp11_bucket
 weight	src/Openflow/openflow-1.5.h	/^    ovs_be16         weight;  \/* Relative weight of bucket. *\/$/;"	m	struct:ofp15_group_bucket_prop_weight
 width	webui/odl-webui.js	/^var width = $("#graph-diagram").width(),$/;"	v
@@ -1921,8 +1829,6 @@ wildcards	src/Openflow/openflow-1.1.h	/^    ovs_be32 wildcards;        \/* Wildc
 wildcards	src/Openflow/openflow-1.1.h	/^    ovs_be32 wildcards;      \/* Bitmap of OFPFMF_* wildcards that are$/;"	m	struct:ofp11_table_stats
 wildcards	src/Openflow/openflow-1.2.h	/^    ovs_be64 wildcards;      \/* Bitmap of (1 << OFPXMT_*) wildcards that are$/;"	m	struct:ofp12_table_stats
 window	src/mf_utilities.h	/^    UINT2 window;$/;"	m	struct:st_tcp
-window.onresize	webui/odl-serv.js	/^    serv_height = $("#server").height();$/;"	f
-wls	webui/terminal/js/jquery.terminal-src.js	/^    function wls(n, v) {$/;"	f
 worker_thread	src/mf_msg_parser.c	/^void * worker_thread(void* arg)$/;"	f
 wr_error_reply	src/httpserver/wrlib/request.c	/^int wr_error_reply(const WrHttp *pHttp ,int stscode)$/;"	f
 wr_hash_add	src/httpserver/wrlib/wrhash.c	/^int wr_hash_add(wr_hashmap *hm ,const void *key ,const void *value)$/;"	f

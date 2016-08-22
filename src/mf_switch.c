@@ -94,3 +94,4 @@ void switch_print(struct mf_switch * sw)
   		printf(":%x\n", (char)sw->ports[i].hw_addr[0]);	
 	}
 }
+

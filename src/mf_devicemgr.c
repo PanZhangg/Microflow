@@ -449,3 +449,22 @@ static void used_to_available(struct host_hash_value * value)
 	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	push_to_array(value, &MF_DEVICE_MGR.available_slot);
 }
+
+void print_switch_link(struct mf_switch *sw)
+{
+	printf("sw_link_head: src_sw_dpid:%ld, src_port_num: %d", sw->link_list.head->src->sw->datapath_id, sw->link_list.head->src->port->port_no);
+}
+
+void print_all_switches()
+{
+	int i = 0;
+	int intr_index = 0;
+	for(i = 0; i < MF_DEVICE_MGR.total_switch_number; i++)
+	{
+		struct mf_switch * sw = get_next_switch(&intr_index);
+		if(sw == NULL)
+			printf("NNNNNNNNNNNNNOOOOOOOOOOOOOOOOOOOOOO");
+		else
+			printf("sw_link_head: src_sw_dpid:%ld, src_port_num: %d", sw->link_list.head->src->sw->datapath_id, sw->link_list.head->src->port->port_no);
+	} 
+}

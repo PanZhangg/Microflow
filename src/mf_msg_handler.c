@@ -245,7 +245,7 @@ static void port_desc_reply_handler(struct q_node* qn)
 		printf("len: %d\n", len);
 	}
 	qn->sw->port_num = i;
-	switch_print(qn->sw);
+	//switch_print(qn->sw);
 }
 
 static uint64_t get_src_mac_addr(char* data)
@@ -586,4 +586,7 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	}
 	struct link_node * left_node = link_node_create(sw, port_out); 
 	struct network_link * netlink = network_link_create(left_node, right_node);
+	uint32_t rst = sw_link_insert(&(qn->sw->link_list), netlink);
+	if(rst == 1)
+		print_switch_link(qn->sw);
 }
