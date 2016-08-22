@@ -89,7 +89,7 @@ void stopwatch_countdown(struct stopwatch_list * swl)
 	{
 		if(tmp->time_remain <= 0.0)
 		{
-			printf("countdown to zero\n");
+			//printf("countdown to zero\n");
 			tmp->sw_callback(tmp->callback_arg);
 			tmp->time_remain = tmp->stop_sec;
 		}

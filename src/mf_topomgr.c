@@ -11,17 +11,20 @@ static struct link_node * LINK_NODE_CACHE_ARRAY;
 
 static struct network_link NETWORK_LINK_CACHE_ARRAY[MAX_NETWORK_LINK_NUM];
 
-static void push_to_array(struct link_node * value, struct link_node ** array);
+static inline void push_to_array(struct link_node * value, struct link_node ** array);
+
+static inline struct link_node* pop_from_array(struct link_node * value, struct link_node ** array);
 
 void mf_topomgr_create()
 {
 	MF_TOPO_MGR.total_node_number = 0;
+	MF_TOPO_MGR.total_network_link_number = 0;
 	MF_TOPO_MGR.node_cache_array_size = LINK_NODE_NUM;
 	pthread_mutex_init(&(MF_TOPO_MGR.topomgr_mutex), NULL);
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)malloc(MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
 	{
-		printf("topo mgr malloc failed\n");
+		perror("topo mgr malloc failed\n");
 		exit(0);
 	}
 	memset(LINK_NODE_CACHE_ARRAY, 0 , MF_TOPO_MGR.node_cache_array_size * sizeof(*LINK_NODE_CACHE_ARRAY));
@@ -114,6 +117,7 @@ static inline struct link_node* pop_from_array(struct link_node * value, struct 
 
 static void realloc_cache_array()
 {
+	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)realloc(LINK_NODE_CACHE_ARRAY, 2 * MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
 	{
@@ -123,6 +127,7 @@ static void realloc_cache_array()
 	memset(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size, 0, MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	int i;
 	MF_TOPO_MGR.node_cache_array_size *= 2;
+	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
 		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));
 }
@@ -169,57 +174,65 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 static uint32_t get_next_available_index()
 {
 	static uint8_t loop_restart;
+	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	uint32_t index = MF_TOPO_MGR.next_available_index;
 	if(NETWORK_LINK_CACHE_ARRAY[index].is_occupied == 0)
 	{
-		if(index == MAX_NETWORK_LINK_NUM)
+		MF_TOPO_MGR.total_network_link_number++;
+		NETWORK_LINK_CACHE_ARRAY[index].is_occupied = 1;
+	}
+	else
+	{
+		if(MF_TOPO_MGR.total_network_link_number == MAX_NETWORK_LINK_NUM)  
+		{
+			perror("No available network link slot index");
+			pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
+			return MAX_NETWORK_LINK_NUM + 1;
+		}
+	}
+	uint32_t tmp = index;
+	if(tmp + 1 >= MAX_NETWORK_LINK_NUM)
+		tmp = 0;
+	while(NETWORK_LINK_CACHE_ARRAY[tmp].is_occupied == 1)
+	{
+		tmp++;
+		if(tmp + 1 >= MAX_NETWORK_LINK_NUM && loop_restart == 0)
 		{
 			loop_restart = 1;
-			//	index = 0;
-			MF_TOPO_MGR.next_available_index = 0;
+			tmp = 0;
 		}
-		else
+		else if(tmp+1 >= MAX_NETWORK_LINK_NUM && loop_restart == 1)
 		{
-			MF_TOPO_MGR.next_available_index++; 
-		}
-		return index;
-	}
-//TODO: Complete this func
-/*
-	while(NETWORK_LINK_CACHE_ARRAY[index].is_occupied == 1)
-	{	
-		index++;
-		if(NETWORK_LINK_CACHE_ARRAY[index].is_occupied == 0)
-		{
-			NETWORK_LINK_CACHE_ARRAY.next_available_index = index;
+			perror("No available network link slot index");
 			loop_restart = 0;
-			return index;  
-		}
-		if(index == MAX_NETWORK_LINK_NUM && \
-				loop_restart == 1)
-		{
-			loop_restart = 0;
-			perror("no network link slot is available");
-			return -1;
+			index = MAX_NETWORK_LINK_NUM + 1;
+			break;
 		}
 	}
-*/
+	MF_TOPO_MGR.next_available_index = tmp;
+	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
+	return index;
 }
 
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst)
 {
-	if(src->port->link == src->port->link && src->port->link != NULL)
+	if(src->port->link == dst->port->link && src->port->link)
 	{
 		perror("Network Link already existes");
+		printf(" Network link num:%d\n", MF_TOPO_MGR.total_network_link_number);
 		return (src->port->link);
 	}
 	uint32_t index = get_next_available_index();
+	if(index = MAX_NETWORK_LINK_NUM + 1)
+	{
+		return NULL;
+	}
 	NETWORK_LINK_CACHE_ARRAY[index].src = src;
 	NETWORK_LINK_CACHE_ARRAY[index].dst = dst;
-	NETWORK_LINK_CACHE_ARRAY[index].is_occupied = 1;
 	NETWORK_LINK_CACHE_ARRAY[index].sw_link_next = NULL;
 	src->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
 	dst->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
+	printf(" Network link num:%d\n", MF_TOPO_MGR.total_network_link_number);
 	return (& NETWORK_LINK_CACHE_ARRAY[index]);
 }
 

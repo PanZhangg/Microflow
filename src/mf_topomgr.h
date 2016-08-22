@@ -7,15 +7,15 @@
 
 struct mf_switch;
 
-#define MAX_NETWORK_LINK_NUM 4096
+#define MAX_NETWORK_LINK_NUM 5 
 #define MAX_NETWORK_LINK_NUM_PER_SWITCH 256 //identical to MAX SWITCH PORT NUM
 #define LONGEST_PATH_LINK_NUM 64
-#define LINK_NODE_NUM 64 
-
+#define LINK_NODE_NUM (MAX_NETWORK_LINK_NUM) * (2) 
 
 struct mf_topomgr
 {
 	uint64_t total_node_number;
+	uint64_t total_network_link_number;
 	uint64_t node_cache_array_size;
 	pthread_mutex_t topomgr_mutex;
 	struct link_node * available_slot;

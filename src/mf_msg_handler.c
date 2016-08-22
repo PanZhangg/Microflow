@@ -259,7 +259,7 @@ static uint64_t get_src_mac_addr(char* data)
 	TODO :
 		1. LLDP packet constructor --Done
 		2. Send LLDP to sw_ports with timer --Done 
-		3. LLDP msg handler
+		3. LLDP msg handler -- Done
 		4. Path calculate algorithm
 */
 
