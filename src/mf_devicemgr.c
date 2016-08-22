@@ -21,7 +21,7 @@ Functions
 static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array);
 static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr);
 static uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr);
-
+static void used_to_available(struct host_hash_value * value);
 
 void mf_devicemgr_create()
 {
@@ -32,8 +32,11 @@ void mf_devicemgr_create()
 	for(; i < MAX_HOST_NUM; i++)
 	{
 		push_to_array(&HOST_CACHE_ARRAY[i],&(MF_DEVICE_MGR.available_slot));
+		HOST_CACHE_ARRAY[i].host_array_slot_index = i;
 	}
 	MF_DEVICE_MGR.used_slot = NULL;
+	MF_DEVICE_MGR.available_slot_num = i;
+	MF_DEVICE_MGR.used_slot_num = 0;
 	for(i = 0; i < HOST_HASH_MAP_SIZE / HOST_MUTEX_SLOT_SIZE; i++)
 		pthread_mutex_init(&(MF_DEVICE_MGR.hash_mutex[i]), NULL);
 }
@@ -79,7 +82,6 @@ struct mf_switch * get_next_switch(uint32_t* loop_index)
 		perror("Bad loop_index");
 		return NULL;
 	}
-//	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	for(; *loop_index < MAX_MF_SWITCH_NUM; (*loop_index)++)
 	{ 
 		if(MF_DEVICE_MGR.mf_switch_map[*loop_index] != NULL)
@@ -87,18 +89,15 @@ struct mf_switch * get_next_switch(uint32_t* loop_index)
 			if(*loop_index < MAX_MF_SWITCH_NUM - 1)
 			{
 				(*loop_index)++; 
-//				pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 				return MF_DEVICE_MGR.mf_switch_map[*loop_index - 1];
 			}
 			else
 			{
-//				pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 				return MF_DEVICE_MGR.mf_switch_map[*loop_index];
 			}
 		}
 	}
 	perror("No valid switch");
-//	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
 
@@ -153,12 +152,15 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 
 static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)
 {
+	return !(((a->mac_addr) ^ (b->mac_addr)) | ((char)(a->sw) ^ (char)(b->sw)) | ((a->port_num) ^ (b->port_num)));
+/*
 	if(a->mac_addr == b->mac_addr \
 			&& a->sw == b->sw \
 			&& a->port_num == b->port_num)
 		return 1;
 	else
 		return 0;
+*/
 }
 
 
@@ -238,6 +240,8 @@ static struct host_hash_value * get_available_value_slot()
 	if(MF_DEVICE_MGR.available_slot->is_occupied == 0)
 	{
 		struct host_hash_value * value = pop_from_array(MF_DEVICE_MGR.available_slot, &(MF_DEVICE_MGR.available_slot));
+		MF_DEVICE_MGR.available_slot_num--;
+		MF_DEVICE_MGR.used_slot_num++;
 		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 		return value;
 	}
@@ -249,12 +253,15 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 {
 	uint64_t index = mac_addr_hash(mac_addr);
 	struct host_hash_value * value;
+	pthread_mutex_lock(&MF_DEVICE_MGR.hash_mutex[index/HOST_MUTEX_SLOT_SIZE]);
 	if(HOST_HASH_MAP[index] == NULL)
 	{
 		value = hash_value_created(sw, port_num, mac_addr); 
 		HOST_HASH_MAP[index] = value;
+		value->hash_map_slot_index = index;
 		value->is_occupied = 1;
 		push_to_array(value, &(MF_DEVICE_MGR.used_slot));
+		
 	}
 	else
 	{
@@ -263,6 +270,7 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 		{
 			if(if_host_exist(tmp, sw, port_num, mac_addr))
 			{
+				pthread_mutex_unlock(&MF_DEVICE_MGR.hash_mutex[index/HOST_MUTEX_SLOT_SIZE]);
 				return NULL;
 			}
 			else
@@ -271,6 +279,7 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 				{
 					value = hash_value_created(sw, port_num, mac_addr); 
 					tmp->hash_next = value;
+					value->hash_map_slot_index = index;
 					value->is_occupied = 1;
 					push_to_array(value, &(MF_DEVICE_MGR.used_slot));
 					break;
@@ -280,17 +289,21 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 			}
 		}
 	}
+	pthread_mutex_unlock(&MF_DEVICE_MGR.hash_mutex[index/HOST_MUTEX_SLOT_SIZE]);
 	return value;
 }
 
-static uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
+static inline uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
+	return !((value->mac_addr ^ mac_addr) | ((char)value->sw ^ (char)sw) | (value->port_num ^ port_num));
+/*
 	if(value->mac_addr == mac_addr \
 			&& value->sw == sw \
 			&& value->port_num == port_num)
 		return 1;
 	else
 		return 0;
+*/
 
 }
 
@@ -323,6 +336,7 @@ inline uint32_t mac_addr_hash(uint64_t key)
 	return (key % HOST_HASH_MAP_SIZE); 
 }
 
+/*
 void host_add_to_hash_map(struct host_hash_value* value)
 {
 	uint64_t index = mac_addr_hash(value->mac_addr);
@@ -343,12 +357,12 @@ void host_add_to_hash_map(struct host_hash_value* value)
 				push_to_array(value, &(MF_DEVICE_MGR.available_slot));
 				return;
 			}
-			/*
+			
 			TODO:
 			Delete hash value structure which hash identical mac addr but different
 			sw or port_num from the global hash map
 			It happens when the same host connect to another port or switch
-			 */
+			 
 			if(tmp->hash_next)
 				tmp = tmp->hash_next;
 			else
@@ -361,6 +375,7 @@ void host_add_to_hash_map(struct host_hash_value* value)
 		}
 	}
 }
+*/
 
 struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr)
 {
@@ -386,6 +401,7 @@ struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr)
 	}
 }
 
+/*
 void host_hash_value_destory(struct host_hash_value* value)
 {
 	if(value)
@@ -393,9 +409,43 @@ void host_hash_value_destory(struct host_hash_value* value)
 	else
 		perror("value is NULL");
 }
+*/
 
-
-void delete_host_hash_value(struct host_hash_value * value)
+//TODO: To test
+void delete_host_hash_value(struct host_hash_value *value)
 {
+	if(HOST_HASH_MAP[value->hash_map_slot_index] == NULL)	
+	{
+		perror("value is not exit");
+		return;
+	}
+	pthread_mutex_lock(&MF_DEVICE_MGR.hash_mutex[value->hash_map_slot_index/HOST_MUTEX_SLOT_SIZE]);
+	struct host_hash_value ** tmp = &HOST_HASH_MAP[value->hash_map_slot_index];
+	while(*tmp)
+	{
+		if(*tmp == value) 
+		{
+			*tmp = value->hash_next;  
+			break;
+		}
+		else
+		{
+			*tmp = (*tmp)->hash_next;   
+		}
+	}
+	pthread_mutex_unlock(&MF_DEVICE_MGR.hash_mutex[value->hash_map_slot_index/HOST_MUTEX_SLOT_SIZE]);
+	if(*tmp == NULL)
+	{
+		perror("value is not exit");
+		return;
+	}
+	used_to_available(value);
+}
 
+static void used_to_available(struct host_hash_value * value)
+{
+	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+	pop_from_array(value,&MF_DEVICE_MGR.used_slot);
+	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+	push_to_array(value, &MF_DEVICE_MGR.available_slot);
 }
