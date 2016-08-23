@@ -44,7 +44,7 @@ static void set_nonblocking(uint32_t sock)
 uint32_t mf_listen_socket_create()
 {
 	uint32_t sock;
-	if((sock = socket(AF_INET, SOCK_STREAM,0)) < 0){
+	if((sock = socket(AF_INET, SOCK_STREAM,0)) == -1){
 		perror("socket created failed");
 		exit(0);
 	}
@@ -98,7 +98,8 @@ void* handle_connection(void* arg)
 		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
 			perror("Set CPU affinity failed");
 	}
-	int i, connfd;
+	unsigned int i;
+	int connfd;
 	static int incompleted_packet_length = 0;
 	socklen_t clilen = sizeof(switch_addr);
 	epoll_init(sock);

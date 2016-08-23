@@ -1,3 +1,4 @@
+TARGET = microflow
 MF_SOURCE = main.c ../src/mf_socket.c ../src/mf_logger.c \
 	../src/mf_timer.c ../src/mf_switch.c ../src/mf_msg_handler.c ../src/mf_ofmsg_constructor.c \
 	../src/mf_devicemgr.c ../src/mf_rx_queue.c ../src/mf_msg_parser.c ../src/mf_mempool.c \
@@ -11,8 +12,9 @@ HTTP_OBJECTS = analysis.o http.o cgi.o mg_compat.o misc.o request.o wrhash.o wri
 
 LIBS = httpserver.a
 
-microflow : $(MF_SOURCE) $(LIBS) 
-	cc -Wall -g -D_POSIX_SOURCE -D_BSD_SOURCE -D_GNU_SOURCE -D__USE_GNU -o $@ $^ -ldl -lpthread 
+$(TARGET): $(MF_SOURCE) $(LIBS) 
+	cc -Wall -W -Wno-unused -Wno-sign-compare -g -D_POSIX_SOURCE -D_BSD_SOURCE -D_GNU_SOURCE -D__USE_GNU -o $@ $^ -ldl -lpthread 
+	rm $(HTTP_OBJECTS)
 httpserver.a : $(HTTP_OBJECTS)
 	ar crv httpserver.a $(HTTP_OBJECTS)
 analysis.o:
@@ -36,4 +38,4 @@ wrmpool.o:
 wrstring.o:
 	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrstring.c -ldl -lpthread  
 clean:
-	rm microflow $(HTTP_OBJECTS) $(LIBS) 
+	rm $(TARGET) $(LIBS) 

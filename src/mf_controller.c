@@ -1,8 +1,12 @@
 #include "mf_controller.h"
+#include <pthread.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
 
 void controller_start(uint32_t * sock)
 {
-	uint32_t sockfd = *sock;
+	//uint32_t sockfd = *sock;
 	//printf("fd in controller start is: %d\n",sockfd);
 	pthread_t thread_id;
 	if((pthread_create(&thread_id, 0, handle_connection, (void*)sock)) < 0)

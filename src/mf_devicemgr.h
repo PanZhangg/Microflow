@@ -39,7 +39,7 @@ struct mf_switch * get_switch(uint32_t sock);
 
 void delete_switch_from_map(struct mf_switch *);
 
-struct mf_switch * get_next_switch(uint32_t* loop_index);//Usually used in a for-loop
+struct mf_switch * get_next_switch(int* loop_index);//Usually used in a for-loop
 /*
 do_something for all the valid switches
 Code template:

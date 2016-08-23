@@ -219,13 +219,13 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	if(src->port->link == dst->port->link && src->port->link)
 	{
 		perror("Network Link already existes");
-		printf(" Network link num:%d\n", MF_TOPO_MGR.total_network_link_number);
+		printf(" Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
 		return (src->port->link);
 	}
 	uint32_t index = get_next_available_index();
 	if(index == MAX_NETWORK_LINK_NUM + 1)
 	{
-		printf(" Network link num:%d\n", MF_TOPO_MGR.total_network_link_number);
+		printf(" Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
 		return NULL;
 	}
 	NETWORK_LINK_CACHE_ARRAY[index].src = src;
@@ -233,7 +233,7 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	NETWORK_LINK_CACHE_ARRAY[index].sw_link_next = NULL;
 	src->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
 	dst->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
-	printf(" Network link num :%d\n", MF_TOPO_MGR.total_network_link_number);
+	printf(" Network link num :%ld\n", MF_TOPO_MGR.total_network_link_number);
 	return (& NETWORK_LINK_CACHE_ARRAY[index]);
 }
 

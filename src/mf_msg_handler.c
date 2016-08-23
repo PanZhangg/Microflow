@@ -268,7 +268,7 @@ static void send_LLDP_packet(void * arg)
 	struct mf_switch * sw = (struct mf_switch*)arg;
 	lldp_t pkt;
 	uint32_t j= 0;
-	uint32_t k = 0;
+	int k = 0;
 	for(j = 0; j < MF_DEVICE_MGR.total_switch_number; j++)
 	{
 		int i = 0;

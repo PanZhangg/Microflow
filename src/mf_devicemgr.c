@@ -75,9 +75,9 @@ for(i = 0; i < curr_sw_number; i++)
 This loop will return all the valid switches in the device manager storage.
 And execute the Dosomething function to all the switches.
 */
-struct mf_switch * get_next_switch(uint32_t* loop_index)
+struct mf_switch * get_next_switch(int* loop_index)
 {
-	if(*loop_index < 0 || *loop_index >= MAX_MF_SWITCH_NUM)
+	if(*loop_index >= MAX_MF_SWITCH_NUM)
 	{
 		perror("Bad loop_index");
 		return NULL;
@@ -103,7 +103,7 @@ struct mf_switch * get_next_switch(uint32_t* loop_index)
 
 struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 {
-	uint32_t i,curr_index;
+	int i,curr_index;
 	curr_index = 0;
 	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	for(i = 0; i < MF_DEVICE_MGR.total_switch_number; i++)
@@ -149,20 +149,20 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
-
+/*
 static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)
 {
-	return !(((a->mac_addr) ^ (b->mac_addr)) | ((char)(a->sw) ^ (char)(b->sw)) | ((a->port_num) ^ (b->port_num)));
-/*
+	return !(((a->mac_addr) ^ (b->mac_addr)) | ((unsigned long)(a->sw) ^ (unsigned long)(b->sw)) | ((a->port_num) ^ (b->port_num)));
+
 	if(a->mac_addr == b->mac_addr \
 			&& a->sw == b->sw \
 			&& a->port_num == b->port_num)
 		return 1;
 	else
 		return 0;
-*/
-}
 
+}
+*/
 
 static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)
 {
@@ -295,7 +295,7 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 
 static inline uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
-	return !((value->mac_addr ^ mac_addr) | ((char)value->sw ^ (char)sw) | (value->port_num ^ port_num));
+	return !((value->mac_addr ^ mac_addr) | ((unsigned long)value->sw ^ (unsigned long)sw) | (value->port_num ^ port_num));
 /*
 	if(value->mac_addr == mac_addr \
 			&& value->sw == sw \
