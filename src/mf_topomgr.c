@@ -100,12 +100,10 @@ static inline struct link_node* pop_from_array(struct link_node * value, struct 
 		}
 		else
 		{
-
 			if(tmp->next)
 				tmp = tmp->next;
 			else
 			{
-
 				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 				return NULL;
 			}
@@ -139,7 +137,6 @@ static struct link_node * get_available_value_slot()
 	if(MF_TOPO_MGR.available_slot->is_occupied == 0)
 	{
 		struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));
-		//push_to_array(node, &(MF_TOPO_MGR.used_slot));
 		return value;
 	}
 	perror("No available value slot");
@@ -219,13 +216,13 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	if(src->port->link == dst->port->link && src->port->link)
 	{
 		perror("Network Link already existes");
-		printf(" Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
-		return (src->port->link);
+		printf("Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
+		return NULL;
 	}
 	uint32_t index = get_next_available_index();
 	if(index == MAX_NETWORK_LINK_NUM + 1)
 	{
-		printf(" Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
+		printf("No available slot\n");
 		return NULL;
 	}
 	NETWORK_LINK_CACHE_ARRAY[index].src = src;

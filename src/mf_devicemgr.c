@@ -89,7 +89,7 @@ struct mf_switch * get_next_switch(int* loop_index)
 			if(*loop_index < MAX_MF_SWITCH_NUM - 1)
 			{
 				(*loop_index)++; 
-				return MF_DEVICE_MGR.mf_switch_map[*loop_index - 1];
+				return MF_DEVICE_MGR.mf_switch_map[(*loop_index) - 1];
 			}
 			else
 			{
@@ -149,20 +149,6 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
-/*
-static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)
-{
-	return !(((a->mac_addr) ^ (b->mac_addr)) | ((unsigned long)(a->sw) ^ (unsigned long)(b->sw)) | ((a->port_num) ^ (b->port_num)));
-
-	if(a->mac_addr == b->mac_addr \
-			&& a->sw == b->sw \
-			&& a->port_num == b->port_num)
-		return 1;
-	else
-		return 0;
-
-}
-*/
 
 static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)
 {
@@ -336,47 +322,6 @@ inline uint32_t mac_addr_hash(uint64_t key)
 	return (key % HOST_HASH_MAP_SIZE); 
 }
 
-/*
-void host_add_to_hash_map(struct host_hash_value* value)
-{
-	uint64_t index = mac_addr_hash(value->mac_addr);
-	if(HOST_HASH_MAP[index] == NULL)
-	{
-		HOST_HASH_MAP[index] = value;
-		value->is_occupied = 1;
-		push_to_array(value, &(MF_DEVICE_MGR.used_slot));
-	}
-	else
-	{
-		struct host_hash_value * tmp = HOST_HASH_MAP[index];
-		while(tmp)
-		{
-			if(is_struct_hash_value_identical(tmp, value))
-			{
-				value->is_occupied = 0;
-				push_to_array(value, &(MF_DEVICE_MGR.available_slot));
-				return;
-			}
-			
-			TODO:
-			Delete hash value structure which hash identical mac addr but different
-			sw or port_num from the global hash map
-			It happens when the same host connect to another port or switch
-			 
-			if(tmp->hash_next)
-				tmp = tmp->hash_next;
-			else
-			{
-				tmp->hash_next = value;
-				value->is_occupied = 1;
-				push_to_array(value, &(MF_DEVICE_MGR.used_slot));
-				return;
-			}
-		}
-	}
-}
-*/
-
 struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr)
 {
 	uint32_t index = mac_addr_hash(mac_addr);
@@ -401,15 +346,6 @@ struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr)
 	}
 }
 
-/*
-void host_hash_value_destory(struct host_hash_value* value)
-{
-	if(value)
-		free(value);
-	else
-		perror("value is NULL");
-}
-*/
 
 //TODO: To test
 void delete_host_hash_value(struct host_hash_value *value)
@@ -452,19 +388,28 @@ static void used_to_available(struct host_hash_value * value)
 
 void print_switch_link(struct mf_switch *sw)
 {
-	printf("sw_link_head: src_sw_dpid:%ld, src_port_num: %d", sw->link_list.head->src->sw->datapath_id, sw->link_list.head->src->port->port_no);
+	struct network_link* p = sw->link_list.head;
+	while(p)
+	{
+		printf("sw_dpid: %ld\n ", p->src->sw->datapath_id);
+		printf("src_sw_dpid:%ld, src_port_num: %d\n", p->src->sw->datapath_id, p->src->port->port_no);
+		printf("dst_sw_dpid:%ld, dst_port_num: %d\n", p->dst->sw->datapath_id, p->dst->port->port_no);
+		p = p->sw_link_next;
+	}
 }
 
 void print_all_switches()
 {
+	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	int i = 0;
 	int intr_index = 0;
 	for(i = 0; i < MF_DEVICE_MGR.total_switch_number; i++)
 	{
 		struct mf_switch * sw = get_next_switch(&intr_index);
 		if(sw == NULL)
-			printf("NNNNNNNNNNNNNOOOOOOOOOOOOOOOOOOOOOO");
+			printf("sw is NULL\n");
 		else
-			printf("sw_link_head: src_sw_dpid:%ld, src_port_num: %d", sw->link_list.head->src->sw->datapath_id, sw->link_list.head->src->port->port_no);
+			print_switch_link(sw);
 	} 
+	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 }

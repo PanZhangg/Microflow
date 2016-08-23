@@ -17,25 +17,27 @@ $(TARGET): $(MF_SOURCE) $(LIBS)
 	rm $(HTTP_OBJECTS)
 httpserver.a : $(HTTP_OBJECTS)
 	ar crv httpserver.a $(HTTP_OBJECTS)
-analysis.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/analysis.c -ldl -lpthread  
-http.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/http.c -ldl -lpthread  
-cgi.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/cgi.c -ldl -lpthread  
-mg_compat.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/mg_compat.c -ldl -lpthread  
-misc.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/misc.c -ldl -lpthread  
-request.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/request.c -ldl -lpthread  
-wrhash.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrhash.c -ldl -lpthread  
-wrio.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrio.c -ldl -lpthread  
-wrmpool.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrmpool.c -ldl -lpthread  
-wrstring.o:
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrstring.c -ldl -lpthread  
+$(HTTP_OBJECTS) : $(HTTP_SOURCE)
+	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE $(HTTP_SOURCE) -ldl -lpthread  
+#analysis.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/analysis.c -ldl -lpthread  
+#http.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/http.c -ldl -lpthread  
+#cgi.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/cgi.c -ldl -lpthread  
+#mg_compat.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/mg_compat.c -ldl -lpthread  
+#misc.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/misc.c -ldl -lpthread  
+#request.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/request.c -ldl -lpthread  
+#wrhash.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrhash.c -ldl -lpthread  
+#wrio.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrio.c -ldl -lpthread  
+#wrmpool.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrmpool.c -ldl -lpthread  
+#wrstring.o:
+#	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/wrstring.c -ldl -lpthread  
 clean:
 	rm $(TARGET) $(LIBS) 

@@ -546,7 +546,7 @@ static uint64_t get_dpid_from_LLDP_packet(char * buffer)
 {
 	uint64_t dpid = 0;
 	inverse_memcpy(&dpid, buffer + 17, 8);	
-	printf("dpid is : %ld\n", dpid);
+	//printf("dpid is : %ld\n", dpid);
 	return dpid;	
 }
 
@@ -554,13 +554,13 @@ static uint16_t get_outport_from_LLDP_packet(char * buffer)
 {
 	uint16_t outport = 0;
 	inverse_memcpy(&outport, buffer + 28, 2);	
-	printf("outport is : %d\n", outport);
+	//printf("outport is : %d\n", outport);
 	return outport;	
 }
 
 void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
-	printf("lldp msg received\n");
+	//printf("lldp msg received\n");
 	ovs_be32 in_port_num = 0;	
 	in_port_num = packet_in_msg_get_in_port_num(qn);
 	struct ofp11_port * port = get_switch_port_by_port_num(qn->sw, in_port_num);
@@ -585,8 +585,11 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 		return;
 	}
 	struct link_node * left_node = link_node_create(sw, port_out); 
+	uint32_t rst = 0;
 	struct network_link * netlink = network_link_create(left_node, right_node);
-	uint32_t rst = sw_link_insert(&(qn->sw->link_list), netlink);
+	if(netlink != NULL)
+		rst = sw_link_insert(&(qn->sw->link_list), netlink);
 	if(rst == 1)
 		print_switch_link(qn->sw);
+	print_all_switches();
 }

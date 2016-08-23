@@ -84,8 +84,6 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 
 inline uint32_t mac_addr_hash(uint64_t mac_addr);
 
-//void host_add_to_hash_map(struct host_hash_value* value);
-
 struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr);
 
 void host_hash_value_destory(struct host_hash_value* value);
