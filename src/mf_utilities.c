@@ -33,6 +33,21 @@ inline void inverse_memcpy(void* dst, void* src, uint16_t len)
 		}
 }
 
+inline uint32_t swap_32bit(uint32_t a)
+{
+	uint32_t rst;
+	asm("movl %1, %%eax;bswap %%eax;movl %%eax,%0;":"=r"(rst):"r"(a):"%eax");
+	return rst;
+}
+
+inline uint16_t swap_16bit(uint16_t a)
+{
+	uint16_t rst;
+	asm("mov %1, %%ax;xchg %%al, %%ah;mov %%ax, %0;":"=r"(rst):"r"(a):"%ah");
+	return rst;
+}
+
+
 static UINT8 gn_htonll(UINT8 n)
 {
     return htonl(1) == 1 ? n : ((UINT8) htonl(n) << 32) | htonl(n >> 32);

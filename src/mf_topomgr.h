@@ -25,10 +25,10 @@ struct mf_topomgr
 
 struct link_node
 {
-	struct mf_switch * sw;
-	struct ofp11_port * port;
 	struct link_node * next; //pointers for available/used slot bi-link list
 	struct link_node * prev;
+	struct mf_switch * sw;
+	struct ofp11_port * port;
 	uint8_t is_occupied;
 };
 

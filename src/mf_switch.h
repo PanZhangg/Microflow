@@ -11,6 +11,7 @@ struct mf_switch
 {
 	/*--socket--*/
 	uint32_t sockfd;
+	uint32_t epoll_recv_incomplete_length;
 	/*--rece buffer--*/
 	char rx_buffer[RX_BUFFER_SIZE];
 	/*--openflow--*/

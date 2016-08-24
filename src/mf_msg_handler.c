@@ -360,9 +360,9 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 		perror("qn is NULL or buffer is NULL");
 		return;
 	}
-	//uint16_t ether_type = *(buffer + 12) << 8 | *(buffer + 13);
-	uint16_t ether_type;
-	inverse_memcpy(&ether_type, buffer + 12, 2);
+	uint16_t ether_type = (uint16_t)*(buffer + 12) << 8 | *(buffer + 13);
+	//uint16_t ether_type;
+	//inverse_memcpy(&ether_type, buffer + 12, 2);
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
@@ -483,9 +483,9 @@ void packet_in_msg_handler(struct q_node* qn)
 	}
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
-	//uint16_t total_len = *(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
-	uint16_t total_len = 0;
-	inverse_memcpy(&total_len, qn->rx_packet + 12, 2);
+	uint16_t total_len =(uint16_t)*(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
+	//uint16_t total_len = 0;
+	//inverse_memcpy(&total_len, qn->rx_packet + 12, 2);
 	char * data_pointor = qn->rx_packet + qn->packet_length - total_len;
 	parse_ether_type(qn, xid, data_pointor, total_len);
 }

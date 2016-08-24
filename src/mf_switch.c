@@ -45,6 +45,7 @@ struct mf_switch * mf_switch_create(uint32_t sockfd)
 {
 	struct mf_switch * sw = (struct mf_switch*)malloc(sizeof(struct mf_switch));
 	sw->sockfd = sockfd;
+	sw->epoll_recv_incomplete_length = 0;
 	sw->datapath_id = 0;
 	sw->n_buffers = 0;
 	sw->n_tables = 0;

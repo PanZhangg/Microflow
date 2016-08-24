@@ -7,7 +7,11 @@
 program utilities
 */
 uint32_t generate_random();
-void inverse_memcpy(void* dst, void* src, uint16_t len);
+inline void inverse_memcpy(void* dst, void* src, uint16_t len);
+inline uint32_t swap_32bit(uint32_t);
+inline uint16_t swap_16bit(uint16_t);
+
+
 
 /*
 Network packets utilities

@@ -100,7 +100,6 @@ void* handle_connection(void* arg)
 	}
 	unsigned int i;
 	int connfd;
-	static int incompleted_packet_length = 0;
 	socklen_t clilen = sizeof(switch_addr);
 	epoll_init(sock);
 	static unsigned int seq = 0;
@@ -138,7 +137,7 @@ void* handle_connection(void* arg)
 					continue;
 				}
 				struct mf_switch * sw = get_switch(sockfd);
-				int length = read(sockfd, (char*)(sw->rx_buffer) + incompleted_packet_length, RX_BUFFER_SIZE);
+				int length = read(sockfd, (char*)(sw->rx_buffer) + sw->epoll_recv_incomplete_length, RX_BUFFER_SIZE);
 				if(length == 0)
 				{
 					ev.data.fd = sockfd;
@@ -158,29 +157,22 @@ void* handle_connection(void* arg)
 				else if(length > 0)
 				{
 					char * pkt_ptr = sw->rx_buffer;
-					length += incompleted_packet_length;
+					length += sw->epoll_recv_incomplete_length;
 					int received_length = length;
 					while(length > 0)
 					{
 						if((int)*pkt_ptr == 4)// This is a OF1.3 Msg
 						{
-							uint16_t msg_length = 0;
-							//msg_length = *(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
-							inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
+								
+							uint16_t msg_length = (uint16_t)*(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
+							//inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
 							if(length < msg_length)
 							{
 								printf("received length is: %d,current length is: %d\n,  msg length is %d\n",received_length, length, msg_length);
-								incompleted_packet_length = length;
-								memmove(sw->rx_buffer, pkt_ptr, incompleted_packet_length);
+								sw->epoll_recv_incomplete_length = length;
+								memmove(sw->rx_buffer, pkt_ptr, sw->epoll_recv_incomplete_length);
 								break;	
 							}
-							else if(msg_length <= 7)
-							{
-								perror("msg length wrong");
-								printf("Received msg length is : %d, Msg length is: %d droped\n",length, msg_length);
-								break;
-							}
-							incompleted_packet_length = 0;
 							push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[(seq++) % WORKER_THREADS_NUM]);
 							pkt_ptr += msg_length;
 							length -= msg_length;

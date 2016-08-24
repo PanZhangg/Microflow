@@ -69,13 +69,13 @@ Value: struct host_hash_value
 */
 struct host_hash_value
 {
+	struct host_hash_value * next;
+	struct host_hash_value * prev;
 	struct mf_switch * sw;
 	uint32_t port_num;
 	uint64_t mac_addr;
 	uint32_t host_array_slot_index;
 	uint32_t hash_map_slot_index;
-	struct host_hash_value * next;
-	struct host_hash_value * prev;
 	struct host_hash_value * hash_next;
 	uint8_t is_occupied;
 };

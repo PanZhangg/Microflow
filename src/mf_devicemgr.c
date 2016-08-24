@@ -150,7 +150,7 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	return NULL;
 }
 
-static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)
+static inline void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)
 {
 	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	if(*array == NULL)
