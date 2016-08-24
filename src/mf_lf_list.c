@@ -1,20 +1,23 @@
 #include "mf_lf_list.h"
+#include <stdlib.h>
 void lf_list_insert(struct lf_list* i, struct lf_list* l)
 {
+	struct lf_list * tmp;
 	do
 	{
-		struct lf_list * old_head = l;
-		struct lf_list * tmp = l->next;
-	}while(!__sync_bool_compare_and_swap(l->next, tmp, i));
-	i->next = old_head;
+		tmp = (l->next);
+		//struct lf_list * tmp = l;
+	}while(!__sync_bool_compare_and_swap(&(l->next), tmp, i));
+	i->next = tmp;
 }
 
 void lf_list_delete(struct lf_list* i, struct lf_list* l)
 {
+	struct lf_list ** tmpp;
 	do
 	{
 		struct lf_list * tmp = l;
-		struct lf_list ** tmpp = &(l->next)
+		tmpp = &(l->next);
 		while(tmp) 
 		{
 			if(tmp == i)
@@ -27,6 +30,6 @@ void lf_list_delete(struct lf_list* i, struct lf_list* l)
 		}
 		if(tmp == NULL)
 			return;
-	}while(!__sync_bool_compare_and_swap(*tmpp, i, i->next));
+	}while(!__sync_bool_compare_and_swap(tmpp, i, i->next));
 }
 
