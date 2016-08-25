@@ -16,7 +16,10 @@ void print_list(struct lf_list* head)
 	//printf("Print func\n");
 	while(tmp)
 	{
-		printf("val:%d\n",*(int*)((char*)tmp - 8));	
+		//printf("offset: %d\n", (int)OFFSETOF(struct list_node, list));
+		struct list_node * ptr = container_of(tmp, struct list_node, list);
+		printf("val:%d\n",*(int*)((char*)tmp - OFFSETOF(struct list_node, list)));
+		printf("val from ptr:%d\n", ptr->val);
 		//printf("memory address: %x\n",(char)(tmp));
 		tmp = tmp->next;
 	}
@@ -35,7 +38,8 @@ void * thread_func_pop(void * arg)
 {
 	printf("pop_Thread starts\n");
 	struct lf_list * n = lf_list_pop(&(node_head.list));
-	printf("val:%d\n",*(int*)((char*)n - 8));	
+	struct list_node * ptr;
+	printf("val:%d\n",*(int*)((char*)n - OFFSETOF(struct list_node, list)));
 	return NULL;
 
 }
