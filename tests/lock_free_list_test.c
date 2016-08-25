@@ -44,13 +44,20 @@ void * thread_func_pop(void * arg)
 
 }
 
+void * thread_func_delete(void * arg)
+{
+	struct list_node * n = (struct list_node *)arg;
+	struct lf_list* t = lf_list_delete(&(n->list), &(node_head.list));
+	printf("delete val:%d\n",*(int*)((char*)t - OFFSETOF(struct list_node, list)));
+	return NULL;
+}
 int main()
 {
-	struct list_node node1 = {1, NULL};
-	struct list_node node2 = {2, NULL};
-	struct list_node node3 = {3, NULL};
-	struct list_node node4 = {4, NULL};
-	struct list_node node5 = {5, NULL};
+	struct list_node node1 = {1, {NULL,0}};
+	struct list_node node2 = {2, {NULL,0}};
+	struct list_node node3 = {3, {NULL,0}};
+	struct list_node node4 = {4, {NULL,0}};
+	struct list_node node5 = {5, {NULL,0}};
 	struct list_node nodes[5] = {node1, node2, node3, node4, node5};
 	pthread_t p[10];
 	int i = 0;
@@ -64,11 +71,23 @@ int main()
 		printf("Thread: %d ends\n",i);
 	}
 	print_list(&(node_head.list));
-	for(i = 7; i < 9; i++)	
+/*
+	for(i = 5; i < 7; i++)	
 	{
 		pthread_create(&p[i], NULL, thread_func_pop, &nodes[i-5]);
 	}
-	for(i = 7; i < 9; i++)
+	for(i = 5; i < 7; i++)
+	{
+		pthread_join(p[i],NULL);
+		printf("Thread: %d ends\n",i);
+	}
+*/
+//	print_list(&(node_head.list));
+	for(i = 5; i < 7; i++)
+	{
+		pthread_create(&p[i], NULL, thread_func_delete, &nodes[i-5]);
+	}
+	for(i = 5; i < 7; i++)
 	{
 		pthread_join(p[i],NULL);
 		printf("Thread: %d ends\n",i);
