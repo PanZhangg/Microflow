@@ -13,22 +13,31 @@ struct list_node node_head = {888, NULL};
 void print_list(struct lf_list* head)
 {
 	struct lf_list* tmp = head;
-	printf("Print func\n");
+	//printf("Print func\n");
 	while(tmp)
 	{
 		printf("val:%d\n",*(int*)((char*)tmp - 8));	
-		printf("memory address: %x\n",(char)(tmp));
+		//printf("memory address: %x\n",(char)(tmp));
 		tmp = tmp->next;
 	}
 	
 }
 void * thread_func(void * arg)
 {
-	printf("Thread starts\n");
+	//printf("Thread starts\n");
 	struct list_node * n = (struct list_node*)arg;
-	printf("input memory address: %x\n",(char)&n->list);
+	//printf("input memory address: %x\n",(char)&n->list);
 	lf_list_insert(&(n->list), &(node_head.list));
 	return NULL;
+}
+
+void * thread_func_pop(void * arg)
+{
+	printf("pop_Thread starts\n");
+	struct lf_list * n = lf_list_pop(&(node_head.list));
+	printf("val:%d\n",*(int*)((char*)n - 8));	
+	return NULL;
+
 }
 
 int main()
@@ -39,14 +48,23 @@ int main()
 	struct list_node node4 = {4, NULL};
 	struct list_node node5 = {5, NULL};
 	struct list_node nodes[5] = {node1, node2, node3, node4, node5};
-	pthread_t p[5];
+	pthread_t p[10];
 	int i = 0;
 	for(i = 0; i < 5; i++)	
 	{
-		pthread_t p[i];
 		pthread_create(&p[i], NULL, thread_func, &nodes[i]);
 	}
 	for(i = 0; i < 5; i++)
+	{
+		pthread_join(p[i],NULL);
+		printf("Thread: %d ends\n",i);
+	}
+	print_list(&(node_head.list));
+	for(i = 7; i < 9; i++)	
+	{
+		pthread_create(&p[i], NULL, thread_func_pop, &nodes[i-5]);
+	}
+	for(i = 7; i < 9; i++)
 	{
 		pthread_join(p[i],NULL);
 		printf("Thread: %d ends\n",i);

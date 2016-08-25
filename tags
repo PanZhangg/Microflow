@@ -34,6 +34,8 @@ HOST_SIZE	webui/odl-webui.js	/^var HOST_SIZE = 40;$/;"	v
 HOST_X	webui/odl-webui.js	/^var HOST_X = -8;$/;"	v
 HOST_Y	webui/odl-webui.js	/^var HOST_Y = -8;$/;"	v
 HPL_VENDOR_ID	src/Openflow/openflow-common.h	97;"	d
+HTTP_OBJECTS	src/Makefile	/^HTTP_OBJECTS = analysis.o http.o cgi.o mg_compat.o misc.o request.o wrhash.o wrio.o wrmpool.o wrstring.o $/;"	m
+HTTP_SOURCE	src/Makefile	/^HTTP_SOURCE = .\/httpserver\/wrlib\/wrmpool.c .\/httpserver\/wrlib\/wrhash.c .\/httpserver\/wrlib\/wrstring.c .\/httpserver\/wrlib\/misc.c .\/httpserver\/wrlib\/wrio.c \\$/;"	m
 INT1	src/mf_utilities.h	/^typedef char              INT1;$/;"	t
 INT2	src/mf_utilities.h	/^typedef short             INT2;$/;"	t
 INT4	src/mf_utilities.h	/^typedef int               INT4;$/;"	t
@@ -41,6 +43,7 @@ INT8	src/mf_utilities.h	/^typedef long              INT8;$/;"	t
 INVALID_SOCKET	src/httpserver/wrlib/mg_compat.h	71;"	d
 IS_DIRSEP_CHAR	src/httpserver/wrlib/mg_compat.h	67;"	d
 IndexFile	src/httpserver/wrlib/http.h	/^static const char *IndexFile = "index.html" ;$/;"	v
+LIBS	src/Makefile	/^LIBS = httpserver.a$/;"	m
 LINK_NODE_CACHE_ARRAY	src/mf_topomgr.c	/^static struct link_node * LINK_NODE_CACHE_ARRAY; $/;"	v	typeref:struct:link_node	file:
 LINK_NODE_NUM	src/mf_topomgr.h	13;"	d
 LLDP_CHASSIS_ID_LOCALLY_ASSIGNED	src/mf_utilities.h	/^    LLDP_CHASSIS_ID_LOCALLY_ASSIGNED = 7$/;"	e	enum:lldp_chassis_id_subtype
@@ -66,13 +69,15 @@ MAX_MF_SWITCH_NUM	src/mf_devicemgr.h	9;"	d
 MAX_MF_SWITCH_PORT_NUM	src/mf_switch.h	8;"	d
 MAX_NETWORK_LINK_NUM	src/mf_topomgr.h	10;"	d
 MAX_NETWORK_LINK_NUM_PER_SWITCH	src/mf_topomgr.h	11;"	d
-MAX_PKT	src/mf_utilities.h	30;"	d
+MAX_PKT	src/mf_utilities.h	34;"	d
 MAX_POST_SIZE	src/httpserver/wrlib/http.h	52;"	d
 MF_API_H__	src/mf_api.h	2;"	d
 MF_DEVICE_MGR	src/mf_devicemgr.c	/^struct mf_devicemgr MF_DEVICE_MGR;$/;"	v	typeref:struct:mf_devicemgr
+MF_LF_LIST_H__	src/mf_lf_list.h	2;"	d
 MF_LOG_FILE	src/mf_logger.c	/^FILE* MF_LOG_FILE;$/;"	v
 MF_MEMPOOL_H__	src/mf_mempool.h	2;"	d
 MF_QUEUE_NODE_MEMPOOL_SIZE	src/mf_mempool.h	10;"	d
+MF_SOURCE	src/Makefile	/^MF_SOURCE = main.c ..\/src\/mf_socket.c ..\/src\/mf_logger.c \\$/;"	m
 MF_STOPWATCH_LIST	src/mf_timer.c	/^struct stopwatch_list * MF_STOPWATCH_LIST;$/;"	v	typeref:struct:stopwatch_list
 MF_TOPOMGR_H__	src/mf_topomgr.h	2;"	d
 MF_TOPO_MGR	src/mf_topomgr.c	/^static struct mf_topomgr MF_TOPO_MGR;$/;"	v	typeref:struct:mf_topomgr	file:
@@ -453,6 +458,7 @@ SOCKET	src/httpserver/wrlib/mg_compat.h	/^typedef int SOCKET;$/;"	t
 SRCS	src/httpserver/Makefile	/^SRCS=	wrlib\/wrmpool.c wrlib\/wrhash.c wrlib\/wrstring.c wrlib\/misc.c wrlib\/wrio.c \\$/;"	m
 STOPWATCH_TYPE	src/mf_timer.h	/^enum  STOPWATCH_TYPE$/;"	g
 S_ISDIR	src/httpserver/wrlib/mg_compat.h	37;"	d
+TARGET	src/Makefile	/^TARGET = microflow$/;"	m
 THIRD_SOCKET_FD	tests/socket_array_test.c	7;"	d	file:
 TRIMI_LB_TAIL	src/httpserver/wrlib/wrstring.h	49;"	d
 TRIM_HEAD	src/httpserver/wrlib/wrstring.h	41;"	d
@@ -717,6 +723,7 @@ echo_request_handler_list_head	src/mf_msg_handler.h	/^	struct single_msg_handler
 endof_lldpdu_tlv_type_and_len	src/mf_utilities.h	/^    UINT2 endof_lldpdu_tlv_type_and_len;$/;"	m	struct:st_lldp
 epfd	src/mf_socket.c	/^uint32_t epfd, nfds;$/;"	v
 epoll_init	src/mf_socket.c	/^static void epoll_init(uint32_t sock)$/;"	f	file:
+epoll_recv_incomplete_length	src/mf_switch.h	/^	uint32_t epoll_recv_incomplete_length;$/;"	m	struct:mf_switch
 errorLog	src/httpserver/cgi.c	/^int errorLog(WrHttp *pHttp ,const char *mess)$/;"	f
 eth_head	src/mf_utilities.h	/^    ether_t eth_head;$/;"	m	struct:st_arp
 eth_head	src/mf_utilities.h	/^    ether_t eth_head;$/;"	m	struct:st_ip
@@ -773,7 +780,7 @@ get_dpid_from_LLDP_packet	src/mf_msg_handler.c	/^static uint64_t get_dpid_from_L
 get_head_info	src/httpserver/wrlib/analysis.c	/^const char *get_head_info(const WrHttp *pHttp ,const char *key)$/;"	f
 get_mime_type	src/httpserver/wrlib/http.c	/^const char *get_mime_type(const char *path)$/;"	f
 get_next_available_index	src/mf_topomgr.c	/^static uint32_t get_next_available_index()$/;"	f	file:
-get_next_switch	src/mf_devicemgr.c	/^struct mf_switch * get_next_switch(uint32_t* loop_index)$/;"	f
+get_next_switch	src/mf_devicemgr.c	/^struct mf_switch * get_next_switch(int* loop_index)$/;"	f
 get_outport_from_LLDP_packet	src/mf_msg_handler.c	/^static uint16_t get_outport_from_LLDP_packet(char * buffer)$/;"	f	file:
 get_param_info	src/httpserver/wrlib/analysis.c	/^const char *get_param_info(const WrHttp *pHttp ,const char *key)$/;"	f
 get_rx_queue	src/mf_socket_array.c	/^struct mf_rx_queue* get_rx_queue(int socket_fd, struct mf_socket_array* q){$/;"	f
@@ -867,7 +874,7 @@ insert_mf_socket_array	src/mf_socket_array.c	/^uint8_t insert_mf_socket_array (s
 insert_stopwatch	src/mf_timer.c	/^void insert_stopwatch(struct stopwatch* stopwatch, struct stopwatch_list* swl)$/;"	f
 instructions	src/Openflow/openflow-1.1.h	/^    ovs_be32 instructions;   \/* Bitmap of OFPIT_* values supported. *\/$/;"	m	struct:ofp11_table_stats
 instructions	src/Openflow/openflow-1.2.h	/^    ovs_be32 instructions;   \/* Bitmap of OFPIT_* values supported. *\/$/;"	m	struct:ofp12_table_stats
-inverse_memcpy	src/mf_utilities.c	/^void inline inverse_memcpy(void* dst, void* src, uint16_t len)$/;"	f
+inverse_memcpy	src/mf_utilities.c	/^inline void inverse_memcpy(void* dst, void* src, uint16_t len)$/;"	f
 ip_t	src/mf_utilities.h	/^}ip_t;$/;"	t	typeref:struct:st_ip
 ipid	src/mf_utilities.h	/^    UINT2 ipid;$/;"	m	struct:st_ip
 isHeadEnd	src/httpserver/wrlib/wrio.c	/^static int isHeadEnd(char *pBuf ,char *cPos ,int len)$/;"	f	file:
@@ -878,7 +885,6 @@ is_occupied	src/mf_rx_queue.h	/^	uint8_t is_occupied;$/;"	m	struct:q_node
 is_occupied	src/mf_topomgr.h	/^	uint8_t is_occupied;$/;"	m	struct:link_node
 is_occupied	src/mf_topomgr.h	/^	uint8_t is_occupied;$/;"	m	struct:network_link
 is_port_desc_request_sent	src/mf_switch.h	/^	uint8_t is_port_desc_request_sent;$/;"	m	struct:mf_switch
-is_struct_hash_value_identical	src/mf_devicemgr.c	/^static uint8_t is_struct_hash_value_identical(struct host_hash_value* a, struct host_hash_value* b)$/;"	f	file:
 key	src/httpserver/wrlib/wrhash.h	/^	void *key;$/;"	m	struct:_slist
 label_ptr	src/mf_utilities.h	/^    UINT2 label_ptr;$/;"	m	struct:st_dns_a
 len	src/Openflow/openflow-1.0.h	/^    ovs_be16 len;               \/* Length in bytes of this queue desc. *\/$/;"	m	struct:ofp10_packet_queue
@@ -938,12 +944,18 @@ length	src/Openflow/openflow-1.5.h	/^    ovs_be16 length;              \/* Lengt
 length	src/Openflow/openflow-common.h	/^    ovs_be16    length;      \/* Length in bytes of this element. *\/$/;"	m	struct:ofp_hello_elem_header
 length	src/Openflow/openflow-common.h	/^    ovs_be16 length;    \/* Length including this ofp_header. *\/$/;"	m	struct:ofp_header
 lengthSet	src/httpserver/wrlib/request.c	/^static int lengthSet(char *buf ,int len)$/;"	f	file:
+lf_list	src/mf_lf_list.h	/^struct lf_list$/;"	s
+lf_list_delete	src/mf_lf_list.c	/^struct lf_list * lf_list_delete(struct lf_list* i, struct lf_list* l)$/;"	f
+lf_list_insert	src/mf_lf_list.c	/^void lf_list_insert(struct lf_list* i, struct lf_list* l)$/;"	f
+lf_list_pop	src/mf_lf_list.c	/^struct lf_list * lf_list_pop(struct lf_list *l)$/;"	f
 link	src/Openflow/openflow-1.1.h	/^	struct network_link * link;$/;"	m	struct:ofp11_port	typeref:struct:ofp11_port::network_link
 link	webui/odl-webui.js	/^var link = svg.selectAll(".link"),$/;"	v
 link_list	src/mf_switch.h	/^	struct sw_link_list link_list;$/;"	m	struct:mf_switch	typeref:struct:mf_switch::sw_link_list
 link_node	src/mf_topomgr.h	/^struct link_node$/;"	s
 link_node_create	src/mf_topomgr.c	/^struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)$/;"	f
 link_num	src/mf_topomgr.h	/^	uint16_t link_num;$/;"	m	struct:sw_link_list
+list	tests/lock_free_list_test.c	/^	struct lf_list list;$/;"	m	struct:list_node	typeref:struct:list_node::lf_list	file:
+list_node	tests/lock_free_list_test.c	/^struct list_node$/;"	s	file:
 liveSet	src/httpserver/wrlib/request.c	/^static int liveSet(char *buf ,const WrHttp *pHttp ,int closeflag)$/;"	f	file:
 lldp_chassis_id_subtype	src/mf_utilities.h	/^enum lldp_chassis_id_subtype {$/;"	g
 lldp_msg_handler	src/mf_msg_handler.c	/^void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)$/;"	f
@@ -970,6 +982,7 @@ main	src/main.c	/^int main(int argc, char** argv)$/;"	f
 main	tests/devicemgr.c	/^int main()$/;"	f
 main	tests/host_hash_test.c	/^int main()$/;"	f
 main	tests/inverse_memcpy_test.c	/^int main()$/;"	f
+main	tests/lock_free_list_test.c	/^int main()$/;"	f
 main	tests/log_test.c	/^int main()$/;"	f
 main	tests/socket_array_test.c	/^int main(int argc, char** argv){$/;"	f
 main	tests/socket_client.c	/^int main(int argc, char** argv)$/;"	f
@@ -1077,6 +1090,7 @@ network_link_free	src/mf_topomgr.c	/^void network_link_free(struct network_link 
 network_path_insert	src/mf_topomgr.c	/^void network_path_insert(struct path_link_list * list, struct network_link * link)$/;"	f
 next	src/httpserver/wrlib/wrhash.h	/^	struct _slist *next;$/;"	m	struct:_slist	typeref:struct:_slist::_slist
 next	src/mf_devicemgr.h	/^	struct host_hash_value * next;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::host_hash_value
+next	src/mf_lf_list.h	/^	struct lf_list * next;  $/;"	m	struct:lf_list	typeref:struct:lf_list::lf_list
 next	src/mf_msg_handler.h	/^	struct single_msg_handler * next;$/;"	m	struct:single_msg_handler	typeref:struct:single_msg_handler::single_msg_handler
 next	src/mf_timer.h	/^	struct stopwatch * next;$/;"	m	struct:stopwatch	typeref:struct:stopwatch::stopwatch
 next	src/mf_topomgr.h	/^	struct link_node * next; \/\/pointers for available\/used slot bi-link list$/;"	m	struct:link_node	typeref:struct:link_node::link_node
@@ -1085,6 +1099,7 @@ next_node	src/mf_socket_array.h	/^	struct mf_socket_array_node * next_node;$/;"	
 nfds	src/mf_socket.c	/^uint32_t epfd, nfds;$/;"	v
 node	src/Openflow/openflow-1.1.h	/^	struct link_node * node;$/;"	m	struct:ofp11_port	typeref:struct:ofp11_port::link_node
 node_cache_array_size	src/mf_topomgr.h	/^	uint64_t node_cache_array_size;$/;"	m	struct:mf_topomgr
+node_head	tests/lock_free_list_test.c	/^struct list_node node_head = {888, NULL};$/;"	v	typeref:struct:list_node
 node_pool	src/mf_mempool.h	/^	struct q_node node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE];$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
 nw_dst	src/Openflow/openflow-1.0.h	/^    ovs_be32 nw_dst;           \/* IP destination address. *\/$/;"	m	struct:ofp10_match
 nw_dst	src/Openflow/openflow-1.1.h	/^    ovs_be32 nw_dst;           \/* IP destination address. *\/$/;"	m	struct:ofp11_match
@@ -1508,6 +1523,7 @@ previous_node	src/mf_socket_array.h	/^	struct mf_socket_array_node * previous_no
 print_all_switches	src/mf_devicemgr.c	/^void print_all_switches()$/;"	f
 print_header	src/httpserver/wrlib/analysis.c	/^void print_header(const WrHttp *pHttp)$/;"	f
 print_info	src/main.c	/^static void print_info()$/;"	f	file:
+print_list	tests/lock_free_list_test.c	/^void print_list(struct lf_list* head)$/;"	f
 print_param	src/httpserver/wrlib/analysis.c	/^void print_param(const WrHttp *pHttp)$/;"	f
 print_switch_link	src/mf_devicemgr.c	/^void print_switch_link(struct mf_switch *sw)$/;"	f
 print_welcome	src/main.c	/^void print_welcome()$/;"	f
@@ -1532,7 +1548,7 @@ pthread_cond_t	src/httpserver/wrlib/mg_compat.h	/^typedef HANDLE pthread_cond_t;
 pthread_mutex_t	src/httpserver/wrlib/mg_compat.h	/^typedef HANDLE pthread_mutex_t;$/;"	t
 push	src/mf_mempool.h	/^	struct q_node * push;$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
 push_queue_node_to_mempool	src/mf_mempool.c	/^void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_switch* sw, struct mf_queue_node_mempool* mp)$/;"	f
-push_to_array	src/mf_devicemgr.c	/^static void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)$/;"	f	file:
+push_to_array	src/mf_devicemgr.c	/^static inline void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)$/;"	f	file:
 push_to_array	src/mf_topomgr.c	/^static inline void push_to_array(struct link_node * value, struct link_node ** array)$/;"	f	file:
 q8021q	src/mf_utilities.h	/^    t802_1q_t *q8021q;$/;"	m	struct:st_ethpkt_info
 q_mutex	src/mf_rx_queue.h	/^	pthread_mutex_t q_mutex;$/;"	m	struct:mf_rx_queue
@@ -1670,9 +1686,13 @@ sw	src/mf_rx_queue.h	/^	struct mf_switch* sw;$/;"	m	struct:q_node	typeref:struct
 sw	src/mf_topomgr.h	/^	struct mf_switch * sw;$/;"	m	struct:link_node	typeref:struct:link_node::mf_switch
 sw_callback	src/mf_timer.h	/^	stopwatch_switch_callback sw_callback;$/;"	m	struct:stopwatch
 sw_link_delete	src/mf_topomgr.c	/^void sw_link_delete(struct sw_link_list * list, struct network_link * link)$/;"	f
-sw_link_insert	src/mf_topomgr.c	/^void sw_link_insert(struct sw_link_list * sw_list, struct network_link * link)$/;"	f
+sw_link_insert	src/mf_topomgr.c	/^uint32_t sw_link_insert(struct sw_link_list * sw_list, struct network_link * link)$/;"	f
 sw_link_list	src/mf_topomgr.h	/^struct sw_link_list$/;"	s
 sw_link_next	src/mf_topomgr.h	/^	struct network_link * sw_link_next;$/;"	m	struct:network_link	typeref:struct:network_link::network_link
+swap_16	tests/inverse_memcpy_test.c	/^uint16_t swap_16(uint16_t a)$/;"	f
+swap_16bit	src/mf_utilities.c	/^inline uint16_t swap_16bit(uint16_t a)$/;"	f
+swap_32	tests/inverse_memcpy_test.c	/^uint32_t swap_32(uint32_t a)$/;"	f
+swap_32bit	src/mf_utilities.c	/^inline uint32_t swap_32bit(uint32_t a)$/;"	f
 switch_addr	src/mf_socket.c	/^struct sockaddr_in controller_addr, switch_addr;$/;"	v	typeref:struct:
 switch_print	src/mf_switch.c	/^void switch_print(struct mf_switch * sw)$/;"	f
 t802_1q_t	src/mf_utilities.h	/^}t802_1q_t;$/;"	t	typeref:struct:st_t802_1q
@@ -1707,6 +1727,8 @@ test_push_q_node	tests/queue_test.c	/^static char* test_push_q_node(){$/;"	f	fil
 test_q_node_init	tests/queue_test.c	/^static char* test_q_node_init(){$/;"	f	file:
 tests_run	src/minunit.h	/^int tests_run;$/;"	v
 threadCnt	src/httpserver/wrlib/http.h	/^	volatile int threadCnt;$/;"	m	struct:__anon12
+thread_func	tests/lock_free_list_test.c	/^void * thread_func(void * arg)$/;"	f
+thread_func_pop	tests/lock_free_list_test.c	/^void * thread_func_pop(void * arg)$/;"	f
 tick	webui/odl-webui.js	/^function tick() {$/;"	f
 time_remain	src/mf_timer.h	/^	float time_remain;$/;"	m	struct:stopwatch
 tlv_t	src/mf_utilities.h	/^}tlv_t;$/;"	t	typeref:struct:st_tlv
@@ -1810,6 +1832,7 @@ used_to_available	src/mf_devicemgr.c	/^static void used_to_available(struct host
 vacancy	src/Openflow/openflow-1.4.h	/^    uint8_t vacancy;      \/* Current vacancy (%) - only in ofp14_table_desc. *\/$/;"	m	struct:ofp14_table_mod_prop_vacancy
 vacancy_down	src/Openflow/openflow-1.4.h	/^    uint8_t vacancy_down;    \/* Vacancy threshold when space decreases (%). *\/$/;"	m	struct:ofp14_table_mod_prop_vacancy
 vacancy_up	src/Openflow/openflow-1.4.h	/^    uint8_t vacancy_up;      \/* Vacancy threshold when space increases (%). *\/$/;"	m	struct:ofp14_table_mod_prop_vacancy
+val	tests/lock_free_list_test.c	/^	int val;$/;"	m	struct:list_node	file:
 value	src/httpserver/wrlib/wrhash.h	/^	void *value;$/;"	m	struct:_slist
 vendor	src/Openflow/openflow-1.0.h	/^    ovs_be32 vendor;            \/* Vendor ID:$/;"	m	struct:ofp10_vendor_stats_msg
 vendor	src/Openflow/openflow-1.1.h	/^    ovs_be32 vendor;            \/* Vendor ID:$/;"	m	struct:ofp11_vendor_stats_msg
