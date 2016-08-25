@@ -8,9 +8,10 @@ void lf_list_insert(struct lf_list* i, struct lf_list* l)
 	do
 	{
 		tmp = (l->next);
+		i->next = tmp;
 		//struct lf_list * tmp = l;
 	}while(!__sync_bool_compare_and_swap(&(l->next), tmp, i));
-	i->next = tmp;
+	//i->next = tmp;
 }
 
 struct lf_list * lf_list_pop(struct lf_list *l)
@@ -57,11 +58,11 @@ again:
 			perror("List node has already been deleted\n");
 			return NULL;
 		}
-	if((*((char*)tmpp + 8)) == 0x1)
-	{
-		printf("*tmpp :%d\n", (unsigned int)*tmpp);
-		goto again;
-	}
+		if((*((char*)tmpp + 8)) == 0x1)
+		{
+			printf("*tmpp :%d\n", (unsigned int)*tmpp);
+			goto again;
+		}
 	}while(!__sync_bool_compare_and_swap(tmpp, i, i->next));
 	tmp->mark = 0;
 	return i;

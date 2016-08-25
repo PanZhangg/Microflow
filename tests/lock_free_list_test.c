@@ -83,11 +83,11 @@ int main()
 	}
 */
 //	print_list(&(node_head.list));
-	for(i = 5; i < 7; i++)
+	for(i = 5; i < 9; i++)
 	{
 		pthread_create(&p[i], NULL, thread_func_delete, &nodes[i-5]);
 	}
-	for(i = 5; i < 7; i++)
+	for(i = 5; i < 9; i++)
 	{
 		pthread_join(p[i],NULL);
 		printf("Thread: %d ends\n",i);
