@@ -4,7 +4,7 @@
 #include <errno.h>
 void lf_list_insert(struct lf_list* i, struct lf_list* l)
 {
-	while(__sync_bool_compare_and_swap(&(l->mark), 1, 1)); //This list is being searched
+	//while(__sync_bool_compare_and_swap(&(l->mark), 1, 1)); //This list is being searched
 	i->next = NULL;
 	struct lf_list * tmp;
 	do
@@ -18,7 +18,7 @@ void lf_list_insert(struct lf_list* i, struct lf_list* l)
 
 struct lf_list * lf_list_pop(struct lf_list *l)
 {
-	while(__sync_bool_compare_and_swap(&(l->mark), 1, 1)); //This list is being searched
+	//while(__sync_bool_compare_and_swap(&(l->mark), 1, 1)); //This list is being searched
 	struct lf_list * tmp;
 	do
 	{
@@ -67,8 +67,8 @@ again:
 
 struct lf_list * lf_list_search_node(struct lf_list* l, compare cmp, void* arg)
 {
-	 if(l->mark == 0) 
-		__sync_fetch_and_add(&(l->mark), 1);
+	//if(l->mark == 0) 
+	//	__sync_fetch_and_add(&(l->mark), 1);
 	struct lf_list * tmp = l->next;
 	while(tmp)
 	{
@@ -84,6 +84,6 @@ struct lf_list * lf_list_search_node(struct lf_list* l, compare cmp, void* arg)
 		}
 		tmp = tmp->next;
 	}
-	l->mark = 0;
+	//l->mark = 0;
 	return NULL ;
 }
