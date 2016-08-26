@@ -3,6 +3,7 @@
 
 #include "Openflow/types.h"
 #include <pthread.h>
+#include "mf_lf_list.h"
 
 struct mf_switch;
 
@@ -26,6 +27,8 @@ struct mf_devicemgr
 	*/
 	struct host_hash_value * available_slot; //* available_slot head of the list
 	struct host_hash_value * used_slot;
+	struct lf_list available_list;
+	struct lf_list used_list;
 	uint32_t available_slot_num;
 	uint32_t used_slot_num;
 	pthread_mutex_t hash_mutex[HOST_HASH_MAP_SIZE / HOST_MUTEX_SLOT_SIZE];
@@ -69,6 +72,8 @@ Value: struct host_hash_value
 */
 struct host_hash_value
 {
+	//struct lf_list mem_manager_list;
+	struct lf_list hash_list; 
 	struct host_hash_value * next;
 	struct host_hash_value * prev;
 	struct mf_switch * sw;

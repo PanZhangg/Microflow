@@ -3,10 +3,11 @@ MF_SOURCE = main.c ../src/mf_socket.c ../src/mf_logger.c \
 	../src/mf_timer.c ../src/mf_switch.c ../src/mf_msg_handler.c ../src/mf_ofmsg_constructor.c \
 	../src/mf_devicemgr.c ../src/mf_rx_queue.c ../src/mf_msg_parser.c ../src/mf_mempool.c \
 	../src/mf_utilities.c ../src/mf_topomgr.c \
-	../src/mf_controller.c 
+	../src/mf_controller.c ../src/mf_lf_list.c\
+
 HTTP_SOURCE = ./httpserver/wrlib/wrmpool.c ./httpserver/wrlib/wrhash.c ./httpserver/wrlib/wrstring.c ./httpserver/wrlib/misc.c ./httpserver/wrlib/wrio.c \
-	./httpserver/wrlib/http.c ./httpserver/wrlib/request.c ./httpserver/wrlib/analysis.c ./httpserver/wrlib/mg_compat.c \
-	./httpserver/cgi.c \
+./httpserver/wrlib/http.c ./httpserver/wrlib/request.c ./httpserver/wrlib/analysis.c ./httpserver/wrlib/mg_compat.c \
+./httpserver/cgi.c \
 
 HTTP_OBJECTS = analysis.o http.o cgi.o mg_compat.o misc.o request.o wrhash.o wrio.o wrmpool.o wrstring.o 
 
@@ -18,7 +19,7 @@ $(TARGET): $(MF_SOURCE) $(LIBS)
 httpserver.a : $(HTTP_OBJECTS)
 	ar crv httpserver.a $(HTTP_OBJECTS)
 $(HTTP_OBJECTS) : $(HTTP_SOURCE)
-	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE $(HTTP_SOURCE) -ldl -lpthread  
+	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE $^ -ldl -lpthread  
 #analysis.o:
 #	gcc -w -c -D_POSIX_SOURCE -D_BSD_SOURCE ./httpserver/wrlib/analysis.c -ldl -lpthread  
 #http.o:

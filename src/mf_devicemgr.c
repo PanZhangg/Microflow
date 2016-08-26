@@ -36,6 +36,14 @@ void mf_devicemgr_create()
 	}
 	MF_DEVICE_MGR.used_slot = NULL;
 	MF_DEVICE_MGR.available_slot_num = i;
+	MF_DEVICE_MGR.used_list.next = NULL;
+	MF_DEVICE_MGR.used_list.mark = 0;
+	MF_DEVICE_MGR.available_list.next = NULL;
+	MF_DEVICE_MGR.available_list.mark= 0;
+	for(i = 0; i < MAX_HOST_NUM; i++)
+	{
+		lf_list_insert(&(HOST_CACHE_ARRAY[i].hash_list), &(MF_DEVICE_MGR.available_list));
+  	}
 	MF_DEVICE_MGR.used_slot_num = 0;
 	for(i = 0; i < HOST_HASH_MAP_SIZE / HOST_MUTEX_SLOT_SIZE; i++)
 		pthread_mutex_init(&(MF_DEVICE_MGR.hash_mutex[i]), NULL);
@@ -244,10 +252,11 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 	{
 		value = hash_value_created(sw, port_num, mac_addr); 
 		HOST_HASH_MAP[index] = value;
+		//lf_list_insert(&(value->hash_list),&(HOST_HASH_MAP[index]->hash_list));
 		value->hash_map_slot_index = index;
 		value->is_occupied = 1;
 		push_to_array(value, &(MF_DEVICE_MGR.used_slot));
-		
+
 	}
 	else
 	{
@@ -265,6 +274,7 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 				{
 					value = hash_value_created(sw, port_num, mac_addr); 
 					tmp->hash_next = value;
+					lf_list_insert(&(value->hash_list),&(HOST_HASH_MAP[index]->hash_list));
 					value->hash_map_slot_index = index;
 					value->is_occupied = 1;
 					push_to_array(value, &(MF_DEVICE_MGR.used_slot));
@@ -296,8 +306,17 @@ static inline uint8_t if_host_exist(struct host_hash_value * value, struct mf_sw
 static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr)
 {
 	struct host_hash_value * value = get_available_value_slot();
+	struct lf_list * l = lf_list_pop(&MF_DEVICE_MGR.available_list);
+	//struct host_hash_value * ptr = container_of(l, struct host_hash_value, mem_manager_list);
+	//ptr->mem_manager_list.next = NULL;
+	//l->next = NULL;
+	lf_list_insert(l, &(MF_DEVICE_MGR.used_list));
 	if(value != NULL)
 	{
+		//value->mem_manager_list.next = NULL;
+		//value->mem_manager_list.mark = 0;
+		value->hash_list.next = NULL;
+		value->hash_list.mark = 0;
 		value->sw = sw;
 		value->port_num = port_num;
 		value->mac_addr = mac_addr;
