@@ -8,7 +8,21 @@ struct list_node
 	struct lf_list list;
 };
 
-struct list_node node_head = {888, NULL};
+struct list_node node_head = {888, {NULL, 0}};
+int compare_list_node(void * arg, struct lf_list* n)
+{
+	struct list_node *tmp =(struct list_node *)arg;
+	//printf("tmp->val:%d\n", tmp->val);
+	struct list_node * pln = container_of(n, struct list_node,list);
+	//printf("pln->val:%d\n", pln->val);
+	if(tmp->val == pln->val)
+	{
+		printf("val found : %d\n", tmp->val);
+		return 1;
+	}
+	else
+		return 0;
+}
 
 void print_list(struct lf_list* head)
 {
@@ -48,8 +62,14 @@ void * thread_func_delete(void * arg)
 {
 	struct list_node * n = (struct list_node *)arg;
 	struct lf_list* t = lf_list_delete(&(n->list), &(node_head.list));
-	printf("delete val:%d\n",*(int*)((char*)t - OFFSETOF(struct list_node, list)));
+	if(t != NULL)
+		printf("delete val:%d\n",*(int*)((char*)t - OFFSETOF(struct list_node, list)));
 	return NULL;
+}
+
+void * thread_func_search(void *arg)
+{
+	lf_list_search_node(&(node_head.list),compare_list_node, arg);
 }
 int main()
 {
@@ -61,7 +81,7 @@ int main()
 	struct list_node nodes[5] = {node1, node2, node3, node4, node5};
 	pthread_t p[10];
 	int i = 0;
-	for(i = 0; i < 5; i++)	
+	/*for(i = 0; i < 5; i++)	
 	{
 		pthread_create(&p[i], NULL, thread_func, &nodes[i]);
 	}
@@ -83,11 +103,18 @@ int main()
 	}
 */
 //	print_list(&(node_head.list));
-	for(i = 5; i < 9; i++)
+	for(i = 0; i < 10; i++)
 	{
+		if(i <  5)
+		pthread_create(&p[i], NULL, thread_func, &nodes[i]);
+		if(i <  7 && i >= 5)
+		pthread_create(&p[i], NULL, thread_func_pop, &nodes[i-5]);
+		if(i>=7 && i< 8)
 		pthread_create(&p[i], NULL, thread_func_delete, &nodes[i-5]);
+		if(i == 8 || i == 9)
+		pthread_create(&p[i], NULL, thread_func_search, &nodes[i - 7]);
 	}
-	for(i = 5; i < 9; i++)
+	for(i = 0; i < 10; i++)
 	{
 		pthread_join(p[i],NULL);
 		printf("Thread: %d ends\n",i);

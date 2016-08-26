@@ -4,6 +4,8 @@
 #include <errno.h>
 void lf_list_insert(struct lf_list* i, struct lf_list* l)
 {
+	while(__sync_bool_compare_and_swap(&(l->mark), 1, 1)); //This list is being searched
+	i->next = NULL;
 	struct lf_list * tmp;
 	do
 	{
@@ -16,6 +18,7 @@ void lf_list_insert(struct lf_list* i, struct lf_list* l)
 
 struct lf_list * lf_list_pop(struct lf_list *l)
 {
+	while(__sync_bool_compare_and_swap(&(l->mark), 1, 1)); //This list is being searched
 	struct lf_list * tmp;
 	do
 	{
@@ -34,15 +37,10 @@ again:
 	{
 		tmp = l->next;
 		tmpp = &(l->next);
-		//printf("tmp is %x\n", (unsigned int)tmp);
-		//printf("i is %x\n", (unsigned int)i);
 		while(tmp) 
 		{
 			if(tmp == i)
 			{
-				//printf("tmp is %x\n", (unsigned int)tmp);
-				//printf("i is %x\n", (unsigned int)i);
-				//printf("*tmpp is %x\n", (unsigned int)*tmpp);
 				tmp->mark = 1;
 				break;
 			}
@@ -50,17 +48,16 @@ again:
 			{
 				tmpp = &(tmp->next);
 				tmp = tmp->next;
-				//printf("tmp is %x\n", (unsigned int)tmp);
 			}
 		}
 		if(tmp == NULL)
 		{
-			perror("List node has already been deleted\n");
+			perror("List node has already been deleted");
 			return NULL;
 		}
-		if((*((char*)tmpp + 8)) == 0x1)
+		if((*((char*)tmpp + (int)OFFSETOF(struct lf_list, mark))) == 0x1)
 		{
-			printf("*tmpp :%d\n", (unsigned int)*tmpp);
+			//printf("*tmpp :%d\n", (unsigned int)*tmpp);
 			goto again;
 		}
 	}while(!__sync_bool_compare_and_swap(tmpp, i, i->next));
@@ -68,3 +65,25 @@ again:
 	return i;
 }
 
+struct lf_list * lf_list_search_node(struct lf_list* l, compare cmp, void* arg)
+{
+	 if(l->mark == 0) 
+		__sync_fetch_and_add(&(l->mark), 1);
+	struct lf_list * tmp = l->next;
+	while(tmp)
+	{
+		if(tmp->mark == 1)//is beding deleted
+		{
+			l->mark = 0;
+			return NULL;
+  		}
+		if(cmp(arg, tmp) == 1)	
+		{
+ 			l->mark = 0;
+			return tmp; 
+		}
+		tmp = tmp->next;
+	}
+	l->mark = 0;
+	return NULL ;
+}

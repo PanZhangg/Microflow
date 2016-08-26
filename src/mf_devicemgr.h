@@ -93,4 +93,5 @@ void delete_host_hash_value(struct host_hash_value * value);
 void print_switch_link(struct mf_switch *);
 
 void print_all_switches();
+
 #endif
