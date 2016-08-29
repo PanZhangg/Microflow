@@ -163,9 +163,9 @@ void* handle_connection(void* arg)
 					{
 						if((int)*pkt_ptr == 4)// This is a OF1.3 Msg
 						{
-								
-							uint16_t msg_length = (uint16_t)*(pkt_ptr + 2) << 8 | *(pkt_ptr + 3);
-							//inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
+							//uint16_t msg_length = (uint16_t)*(pkt_ptr + 3) << 8 | *(pkt_ptr + 2);
+							uint16_t msg_length = 0;
+							inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
 							if(length < msg_length)
 							{
 								printf("received length is: %d,current length is: %d\n,  msg length is %d\n",received_length, length, msg_length);

@@ -25,13 +25,12 @@ struct mf_devicemgr
 	to get a ptr pointed to static memory slot
 	then store the ptr into used_slot
 	*/
-	struct host_hash_value * available_slot; //* available_slot head of the list
-	struct host_hash_value * used_slot;
+	//struct host_hash_value * available_slot; //* available_slot head of the list
+	//struct host_hash_value * used_slot;
 	struct lf_list available_list;
 	struct lf_list used_list;
 	uint32_t available_slot_num;
 	uint32_t used_slot_num;
-	pthread_mutex_t hash_mutex[HOST_HASH_MAP_SIZE / HOST_MUTEX_SLOT_SIZE];
 };
 
 void mf_devicemgr_create();
@@ -72,16 +71,16 @@ Value: struct host_hash_value
 */
 struct host_hash_value
 {
-	//struct lf_list mem_manager_list;
+	struct lf_list mem_manage_list;
 	struct lf_list hash_list; 
-	struct host_hash_value * next;
-	struct host_hash_value * prev;
+	//struct host_hash_value * next;
+	//struct host_hash_value * prev;
 	struct mf_switch * sw;
 	uint32_t port_num;
 	uint64_t mac_addr;
 	uint32_t host_array_slot_index;
 	uint32_t hash_map_slot_index;
-	struct host_hash_value * hash_next;
+	//struct host_hash_value * hash_next;
 	uint8_t is_occupied;
 };
 

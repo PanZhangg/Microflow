@@ -59,6 +59,7 @@ struct mf_switch * mf_switch_create(uint32_t sockfd)
 	sw->feature_request_xid = 0;
 	/*link_list has already been assigned an address*/
 	add_switch(sw);
+	pthread_mutex_init(&(sw->switch_mutex), NULL);
 	return sw;
 }
 

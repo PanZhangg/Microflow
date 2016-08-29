@@ -22,6 +22,7 @@ struct lf_list * lf_list_pop(struct lf_list *l)
 		if(tmp == NULL)
 			return NULL;
 	}while(!__sync_bool_compare_and_swap(&(l->next), tmp, tmp->next));
+	tmp->next = NULL;
 	return tmp;
 }
 
