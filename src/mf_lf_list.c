@@ -54,7 +54,7 @@ again:
 			perror("List node has already been deleted");
 			return NULL;
 		}
-		if((*((char*)tmpp + (int)OFFSETOF(struct lf_list, mark))) == 0x1)
+		if((*((char*)tmpp + (int)OFFSETOF(struct lf_list, mark))) == 0x1) //mark of previous node is 1
 		{
 			goto again;
 		}

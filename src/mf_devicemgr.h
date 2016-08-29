@@ -92,7 +92,7 @@ struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr);
 
 void host_hash_value_destory(struct host_hash_value* value);
 
-void delete_host_hash_value(struct host_hash_value * value);
+void delete_host_hash_value(struct host_hash_value * value, struct host_hash_value * bucket_head);
 
 void print_switch_link(struct mf_switch *);
 
