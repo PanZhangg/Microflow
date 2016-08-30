@@ -3,6 +3,7 @@
 #include "Openflow/types.h"
 #include "./Openflow/openflow-1.1.h"
 #include <pthread.h>
+#include "mf_lf_list.h"
 
 
 struct mf_switch;
@@ -20,11 +21,16 @@ struct mf_topomgr
 	pthread_mutex_t topomgr_mutex;
 	struct link_node * available_slot;
 	struct link_node * used_slot;
+	struct lf_list available_list;
+	struct lf_list used_list;
+	struct lf_list available_link_list;
+	struct lf_list used_link_list;
 	uint32_t next_available_index;
 };
 
 struct link_node
 {
+	struct lf_list mem_manage_list;	//Keep this at the beginning of this structure
 	struct link_node * next; //pointers for available/used slot bi-link list
 	struct link_node * prev;
 	struct mf_switch * sw;
@@ -34,6 +40,8 @@ struct link_node
 
 struct network_link
 {
+	struct lf_list mem_manage_list;
+	struct lf_list sw_next;
 	struct link_node* src;
 	struct link_node* dst;
 	uint8_t is_occupied;
