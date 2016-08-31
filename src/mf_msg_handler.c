@@ -146,7 +146,7 @@ void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func fu
 
 static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_node * qn)
 {
-	if(handler_head == NULL)
+	if(unlikely(handler_head == NULL))
 	{
 		perror("handler head is NULL");
 		return;
@@ -355,7 +355,7 @@ static ovs_be32 packet_in_msg_get_in_port_num(struct q_node *qn)
 
 static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uint16_t total_len)
 {
-	if(qn == NULL || buffer == NULL)
+	if(unlikely(qn == NULL || buffer == NULL))
 	{
 		perror("qn is NULL or buffer is NULL");
 		return;
@@ -378,12 +378,12 @@ Msg handler functions
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
 	}
-	if(version == 4)
+	if(likely(version == 4))
 	{
 		switch(type)
 		{
@@ -406,7 +406,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 void hello_msg_handler(struct q_node* qn)
 {
 	static int if_LLDP_timer_exist = 0;
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
@@ -447,7 +447,7 @@ void hello_msg_handler(struct q_node* qn)
 
 void echo_request_handler(struct q_node* qn)
 {	
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
@@ -461,7 +461,7 @@ void echo_request_handler(struct q_node* qn)
 
 void feature_reply_handler(struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
@@ -476,7 +476,7 @@ void feature_reply_handler(struct q_node* qn)
 
 void packet_in_msg_handler(struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
@@ -492,7 +492,7 @@ void packet_in_msg_handler(struct q_node* qn)
 
 void port_status_msg_handler(struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
@@ -500,7 +500,7 @@ void port_status_msg_handler(struct q_node* qn)
 	uint8_t reason = *(qn->rx_packet + 8);
 	if(reason == 0)
 	{
-		pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
+		pthread_mutex_lock(&(qn->sw->switch_mutex));
 		char* pkt_ptr = qn->rx_packet + 16;
 		uint8_t i = qn->sw->port_num;
 		uint16_t len = 16; 
@@ -513,14 +513,14 @@ void port_status_msg_handler(struct q_node* qn)
 			pkt_ptr += 64;
 		}
 		qn->sw->port_num = i;
-		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
+		pthread_mutex_unlock(&(qn->sw->switch_mutex));
 		switch_print(qn->sw);
 	}
 }
 
 void multipart_reply_handler(struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
@@ -532,7 +532,7 @@ void multipart_reply_handler(struct q_node* qn)
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL");
 		return;
@@ -564,7 +564,7 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	ovs_be32 in_port_num = 0;	
 	in_port_num = packet_in_msg_get_in_port_num(qn);
 	struct ofp11_port * port = get_switch_port_by_port_num(qn->sw, in_port_num);
-	if(port == NULL)
+	if(unlikely(port == NULL))
 	{
 		perror("Bad Port");
 		return;
@@ -572,14 +572,14 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	struct link_node * right_node = link_node_create(qn->sw, port);
 	uint64_t dpid = get_dpid_from_LLDP_packet(qn->rx_packet + qn->packet_length - total_len);
 	struct mf_switch *sw = get_switch_by_dpid(dpid);
-	if(sw == NULL)
+	if(unlikely(sw == NULL))
 	{
 		perror("Bad dpid, can Not get switch");
 		return;
 	}
 	uint16_t outport = get_outport_from_LLDP_packet(qn->rx_packet + qn->packet_length - total_len);
 	struct ofp11_port * port_out = get_switch_port_by_port_num(sw, outport);
-	if(port_out == NULL)
+	if(unlikely(port_out == NULL))
 	{
 		perror("Bad Port");
 		return;

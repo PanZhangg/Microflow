@@ -1,4 +1,5 @@
 #include "mf_lf_list.h"
+#include "mf_utilities.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
@@ -68,7 +69,7 @@ struct lf_list * lf_list_search_node(struct lf_list* l, compare cmp, void* arg)
 	struct lf_list * tmp = l->next;
 	while(tmp)
 	{
-		if(tmp->mark == 1)//is being deleted
+		if(unlikely(tmp->mark == 1))//is being deleted
 		{
 			l->mark = 0;
 			return NULL;

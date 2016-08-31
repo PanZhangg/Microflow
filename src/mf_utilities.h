@@ -12,6 +12,12 @@ inline uint32_t swap_32bit(uint32_t);
 inline uint16_t swap_16bit(uint16_t);
 
 
+/*
+compiler utilities
+*/
+
+#define likely(x) __builtin_expect(!!(x), 1)
+#define unlikely(x) __builtin_expect(!!(x), 0)
 
 /*
 Network packets utilities

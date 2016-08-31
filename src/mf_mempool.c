@@ -1,5 +1,6 @@
 #include "mf_mempool.h"
 #include "mf_logger.h"
+#include "mf_utilities.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -20,7 +21,7 @@ struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 
 void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_switch* sw, struct mf_queue_node_mempool* mp)
 {
-	if(mp->push == mp->pop - 1 || (mp->pop == mp->head && mp->push == mp->tail))
+	if(unlikely(mp->push == mp->pop - 1 || (mp->pop == mp->head && mp->push == mp->tail)))
 	{
 		perror("Queue is full");
 		return;
@@ -28,7 +29,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 	memcpy(mp->push->rx_packet,rx_buffer, rx_length);
 	mp->push->packet_length = rx_length;
 	mp->push->sw = sw;
-	if(mp->push == mp->tail)
+	if(unlikely(mp->push == mp->tail))
 		mp->push = mp->head;
 	else
 		mp->push++;
@@ -40,7 +41,7 @@ struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 	if(mp->pop == mp->push)
 		return NULL;
 	qn = mp->pop;
-	if(mp->pop == mp->tail)
+	if(unlikely(mp->pop == mp->tail))
 		mp->pop = mp->head;
 	else
 		mp->pop++;

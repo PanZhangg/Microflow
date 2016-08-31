@@ -11,6 +11,7 @@
 #include "mf_switch.h"
 #include "mf_socket.h"
 #include "mf_mempool.h"
+#include "mf_utilities.h"
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 
@@ -63,7 +64,7 @@ void parse_thread_start(uint8_t num)
 
 static inline uint8_t parse_msg_type(struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL when parsing msg type");
 		return 0;
@@ -76,7 +77,7 @@ static inline uint8_t parse_msg_type(struct q_node* qn)
 
 static inline uint8_t parse_msg_version(struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL when parsing version"); 
 		return 0;
@@ -89,7 +90,7 @@ static inline uint8_t parse_msg_version(struct q_node* qn)
 
 void parse_msg(struct q_node* qn)
 {
-	if(qn == NULL)
+	if(unlikely(qn == NULL))
 	{
 		perror("qn is NULL when parsing msg");
 		return;
