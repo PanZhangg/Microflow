@@ -59,6 +59,7 @@ Register/unregister customized handler according to different msg type
 Maintain network links  
 Maintain switch links  
 Pre-alloced memory cells, eliminate malloc/free  
+Merge lock-free list
 
 ###Logo Design  DONE
 :D Thanks to Miss Hong :p  
@@ -66,6 +67,10 @@ Pre-alloced memory cells, eliminate malloc/free
 ###Http server/Web GUI  DONE
 Http server  
 Web GUI based on bootstrap jQuery and D3.js  
+
+###Lock-free linked-list & hashtable
+Used for device manager and topo manager  
+Eliminate performance bottleneck in multi-thread environment  
 
 #TODO List  
 
@@ -83,9 +88,6 @@ Topo status
 Warning/error messages  
 Port/Link status  
 
-###Lock-free linked-list & hashtable
-Used for device manager and topo manager  
-Eliminate performance bottleneck in multi-thread environment  
 
 ###Cluster
 A cluster service based on network games' mechanism  
