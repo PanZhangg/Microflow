@@ -75,6 +75,8 @@ void mf_switch_destory(struct mf_switch * sw)
 		perror("socket close error");
 	}
 	delete_switch_from_map(sw);
+	if(pthread_mutex_destroy(&sw->switch_mutex) < 0)
+		perror("mutex destroy error");
 	//free(sw);
 }
 

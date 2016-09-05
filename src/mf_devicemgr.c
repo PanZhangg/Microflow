@@ -48,6 +48,8 @@ void mf_devicemgr_create()
 	MF_DEVICE_MGR.used_slot_num = 0;
 }
 
+/*May return NULL
+Programmer should take care of this*/
 struct mf_switch * get_switch(uint32_t sock)
 {
 	return MF_DEVICE_MGR.mf_switch_map[sock];
@@ -110,24 +112,20 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 {
 	int i,curr_index;
 	curr_index = 0;
-	//pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	for(i = 0; i < MF_DEVICE_MGR.total_switch_number; i++)
 	{
 		struct mf_switch* sw = get_next_switch(&curr_index);
 		if(sw == NULL)
 		{
 			perror("No switch has this dpid");
-			//pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 			return NULL;
 		}
 		else if(sw->datapath_id == dpid)
 		{
-			//pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 			return sw;
 		}
 	}
 	perror("No switch has this dpid");
-	//pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
 	return NULL;
 }
 
@@ -244,16 +242,12 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 {
 	uint64_t index = mac_addr_hash(mac_addr);
 	struct host_hash_value * value;
-	//pthread_mutex_lock(&MF_DEVICE_MGR.hash_mutex[index/HOST_MUTEX_SLOT_SIZE]);
 	if(HOST_HASH_MAP[index] == NULL)
 	{
 		value = hash_value_created(sw, port_num, mac_addr); 
 		HOST_HASH_MAP[index] = value;
-		//lf_list_insert(&(value->hash_list),&(HOST_HASH_MAP[index]->hash_list));
 		value->hash_map_slot_index = index;
 		value->is_occupied = 1;
-		//push_to_array(value, &(MF_DEVICE_MGR.used_slot));
-
 	}
 	else
 	{
@@ -263,7 +257,6 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 			struct host_hash_value * value = container_of(tmp, struct host_hash_value, hash_list);
 			if(if_host_exist(value, sw, port_num, mac_addr))
 			{
-				//pthread_mutex_unlock(&MF_DEVICE_MGR.hash_mutex[index/HOST_MUTEX_SLOT_SIZE]);
 				return NULL;
 			}
 			else
@@ -271,44 +264,28 @@ struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port
 				if(tmp->next== NULL)
 				{
 					value = hash_value_created(sw, port_num, mac_addr); 
-					//tmp->hash_next = value;
 					lf_list_insert(&(value->hash_list),&(HOST_HASH_MAP[index]->hash_list));
 					value->hash_map_slot_index = index;
 					value->is_occupied = 1;
-					//push_to_array(value, &(MF_DEVICE_MGR.used_slot));
 					break;
 				}	
 				else
-					//tmp = tmp->hash_next;	
 					tmp = tmp->next;
 			}
 		}
 	}
-	//pthread_mutex_unlock(&MF_DEVICE_MGR.hash_mutex[index/HOST_MUTEX_SLOT_SIZE]);
 	return value;
 }
 
 static inline uint8_t if_host_exist(struct host_hash_value * value, struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
 	return !((value->mac_addr ^ mac_addr) | ((unsigned long)value->sw ^ (unsigned long)sw) | (value->port_num ^ port_num));
-/*
-	if(value->mac_addr == mac_addr \
-			&& value->sw == sw \
-			&& value->port_num == port_num)
-		return 1;
-	else
-		return 0;
-*/
-
 }
 
 static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t port_num, uint64_t mac_addr)
 {
-	//struct host_hash_value * value = get_available_value_slot();
 	struct lf_list * l = lf_list_pop(&MF_DEVICE_MGR.available_list);
 	struct host_hash_value * value = container_of(l, struct host_hash_value, mem_manage_list);
-	//ptr->mem_manager_list.next = NULL;
-	//l->next = NULL;
 	lf_list_insert(l, &(MF_DEVICE_MGR.used_list));
 	MF_DEVICE_MGR.available_slot_num--;
 	MF_DEVICE_MGR.used_slot_num++;
@@ -321,9 +298,6 @@ static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t
 		value->sw = sw;
 		value->port_num = port_num;
 		value->mac_addr = mac_addr;
-		//value->next = NULL;
-		//value->prev = NULL;
-		//value->hash_next = NULL;
 		return value;
 	}
 	perror("Value slot is NULL");
@@ -376,24 +350,20 @@ void delete_host_hash_value(struct host_hash_value * value, struct host_hash_val
 		perror("value is not exit");
 		return;
 	}
-	//pthread_mutex_lock(&MF_DEVICE_MGR.hash_mutex[value->hash_map_slot_index/HOST_MUTEX_SLOT_SIZE]);
 	struct host_hash_value * tmp = HOST_HASH_MAP[value->hash_map_slot_index];
 	struct lf_list * link = &(tmp->hash_list);
 	while(tmp)
 	{
 		if(tmp == value) 
 		{
-			//tmp = value->hash_list.next;  
 			break;
 		}
 		else
 		{
 			link = link->next;
-			//tmp = (tmp)->hash_list.next;   
 			tmp = container_of(link, struct host_hash_value, hash_list);
 		}
 	}
-	//pthread_mutex_unlock(&MF_DEVICE_MGR.hash_mutex[value->hash_map_slot_index/HOST_MUTEX_SLOT_SIZE]);
 	if(tmp == NULL)
 	{
 		perror("value is not exit");
@@ -405,10 +375,6 @@ void delete_host_hash_value(struct host_hash_value * value, struct host_hash_val
 
 static void used_to_available(struct host_hash_value * value)
 {
-	//pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
-	//pop_from_array(value,&MF_DEVICE_MGR.used_slot);
-	//pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
-	//push_to_array(value, &MF_DEVICE_MGR.available_slot);
 	struct lf_list * tmp = lf_list_delete(&(value->hash_list), &(MF_DEVICE_MGR.used_list));
 	lf_list_insert(tmp, &(MF_DEVICE_MGR.available_list));
 }

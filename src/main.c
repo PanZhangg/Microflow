@@ -13,6 +13,12 @@ static void print_info()
 	printf("		-=WebUI://localhost:8000=-\n");
 }
 
+void print_other()
+{
+	printf("To quit, type \033[1m'quit'\033[m"); 
+	printf("\n");
+}
+
 void print_welcome()
 {
 	print_info();
@@ -22,7 +28,10 @@ void print_welcome()
 	printf("	\033[31m| |\\/| | |/ __| '__/ _ \\|  __| | |/ _ \\ \\ /\\ / /\n\033[0m");
 	printf("	\033[31m| |  | | | (__| | | (_) | |    | | (_) \\ V  V / \n\033[0m");
 	printf("	\033[31m|_|  |_|_|\\___|_|  \\___/|_|    |_|\\___/ \\_/\\_/  \n\033[0m");
+print_other();
 }
+
+
 
 int main(int argc, char** argv)
 {
