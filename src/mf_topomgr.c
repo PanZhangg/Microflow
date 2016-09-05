@@ -47,7 +47,6 @@ void mf_topomgr_create()
 	MF_TOPO_MGR.used_link_list.next= NULL;
 	MF_TOPO_MGR.used_link_list.mark= 0;
 	MF_TOPO_MGR.next_available_index = 0;
-
 }
 
 static inline void push_to_array(struct link_node * value, struct link_node ** array)
@@ -138,11 +137,13 @@ static void realloc_cache_array()
 		exit(0);
 	}
 	memset(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size, 0, MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
-	int i;
-	MF_TOPO_MGR.node_cache_array_size *= 2;
 	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
+	int i;
 	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
 		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));
+	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
+		lf_list_insert(&(LINK_NODE_CACHE_ARRAY[i].mem_manage_list), &(MF_TOPO_MGR.available_list));
+	MF_TOPO_MGR.node_cache_array_size *= 2;
 }
 
 static struct link_node * get_available_value_slot()
@@ -151,6 +152,9 @@ static struct link_node * get_available_value_slot()
 		realloc_cache_array();
 	if(MF_TOPO_MGR.available_slot->is_occupied == 0)
 	{
+		struct lf_list* l = lf_list_pop(&MF_TOPO_MGR.available_list);
+		struct link_node * value1 = container_of(l, struct link_node, mem_manage_list);
+		lf_list_insert(l, &(MF_TOPO_MGR.used_list));
 		struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));
 		return value;
 	}
@@ -166,8 +170,6 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 		return (port->node);
 	}
 	struct link_node * node = get_available_value_slot();
-	struct lf_list * l = lf_list_pop(&(MF_TOPO_MGR.available_list));
-	//struct link_node * node = container_of(l, struct link_node, mem_manage_list);
 	if(node == NULL)
 	{
 		perror("Bad value slot");
@@ -180,9 +182,9 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 	node->prev = NULL;
 	node->is_occupied = 1;
 	push_to_array(node, &(MF_TOPO_MGR.used_slot));
-	node->mem_manage_list.next = NULL;
+	//node->mem_manage_list.next = NULL;
 	node->mem_manage_list.mark= 0;//Not necessary actually...But...Keep it as a good hobby..
-	lf_list_insert(l, &(MF_TOPO_MGR.used_list)); 
+	//lf_list_insert(l, &(MF_TOPO_MGR.used_list)); 
 	MF_TOPO_MGR.total_node_number++;
 	//printf("Node number is now: %ld\n", MF_TOPO_MGR.total_node_number);
 	return node;
@@ -241,7 +243,8 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	}
 	uint32_t index = get_next_available_index();
 	struct lf_list * l = lf_list_pop(&(MF_TOPO_MGR.available_link_list));
-	//struct network_link * link = container_of(l, struct network_link, mem_manage_lsit);
+	struct network_link * link_t = container_of(l, struct network_link, mem_manage_list);
+	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list)); 
 	if(index == MAX_NETWORK_LINK_NUM + 1)
 	{
 		printf("No available slot\n");
