@@ -417,7 +417,9 @@ void hello_msg_handler(struct q_node* qn)
 		//struct stopwatch * spw = stopwatch_create(1.0, &hello_msg_stopwatch_callback, PERMANENT, (void*)qn);
 		is_timer_added = 1;
 	}
-	mf_write_socket_log("Hello Message received", qn->sw->sockfd);
+	/*Log behavior leads to race condition when massive switches
+	to connect at the same time*/
+	//mf_write_socket_log("Hello Message received", qn->sw->sockfd);
 	uint32_t xid;
 	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);
