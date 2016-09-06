@@ -29,9 +29,9 @@ void mf_topomgr_create()
 	}
 	memset(LINK_NODE_CACHE_ARRAY, 0 , MF_TOPO_MGR.node_cache_array_size * sizeof(*LINK_NODE_CACHE_ARRAY));
 	int i = 0;
-	for(; i< MF_TOPO_MGR.node_cache_array_size; i++)
+	/*for(; i< MF_TOPO_MGR.node_cache_array_size; i++)
 		push_to_array(LINK_NODE_CACHE_ARRAY + i, &(MF_TOPO_MGR.available_slot));
-	MF_TOPO_MGR.used_slot = NULL;
+	MF_TOPO_MGR.used_slot = NULL;*/
 	/* Network Node list*/
 	MF_TOPO_MGR.available_list.next = NULL;
 	MF_TOPO_MGR.available_list.mark= 0;
@@ -46,10 +46,10 @@ void mf_topomgr_create()
 		lf_list_insert(&(NETWORK_LINK_CACHE_ARRAY[i].mem_manage_list), &(MF_TOPO_MGR.available_link_list));
 	MF_TOPO_MGR.used_link_list.next= NULL;
 	MF_TOPO_MGR.used_link_list.mark= 0;
-	MF_TOPO_MGR.next_available_index = 0;
+	//MF_TOPO_MGR.next_available_index = 0;
 }
 
-static inline void push_to_array(struct link_node * value, struct link_node ** array)
+/*static inline void push_to_array(struct link_node * value, struct link_node ** array)
 {
 	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	if(*array == NULL)
@@ -125,7 +125,7 @@ static inline struct link_node* pop_from_array(struct link_node * value, struct 
 	}
 	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 	return NULL;
-}
+}*/
 
 static void realloc_cache_array()
 {
@@ -139,8 +139,8 @@ static void realloc_cache_array()
 	memset(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size, 0, MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 	int i;
-	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
-		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));
+	/*for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
+		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));*/
 	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
 		lf_list_insert(&(LINK_NODE_CACHE_ARRAY[i].mem_manage_list), &(MF_TOPO_MGR.available_list));
 	MF_TOPO_MGR.node_cache_array_size *= 2;
@@ -148,16 +148,13 @@ static void realloc_cache_array()
 
 static struct link_node * get_available_value_slot()
 {
-	if(MF_TOPO_MGR.available_slot == NULL)
+	if(MF_TOPO_MGR.available_list.next == NULL)
 		realloc_cache_array();
-	if(MF_TOPO_MGR.available_slot->is_occupied == 0)
-	{
-		struct lf_list* l = lf_list_pop(&MF_TOPO_MGR.available_list);
-		struct link_node * value1 = container_of(l, struct link_node, mem_manage_list);
-		lf_list_insert(l, &(MF_TOPO_MGR.used_list));
-		struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));
-		return value;
-	}
+	struct lf_list* l = lf_list_pop(&MF_TOPO_MGR.available_list);
+	struct link_node * value = container_of(l, struct link_node, mem_manage_list);
+	lf_list_insert(l, &(MF_TOPO_MGR.used_list));
+	/*struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));*/
+	return value;
 	perror("No available value slot");
 	return NULL;
 }
@@ -181,8 +178,7 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 	node->next = NULL;
 	node->prev = NULL;
 	node->is_occupied = 1;
-	push_to_array(node, &(MF_TOPO_MGR.used_slot));
-	//node->mem_manage_list.next = NULL;
+	//push_to_array(node, &(MF_TOPO_MGR.used_slot));
 	node->mem_manage_list.mark= 0;//Not necessary actually...But...Keep it as a good hobby..
 	//lf_list_insert(l, &(MF_TOPO_MGR.used_list)); 
 	MF_TOPO_MGR.total_node_number++;
@@ -190,7 +186,7 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 	return node;
 }
 
-static uint32_t get_next_available_index()
+/*static uint32_t get_next_available_index()
 {
 	static uint8_t loop_restart;
 	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
@@ -231,7 +227,7 @@ static uint32_t get_next_available_index()
 	MF_TOPO_MGR.next_available_index = tmp;
 	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 	return index;
-}
+}*/
 
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst)
 {
@@ -241,28 +237,34 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 		printf("Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
 		return NULL;
 	}
-	uint32_t index = get_next_available_index();
+	//uint32_t index = get_next_available_index();
 	struct lf_list * l = lf_list_pop(&(MF_TOPO_MGR.available_link_list));
-	struct network_link * link_t = container_of(l, struct network_link, mem_manage_list);
-	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list)); 
-	if(index == MAX_NETWORK_LINK_NUM + 1)
+	if(l == NULL)
 	{
 		printf("No available slot\n");
 		return NULL;
 	}
-/*
+	struct network_link * link = container_of(l, struct network_link, mem_manage_list);
+	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list)); 
+	MF_TOPO_MGR.total_network_link_number++;
+	/*if(index == MAX_NETWORK_LINK_NUM + 1)
+	  {
+	  printf("No available slot\n");
+	  return NULL;
+	  }*/
 	link->src = src;
 	link->dst = dst;
 	link->sw_next.next = NULL;
 	link->sw_next.mark = 0;
-	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list));*/
-	NETWORK_LINK_CACHE_ARRAY[index].src = src;
-	NETWORK_LINK_CACHE_ARRAY[index].dst = dst;
-	NETWORK_LINK_CACHE_ARRAY[index].sw_link_next = NULL;
-	src->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
-	dst->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
-	printf(" Network link num :%ld\n", MF_TOPO_MGR.total_network_link_number);
-	return (& NETWORK_LINK_CACHE_ARRAY[index]);
+	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list));
+	/*NETWORK_LINK_CACHE_ARRAY[index].src = src;
+	  NETWORK_LINK_CACHE_ARRAY[index].dst = dst;
+	  NETWORK_LINK_CACHE_ARRAY[index].sw_link_next = NULL;
+	  src->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
+	  dst->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
+	  printf(" Network link num :%ld\n", MF_TOPO_MGR.total_network_link_number);
+	  return (& NETWORK_LINK_CACHE_ARRAY[index]);*/
+	return link;
 }
 
 struct path_link_list * path_link_list_create()

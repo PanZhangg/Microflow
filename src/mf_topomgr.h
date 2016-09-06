@@ -19,13 +19,13 @@ struct mf_topomgr
 	uint64_t total_network_link_number;
 	uint64_t node_cache_array_size;
 	pthread_mutex_t topomgr_mutex;
-	struct link_node * available_slot;
-	struct link_node * used_slot;
+	//struct link_node * available_slot;
+	//struct link_node * used_slot;
 	struct lf_list available_list;
 	struct lf_list used_list;
 	struct lf_list available_link_list;
 	struct lf_list used_link_list;
-	uint32_t next_available_index;
+	//uint32_t next_available_index;
 };
 
 struct link_node
