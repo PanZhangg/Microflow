@@ -158,6 +158,7 @@ void* handle_connection(void* arg)
 				{
 					char * pkt_ptr = sw->rx_buffer;
 					length += sw->epoll_recv_incomplete_length;
+					sw->epoll_recv_incomplete_length = 0;
 					int received_length = length;
 					while(length > 0)
 					{
