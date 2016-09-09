@@ -1,5 +1,6 @@
 #include "../src/mf_utilities.h"
-#include "stdio.h"
+#include <time.h>
+#include <stdio.h>
 
 uint32_t swap_32(uint32_t a)
 {
@@ -20,6 +21,7 @@ uint16_t copy_16(char* ptr)
 
 int main()
 {
+	time_t clockbegin, clockend;
 	char * src_buffer = "abcdefghijk";
 	char dst_buffer[12];
 	inverse_memcpy(dst_buffer, src_buffer+2, 2);
@@ -34,5 +36,16 @@ int main()
 	uint16_t rst_16 = swap_16(test16);
 	printf("test:%x\n",rst);
 	printf("test:%x\n",rst_16);
+	int i = 0;
+	time(&clockbegin);
+	for(; i < 900000000; i++)
+		inverse_memcpy(&test1, &test, 2);
+	time(&clockend);
+	printf("inverse_memcpy: %f\n", difftime(clockend, clockbegin));
+	time(&clockbegin);
+	for(; i < 900000000; i++)
+		test1 = ntoh_16bit(((char*)&test+1));
+	time(&clockend);
+	printf("ntoh_swap: %f\n", difftime(clockend, clockbegin));
 	return 0;
 }
