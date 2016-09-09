@@ -5,6 +5,7 @@
 #include "mf_mempool.h"
 #include "mf_utilities.h"
 #include "mf_api.h"
+#include "dbg.h"
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <string.h>  
@@ -29,13 +30,13 @@ static void set_nonblocking(uint32_t sock)
     opts=fcntl(sock,F_GETFL);
     if(opts<0)
     {
-        perror("fcntl(sock,GETFL)");
+        log_err("fcntl(sock,GETFL)");
         exit(1);
     }
     opts = opts|O_NONBLOCK;
     if(fcntl(sock,F_SETFL,opts)<0)
     {
-        perror("fcntl(sock,SETFL,opts)");
+        log_err("fcntl(sock,SETFL,opts)");
         exit(1);
     }
 }
@@ -45,13 +46,13 @@ uint32_t mf_listen_socket_create()
 {
 	uint32_t sock;
 	if((sock = socket(AF_INET, SOCK_STREAM,0)) == -1){
-		perror("socket created failed");
+		log_err("socket created failed");
 		exit(0);
 	}
 	int enable = 1;
 	if(setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (void*)&enable, sizeof(enable)) != 0)
 	{
-		perror("set sock option failed");
+		log_err("set sock option failed");
 		exit(0);
 	}
 	mf_write_socket_log("controller socket created",sock);
@@ -77,7 +78,7 @@ void mf_socket_bind(uint32_t sock)
 	controller_addr.sin_port = htons(DEFAULT_PORT);
 	if((bind(sock, (struct sockaddr*)&controller_addr,sizeof(controller_addr))) == -1)
 	{
-		perror("socket bind failed");
+		log_err("socket bind failed");
 		exit(0);
 	}
 	mf_write_socket_log("socket binded with local IP addresses",sock);
@@ -96,7 +97,7 @@ void* handle_connection(void* arg)
 		CPU_ZERO(&my_set);
 		CPU_SET(ccpu_id, &my_set);
 		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
-			perror("Set CPU affinity failed");
+			log_warn("Set CPU affinity failed");
 	}
 	unsigned int i;
 	int connfd;
@@ -115,12 +116,12 @@ void* handle_connection(void* arg)
 		{
 			if(events[i].data.fd == sock)
 			{
-				printf("incoming connection\n");
+				log_info("incoming connection");
 				connfd = accept(sock, (struct sockaddr*)&switch_addr, &clilen);
 				mf_write_socket_log("Incoming socket connection", connfd);
 				if(connfd < 0)
 				{
-					perror("connfd < 0");
+					log_warn("connfd < 0");
 					continue;
 				}
 				mf_switch_create(connfd);
@@ -133,7 +134,7 @@ void* handle_connection(void* arg)
 				int sockfd = events[i].data.fd;
 				if(sockfd < 0)
 				{
-					perror("sockfd < 0");
+					log_warn("sockfd < 0");
 					continue;
 				}
 				struct mf_switch * sw = get_switch(sockfd);
@@ -145,12 +146,12 @@ void* handle_connection(void* arg)
 					epoll_ctl(epfd, EPOLL_CTL_DEL, sockfd, &ev);
 					mf_switch_destory(sw);
 					mf_write_socket_log("socket closed", sockfd);
-					printf("socket closed\n");	
+					log_info("socket closed");	
 					continue;
 				}
 				if(length < 0)
 				{
-					printf("socket error\n");
+					log_warn("socket error\n");
 					mf_write_socket_log("socket error", sockfd);
 					continue;
 				}
@@ -169,7 +170,7 @@ void* handle_connection(void* arg)
 							inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
 							if(unlikely(length < msg_length))
 							{
-								printf("received length is: %d,current length is: %d\n,  msg length is %d\n",received_length, length, msg_length);
+								log_warn("received length is: %d,current length is: %d\n,  msg length is %d\n",received_length, length, msg_length);
 								sw->epoll_recv_incomplete_length = length;
 								memmove(sw->rx_buffer, pkt_ptr, sw->epoll_recv_incomplete_length);
 								break;	
@@ -180,8 +181,8 @@ void* handle_connection(void* arg)
 						}
 						else
 						{
-							perror("Msg is not OF1.3");
-							printf("Packets drop, total length: %d\n", length);
+							log_warn("Msg is not OF1.3");
+							log_warn("Packets drop, total length: %d\n", length);
 							break;
 						}
 					}

@@ -5,6 +5,7 @@
 #include "./Openflow/openflow-1.1.h"
 #include "mf_topomgr.h"
 #include <pthread.h>
+#include "mf_lf_list.h"
 
 #define MAX_MF_SWITCH_PORT_NUM 256
 
@@ -33,6 +34,8 @@ struct mf_switch
 	struct sw_link_list link_list;
 	/*--thread mutex--*/	
 	pthread_mutex_t switch_mutex;
+	/*hosts list*/
+	struct lf_list hosts;
 };
 
 struct mf_switch * mf_switch_create(uint32_t sockfd);

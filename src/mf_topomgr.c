@@ -1,5 +1,6 @@
 #include "mf_topomgr.h"
 #include "mf_switch.h"
+#include "dbg.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -24,7 +25,7 @@ void mf_topomgr_create()
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)malloc(MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
 	{
-		perror("topo mgr malloc failed\n");
+		log_err("topo mgr malloc failed\n");
 		exit(0);
 	}
 	memset(LINK_NODE_CACHE_ARRAY, 0 , MF_TOPO_MGR.node_cache_array_size * sizeof(*LINK_NODE_CACHE_ARRAY));
@@ -73,7 +74,7 @@ static inline struct link_node* pop_from_array(struct link_node * value, struct 
 	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
 	if(array == NULL || *array == NULL)
 	{
-		perror("Pop array is NULL");
+		log_warn("Pop array is NULL");
 		pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 		return NULL;
 	}
@@ -133,7 +134,7 @@ static void realloc_cache_array()
 	LINK_NODE_CACHE_ARRAY = (struct link_node *)realloc(LINK_NODE_CACHE_ARRAY, 2 * MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	if(LINK_NODE_CACHE_ARRAY == NULL)
 	{
-		perror("realloc cache array failed");
+		log_err("realloc cache array failed");
 		exit(0);
 	}
 	memset(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size, 0, MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
@@ -155,7 +156,7 @@ static struct link_node * get_available_value_slot()
 	lf_list_insert(l, &(MF_TOPO_MGR.used_list));
 	/*struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));*/
 	return value;
-	perror("No available value slot");
+	log_warn("No available value slot");
 	return NULL;
 }
 
@@ -163,13 +164,13 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 {
 	if(port->node != NULL)
 	{
-		perror("Node already exists");
+		log_warn("Node already exists");
 		return (port->node);
 	}
 	struct link_node * node = get_available_value_slot();
 	if(node == NULL)
 	{
-		perror("Bad value slot");
+		log_warn("Bad value slot");
 		return NULL;
 	}
 	node->sw = sw;
@@ -200,7 +201,7 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 	{
 		if(MF_TOPO_MGR.total_network_link_number == MAX_NETWORK_LINK_NUM)  
 		{
-			perror("No available network link slot index");
+			log_warn("No available network link slot index");
 			pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 			return MAX_NETWORK_LINK_NUM + 1;
 		}
@@ -218,7 +219,7 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 		}
 		else if(tmp+1 >= MAX_NETWORK_LINK_NUM && loop_restart == 1)
 		{
-			perror("No available network link slot index");
+			log_warn("No available network link slot index");
 			loop_restart = 0;
 			index = MAX_NETWORK_LINK_NUM + 1;
 			break;
@@ -233,7 +234,7 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 {
 	if(src->port->link == dst->port->link && src->port->link)
 	{
-		perror("Network Link already existes");
+		log_warn("Network Link already existes");
 		printf("Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
 		return NULL;
 	}

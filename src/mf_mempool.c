@@ -1,4 +1,5 @@
 #include "mf_mempool.h"
+#include "dbg.h"
 #include "mf_logger.h"
 #include "mf_utilities.h"
 #include <unistd.h>
@@ -23,7 +24,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 {
 	if(unlikely(mp->push == mp->pop - 1 || (mp->pop == mp->head && mp->push == mp->tail)))
 	{
-		perror("Queue is full");
+		log_warn("Queue is full");
 		return;
 	}
 	memcpy(mp->push->rx_packet,rx_buffer, rx_length);

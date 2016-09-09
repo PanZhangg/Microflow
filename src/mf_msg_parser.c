@@ -12,6 +12,7 @@
 #include "mf_socket.h"
 #include "mf_mempool.h"
 #include "mf_utilities.h"
+#include "dbg.h"
 #include "./Openflow/openflow.h"
 #include "./Openflow/openflow-common.h"
 
@@ -33,7 +34,7 @@ void * worker_thread(void* arg)
 		CPU_SET(ccpu_id, &my_set);
 		//printf("Set CPU affinity: %d\n", ccpu_id);
 		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
-			perror("Set CPU affinity failed");
+			log_warn("Set CPU affinity failed");
 	}
 	int index = *(int*)arg;
 	while(1)
@@ -55,7 +56,7 @@ void parse_thread_start(uint8_t num)
 		queue_index[i] = i;
 		if((pthread_create(&thread_id, NULL, worker_thread, (void*)&queue_index[i])) < 0)
 		{
-			perror("thread create error");
+			log_err("thread create error");
 			exit(0);
 		}
 		pthread_detach(thread_id);
@@ -66,7 +67,7 @@ static inline uint8_t parse_msg_type(struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL when parsing msg type");
+		log_warn("qn is NULL when parsing msg type");
 		return 0;
 	}
 	//uint8_t type = (uint8_t)*(qn->rx_packet + 1);
@@ -79,7 +80,7 @@ static inline uint8_t parse_msg_version(struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL when parsing version"); 
+		log_warn("qn is NULL when parsing version"); 
 		return 0;
 	}
 	uint8_t version;
@@ -92,7 +93,7 @@ void parse_msg(struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL when parsing msg");
+		log_warn("qn is NULL when parsing msg");
 		return;
 	}
 	else

@@ -1,4 +1,5 @@
 #include "mf_lf_list.h"
+#include "dbg.h"
 #include "mf_utilities.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -52,7 +53,7 @@ again:
 		}
 		if(tmp == NULL)
 		{
-			perror("List node has already been deleted");
+			log_warn("List node has already been deleted");
 			return NULL;
 		}
 		if((*((char*)tmpp + (int)OFFSETOF(struct lf_list, mark))) == 0x1) //mark of previous node is 1

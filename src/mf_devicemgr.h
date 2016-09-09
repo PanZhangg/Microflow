@@ -20,13 +20,6 @@ struct mf_devicemgr
 	uint32_t total_switch_number;
 	struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
 	pthread_mutex_t devicemgr_mutex;
-	/*
-	always start with the available_slot
-	to get a ptr pointed to static memory slot
-	then store the ptr into used_slot
-	*/
-	//struct host_hash_value * available_slot; //* available_slot head of the list
-	//struct host_hash_value * used_slot;
 	struct lf_list available_list;
 	struct lf_list used_list;
 	uint32_t available_slot_num;
@@ -41,7 +34,7 @@ struct mf_switch * get_switch(uint32_t sock);
 
 void delete_switch_from_map(struct mf_switch *);
 
-struct mf_switch * get_next_switch(int* loop_index);//Usually used in a for-loop
+struct mf_switch * get_next_switch(int* loop_index);//Usually used within a for-loop
 /*
 do_something for all the valid switches
 Code template:
@@ -73,14 +66,12 @@ struct host_hash_value
 {
 	struct lf_list mem_manage_list;
 	struct lf_list hash_list; 
-	//struct host_hash_value * next;
-	//struct host_hash_value * prev;
+	struct lf_list switch_list;
 	struct mf_switch * sw;
 	uint32_t port_num;
 	uint64_t mac_addr;
 	uint32_t host_array_slot_index;
 	uint32_t hash_map_slot_index;
-	//struct host_hash_value * hash_next;
 	uint8_t is_occupied;
 };
 

@@ -11,6 +11,7 @@
 #include "mf_utilities.h"
 #include "mf_devicemgr.h"
 #include "mf_topomgr.h"
+#include "dbg.h"
 
 /*=====================================
 Global variables
@@ -31,8 +32,9 @@ static void regist_msg_handler(struct single_msg_handler ** handler_list, struct
 {
 	if(handler == NULL)
 	{
-		perror("handler is NULL");
-		exit(0);
+		log_warn("handler is NULL");
+		//exit(0);
+		return;
 	}
 	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
@@ -49,14 +51,15 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 {
 	if(handler_list == NULL || func == NULL)
 	{
-		perror("Handler list is NULL or Func is NULL");
-		exit(0);
+		log_warn("Handler list is NULL or Func is NULL");
+		//exit(0);
+		return;
 	}
 	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
 	{
-		perror("handler list is NULL");
-		exit(0);
+		log_warn("handler list is NULL");
+		//exit(0);
 		return;
 	}
 	while(*tmp)
@@ -92,13 +95,14 @@ struct single_msg_handler * single_msg_handler_create(msg_handler_func func)
 {
 	if(func == NULL)
 	{
-		perror("func is NULL");
-		exit(0);
+		log_warn("func is NULL");
+		//exit(0);
+		return NULL;
 	}
 	struct single_msg_handler * handler = (struct single_msg_handler *) malloc(sizeof(*handler));
 	if(handler == NULL)
 	{
-		perror("malloc failed");
+		log_err("malloc failed");
 		exit(0);
 	}
 	handler->handler_func = func;
@@ -119,7 +123,7 @@ void msg_handler_func_register(enum MSG_HANDLER_TYPE type, msg_handler_func func
 			regist_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, handler);break;
 		case PACKET_IN_MSG_HANDLER_FUNC:
 			regist_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, handler);break;
-		default:perror("wrong handler type"); break;
+		default:log_warn("wrong handler type"); break;
 	}
 }
 
@@ -127,8 +131,9 @@ void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func fu
 {
 	if(func == NULL)
 	{
-		perror("func is NULL");
-		exit(0);
+		log_warn("func is NULL");
+		return;
+		//exit(0);
 	}
 	switch(type)
 	{
@@ -140,7 +145,7 @@ void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func fu
 			unregister_msg_handler(&MSG_HANDLERS->feature_reply_handler_list_head, func);break;
 		case PACKET_IN_MSG_HANDLER_FUNC:
 			unregister_msg_handler(&MSG_HANDLERS->packet_in_msg_handler_list_head, func);break;
-		default: perror("wrong handler type"); break;
+		default: log_warn("wrong handler type"); break;
 	}
 }
 
@@ -148,7 +153,7 @@ static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_
 {
 	if(unlikely(handler_head == NULL))
 	{
-		perror("handler head is NULL");
+		log_warn("handler head is NULL");
 		return;
 	}
 
@@ -168,7 +173,7 @@ void hello_msg_stopwatch_callback(void* arg) //for timer function test
 {
 	if(arg == NULL)
 	{
-		perror("stopwatch callback arg is null");
+		log_warn("stopwatch callback arg is null");
 		return;
 	}
 	else
@@ -347,8 +352,8 @@ static ovs_be32 packet_in_msg_get_in_port_num(struct q_node *qn)
 	uint16_t match_length = 0;
 	inverse_memcpy(&match_length, qn->rx_packet + 26, 2);
 	inverse_memcpy(&port_num, qn->rx_packet + 32, 4);
-	printf("Match length is : %d\n", match_length);
-	printf("In port num is : %d\n", port_num);
+	//printf("Match length is : %d\n", match_length);
+	//printf("In port num is : %d\n", port_num);
 	return port_num;  
 }
 
@@ -357,7 +362,7 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 {
 	if(unlikely(qn == NULL || buffer == NULL))
 	{
-		perror("qn is NULL or buffer is NULL");
+		log_warn("qn is NULL or buffer is NULL");
 		return;
 	}
 	//uint16_t ether_type = (uint16_t)*(buffer + 12) << 8 | *(buffer + 13);
@@ -367,7 +372,7 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
 		case 0x88cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
-		default:perror("wrong ether type");printf("ether type: %x\n", ether_type);break;
+		default:log_warn("wrong ether type");log_info("ether type: %x\n", ether_type);break;
 	}
 }
 
@@ -380,7 +385,7 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
 	if(likely(version == 4))
@@ -393,13 +398,13 @@ void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 			case 10: packet_in_msg_handler(qn); break;
 			case 12: port_status_msg_handler(qn);break;
 			case 19: multipart_reply_handler(qn); break;
-			default: perror("Invalid msg type"); break;
+			default: log_warn("Invalid msg type"); break;
 		}
 	}
 	else
 	{
-		perror("Msg is not Openflow Version 1.3");
-		printf("Msg version is: %d\n", version);
+		log_warn("Msg is not Openflow Version 1.3");
+		log_warn("Msg version is: %d\n", version);
 	}
 }
 
@@ -408,7 +413,7 @@ void hello_msg_handler(struct q_node* qn)
 	static int if_LLDP_timer_exist = 0;
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
 	static uint8_t is_timer_added;
@@ -444,14 +449,14 @@ void hello_msg_handler(struct q_node* qn)
 		struct stopwatch * spw = stopwatch_create(1.0, &send_LLDP_packet, PERMANENT, (void*)(qn->sw));
 		if_LLDP_timer_exist = 1;
 	}
-	printf("Hello msg handling\n");
+	log_info("Hello msg handling");
 }
 
 void echo_request_handler(struct q_node* qn)
 {	
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
 	uint32_t xid;
@@ -465,9 +470,10 @@ void feature_reply_handler(struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
+	log_info("feature_reply message handling");
 	mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
 	inverse_memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
 	inverse_memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
@@ -480,7 +486,7 @@ void packet_in_msg_handler(struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
 	uint32_t xid;
@@ -496,7 +502,7 @@ void port_status_msg_handler(struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
 	uint8_t reason = *(qn->rx_packet + 8);
@@ -524,7 +530,7 @@ void multipart_reply_handler(struct q_node* qn)
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
 	uint16_t type = *(qn->rx_packet + 8) << 8 | *(qn->rx_packet + 9);
@@ -536,7 +542,7 @@ void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t tot
 {
 	if(unlikely(qn == NULL))
 	{
-		perror("qn is NULL");
+		log_warn("qn is NULL");
 		return;
 	}
 	uint64_t mac_addr = get_src_mac_addr(buffer);
@@ -568,7 +574,7 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	struct ofp11_port * port = get_switch_port_by_port_num(qn->sw, in_port_num);
 	if(unlikely(port == NULL))
 	{
-		perror("Bad Port");
+		log_warn("Bad Port");
 		return;
 	}
 	struct link_node * right_node = link_node_create(qn->sw, port);
@@ -576,14 +582,14 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	struct mf_switch *sw = get_switch_by_dpid(dpid);
 	if(unlikely(sw == NULL))
 	{
-		perror("Bad dpid, can Not get switch");
+		log_warn("Bad dpid, can Not get switch");
 		return;
 	}
 	uint16_t outport = get_outport_from_LLDP_packet(qn->rx_packet + qn->packet_length - total_len);
 	struct ofp11_port * port_out = get_switch_port_by_port_num(sw, outport);
 	if(unlikely(port_out == NULL))
 	{
-		perror("Bad Port");
+		log_warn("Bad Port");
 		return;
 	}
 	struct link_node * left_node = link_node_create(sw, port_out); 

@@ -1,4 +1,5 @@
 #include "mf_devicemgr.h"
+#include "dbg.h"
 #include "mf_switch.h"
 #include <string.h>
 #include <stdlib.h>
@@ -27,14 +28,6 @@ void mf_devicemgr_create()
 {
 	MF_DEVICE_MGR.total_switch_number = 0;
 	pthread_mutex_init(&(MF_DEVICE_MGR.devicemgr_mutex), NULL);
-	/*MF_DEVICE_MGR.available_slot = NULL;
-	int i = 0;
-	for(; i < MAX_HOST_NUM; i++)
-	{
-		push_to_array(&HOST_CACHE_ARRAY[i],&(MF_DEVICE_MGR.available_slot));
-		HOST_CACHE_ARRAY[i].host_array_slot_index = i;
-	}
-	MF_DEVICE_MGR.used_slot = NULL;*/
 	int i = 0;
 	MF_DEVICE_MGR.used_list.next = NULL;
 	MF_DEVICE_MGR.used_list.mark = 0;
@@ -86,7 +79,7 @@ struct mf_switch * get_next_switch(int* loop_index)
 {
 	if(*loop_index >= MAX_MF_SWITCH_NUM)
 	{
-		perror("Bad loop_index");
+		log_warn("Bad loop_index");
 		return NULL;
 	}
 	for(; *loop_index < MAX_MF_SWITCH_NUM; (*loop_index)++)
@@ -104,7 +97,7 @@ struct mf_switch * get_next_switch(int* loop_index)
 			}
 		}
 	}
-	perror("No valid switch");
+	log_warn("No valid switch");
 	return NULL;
 }
 
@@ -117,7 +110,7 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 		struct mf_switch* sw = get_next_switch(&curr_index);
 		if(sw == NULL)
 		{
-			perror("No switch has this dpid");
+			log_warn("No switch has this dpid");
 			return NULL;
 		}
 		else if(sw->datapath_id == dpid)
@@ -125,7 +118,7 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 			return sw;
 		}
 	}
-	perror("No switch has this dpid");
+	log_warn("No switch has this dpid");
 	return NULL;
 }
 
@@ -134,7 +127,7 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	pthread_mutex_lock(&sw->switch_mutex);
 	if(sw == NULL)
 	{
-		perror("sw is NULL");
+		log_warn("sw is NULL");
 		pthread_mutex_unlock(&sw->switch_mutex);
 		return NULL;
 	}
@@ -148,7 +141,7 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 			return &(sw->ports[i]);
 		}
 	}
-	perror("No port has the port num");
+	log_warn("No port has the port num");
 	pthread_mutex_unlock(&sw->switch_mutex);
 	return NULL;
 }
@@ -176,7 +169,7 @@ static struct host_hash_value* pop_from_array(struct host_hash_value * value, st
 {
 	if(array == NULL || *array == NULL)
 	{
-		perror("Array is NULL"); 
+		log_warn("Array is NULL"); 
 		return NULL;
 	}
 	struct host_hash_value * tmp = * array;
@@ -296,11 +289,12 @@ static struct host_hash_value* hash_value_created(struct mf_switch *sw, uint32_t
 		value->hash_list.next = NULL;
 		value->hash_list.mark = 0;
 		value->sw = sw;
+		lf_list_insert(&value->switch_list, &sw->hosts);
 		value->port_num = port_num;
 		value->mac_addr = mac_addr;
 		return value;
 	}
-	perror("Value slot is NULL");
+	log_warn("Value slot is NULL");
 	return NULL;
 }
 
@@ -347,7 +341,7 @@ void delete_host_hash_value(struct host_hash_value * value, struct host_hash_val
 {
 	if(HOST_HASH_MAP[value->hash_map_slot_index] == NULL)	
 	{
-		perror("value is not exit");
+		log_warn("value is not exist");
 		return;
 	}
 	struct host_hash_value * tmp = HOST_HASH_MAP[value->hash_map_slot_index];
@@ -366,7 +360,7 @@ void delete_host_hash_value(struct host_hash_value * value, struct host_hash_val
 	}
 	if(tmp == NULL)
 	{
-		perror("value is not exit");
+		log_warn("value is not exist");
 		return;
 	}
 	lf_list_delete(link, &(bucket_head->hash_list));

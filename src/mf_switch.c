@@ -3,6 +3,7 @@
 #include "mf_logger.h"
 #include "mf_devicemgr.h"
 #include "mf_rx_queue.h"
+#include "dbg.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -44,6 +45,11 @@
 struct mf_switch * mf_switch_create(uint32_t sockfd)
 {
 	struct mf_switch * sw = (struct mf_switch*)malloc(sizeof(struct mf_switch));
+	if(sw == NULL)
+	{
+		log_err("malloc failed");
+		exit(0);
+	}
 	sw->sockfd = sockfd;
 	sw->epoll_recv_incomplete_length = 0;
 	sw->datapath_id = 0;
@@ -67,16 +73,17 @@ void mf_switch_destory(struct mf_switch * sw)
 {
 	if(sw == NULL)
 	{
-		perror("error: switch to destory is NULL");
-		exit(0);
+		log_warn("error: switch to destory is NULL");
+		//exit(0);
+		return;
 	}
 	if(close(sw->sockfd) < 0)
 	{
-		perror("socket close error");
+		log_warn("socket close error");
 	}
 	delete_switch_from_map(sw);
 	if(pthread_mutex_destroy(&sw->switch_mutex) < 0)
-		perror("mutex destroy error");
+		log_warn("mutex destroy error");
 	//free(sw);
 }
 

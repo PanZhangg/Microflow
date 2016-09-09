@@ -66,7 +66,7 @@ MAX_HEADER_SIZE	src/httpserver/wrlib/http.h	42;"	d
 MAX_HOST_NUM	src/mf_devicemgr.h	12;"	d
 MAX_HTTP_HEADERS	src/httpserver/wrlib/http.h	33;"	d
 MAX_MF_SWITCH_NUM	src/mf_devicemgr.h	10;"	d
-MAX_MF_SWITCH_PORT_NUM	src/mf_switch.h	9;"	d
+MAX_MF_SWITCH_PORT_NUM	src/mf_switch.h	10;"	d
 MAX_NETWORK_LINK_NUM	src/mf_topomgr.h	11;"	d
 MAX_NETWORK_LINK_NUM_PER_SWITCH	src/mf_topomgr.h	12;"	d
 MAX_PKT	src/mf_utilities.h	42;"	d
@@ -540,7 +540,7 @@ available_list	src/mf_topomgr.h	/^	struct lf_list available_list;$/;"	m	struct:m
 available_slot_num	src/mf_devicemgr.h	/^	uint32_t available_slot_num;$/;"	m	struct:mf_devicemgr
 band_stats	src/Openflow/openflow-1.3.h	/^    struct ofp13_meter_band_stats band_stats[0];  \/* The band_stats length is$/;"	m	struct:ofp13_meter_stats	typeref:struct:ofp13_meter_stats::ofp13_meter_band_stats
 band_types	src/Openflow/openflow-1.3.h	/^    ovs_be32   band_types;    \/* Bitmaps of OFPMBT13_* values supported. *\/$/;"	m	struct:ofp13_meter_features
-barrier	src/mf_mempool.c	9;"	d	file:
+barrier	src/mf_mempool.c	10;"	d	file:
 begin	src/httpserver/wrlib/wrmpool.h	/^	char *begin;\/*start pos*\/$/;"	m	struct:__anon7
 bucket_array_len	src/Openflow/openflow-1.5.h	/^    ovs_be16 bucket_array_len;    \/* Length of action buckets data. *\/$/;"	m	struct:ofp15_group_mod
 bucket_id	src/Openflow/openflow-1.5.h	/^    ovs_be32 bucket_id;             \/* Bucket Id used to identify bucket*\/$/;"	m	struct:ofp15_bucket
@@ -840,6 +840,7 @@ host_array_slot_index	src/mf_devicemgr.h	/^	uint32_t host_array_slot_index;$/;"	
 host_hash_value	src/mf_devicemgr.h	/^struct host_hash_value$/;"	s
 host_hash_value_add	src/mf_devicemgr.c	/^struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)$/;"	f
 hostname	src/mf_utilities.h	/^    UINT1 hostname[64];$/;"	m	struct:st_dhcp
+hosts	src/mf_switch.h	/^	struct lf_list hosts;$/;"	m	struct:mf_switch	typeref:struct:mf_switch::lf_list
 htype	src/mf_utilities.h	/^    UINT1 htype;$/;"	m	struct:st_dhcp
 hw_addr	src/Openflow/openflow-1.0.h	/^    uint8_t hw_addr[OFP_ETH_ALEN]; \/* The hardware address is not$/;"	m	struct:ofp10_port_mod
 hw_addr	src/Openflow/openflow-1.0.h	/^    uint8_t hw_addr[OFP_ETH_ALEN];$/;"	m	struct:ofp10_phy_port
@@ -1686,6 +1687,7 @@ swap_16bit	src/mf_utilities.c	/^inline uint16_t swap_16bit(uint16_t a)$/;"	f
 swap_32	tests/inverse_memcpy_test.c	/^uint32_t swap_32(uint32_t a)$/;"	f
 swap_32bit	src/mf_utilities.c	/^inline uint32_t swap_32bit(uint32_t a)$/;"	f
 switch_addr	src/mf_socket.c	/^struct sockaddr_in controller_addr, switch_addr;$/;"	v	typeref:struct:
+switch_list	src/mf_devicemgr.h	/^	struct lf_list switch_list;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::lf_list
 switch_mutex	src/mf_switch.h	/^	pthread_mutex_t switch_mutex;$/;"	m	struct:mf_switch
 switch_print	src/mf_switch.c	/^void switch_print(struct mf_switch * sw)$/;"	f
 t802_1q_t	src/mf_utilities.h	/^}t802_1q_t;$/;"	t	typeref:struct:st_t802_1q

@@ -1,4 +1,5 @@
 #include "mf_timer.h"
+#include "dbg.h"
 #include <sched.h>
 #include "mf_rx_queue.h"
 #include <stdlib.h>
@@ -12,6 +13,11 @@ struct stopwatch_list * MF_STOPWATCH_LIST;
 struct stopwatch * stopwatch_create(float sec, stopwatch_switch_callback swc, enum STOPWATCH_TYPE type, void* callback_arg)
 {
 	struct stopwatch * stopwatch = (struct stopwatch*)malloc(sizeof(*stopwatch));
+	if(stopwatch == NULL)
+	{
+		log_err("malloc failed");
+		exit(0);
+	}
 	stopwatch->stop_sec = sec;
 	stopwatch->time_remain = sec;
 	stopwatch->type = type;
@@ -25,6 +31,11 @@ struct stopwatch * stopwatch_create(float sec, stopwatch_switch_callback swc, en
 struct stopwatch_list * stopwatch_list_create()
 {
 	struct stopwatch_list * swl = (struct stopwatch_list*)malloc(sizeof(*swl));
+	if(swl == NULL)
+	{
+		log_err("malloc failed");
+		exit(0);
+	}
 	swl->head = NULL;
 	swl->stopwatch_num = 0;
 	pthread_mutex_init(&swl->stopwatch_mutex, NULL);
@@ -125,7 +136,8 @@ void start_stopwatch_thread(struct q_node * qn)
 	pthread_t thread_id;
 	if((pthread_create(&thread_id, NULL, stopwatch_worker, NULL)) < 0)
 	{
-		printf("thread create error\n");
+		log_err("thread create error\n");
+		exit(0);
 	}
 	pthread_detach(thread_id);
 }
@@ -133,11 +145,10 @@ void start_stopwatch_thread(struct q_node * qn)
 char* get_asctime()
 {
 	char* asc_time = NULL;
-	//time_t t = time(NULL);
 	time_t t;
 	if(time(&t) < 0)
 	{
-		printf("get time error\n");
+		log_warn("get time error");
 	}
 	asc_time = ctime(&t);
 	char* tmp = asc_time;
@@ -150,6 +161,5 @@ char* get_asctime()
 		}
 		tmp++;
 	}
-	//printf("\n%s",asc_time);
 	return asc_time;
 }
