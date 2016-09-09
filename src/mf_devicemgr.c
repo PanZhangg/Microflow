@@ -28,6 +28,8 @@ void mf_devicemgr_create()
 {
 	MF_DEVICE_MGR.total_switch_number = 0;
 	pthread_mutex_init(&(MF_DEVICE_MGR.devicemgr_mutex), NULL);
+	MF_DEVICE_MGR.switches.next = NULL;
+	MF_DEVICE_MGR.switches.mark = 0;
 	int i = 0;
 	MF_DEVICE_MGR.used_list.next = NULL;
 	MF_DEVICE_MGR.used_list.mark = 0;
@@ -51,6 +53,7 @@ struct mf_switch * get_switch(uint32_t sock)
 void add_switch(struct mf_switch* sw)
 {
 	MF_DEVICE_MGR.mf_switch_map[sw->sockfd] = sw;
+	lf_list_insert(&(sw->next_switch), &(MF_DEVICE_MGR.switches));
 	MF_DEVICE_MGR.total_switch_number++;
 }
 
@@ -58,6 +61,7 @@ void delete_switch_from_map(struct mf_switch * sw)
 {
 	pthread_mutex_lock(&sw->switch_mutex);
 	MF_DEVICE_MGR.mf_switch_map[sw->sockfd] = NULL;
+	lf_list_delete(&(sw->next_switch), &(MF_DEVICE_MGR.switches));
 	MF_DEVICE_MGR.total_switch_number--;
 	pthread_mutex_unlock(&sw->switch_mutex);
 }
@@ -101,6 +105,13 @@ struct mf_switch * get_next_switch(int* loop_index)
 	return NULL;
 }
 
+inline static struct mf_switch * get_next_switch_from_list(struct mf_switch * sw)
+{
+	/*Keep the next_switch element at the top of struct mf_switch*/
+	struct lf_list * l = sw->next_switch.next;
+	return (struct mf_switch*)l;
+}
+
 struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 {
 	int i,curr_index;
@@ -119,6 +130,20 @@ struct mf_switch * get_switch_by_dpid(uint64_t dpid)
 		}
 	}
 	log_warn("No switch has this dpid");
+	return NULL;
+}
+
+struct mf_switch * get_switch_by_dpid_from_list(uint64_t dpid)
+{
+	struct mf_switch * tmp = get_next_switch_from_list((struct mf_switch *) &(MF_DEVICE_MGR.switches));
+	while(tmp != NULL)	
+	{
+		if(tmp->datapath_id == dpid)
+			return tmp;
+		else
+			tmp = get_next_switch_from_list(tmp);
+  	}
+	log_warn("No switch has this dpid:%ld", dpid);
 	return NULL;
 }
 

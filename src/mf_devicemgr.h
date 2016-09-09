@@ -19,6 +19,7 @@ struct mf_devicemgr
 {
 	uint32_t total_switch_number;
 	struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
+	struct lf_list switches;
 	pthread_mutex_t devicemgr_mutex;
 	struct lf_list available_list;
 	struct lf_list used_list;

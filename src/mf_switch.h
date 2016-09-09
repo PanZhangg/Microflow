@@ -11,6 +11,9 @@
 
 struct mf_switch
 {
+	/*network switch list*/
+	/*Keep the next_switch element at the top of struct mf_switch*/
+	struct lf_list next_switch;
 	/*--socket--*/
 	uint32_t sockfd;
 	uint32_t epoll_recv_incomplete_length;

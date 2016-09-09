@@ -10,7 +10,6 @@
 struct lf_list
 {
 	struct lf_list * next;  
-	uint32_t cache_padding;
 	char mark;
 };
 
