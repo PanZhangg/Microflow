@@ -4,9 +4,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <signal.h>
 
 void controller_start(uint32_t * sock)
 {
+	signal(SIGPIPE,SIG_IGN);
 	pthread_t thread_id;
 	if((pthread_create(&thread_id, 0, handle_connection, (void*)sock)) < 0)
 	{
