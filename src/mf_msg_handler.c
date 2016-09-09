@@ -348,10 +348,10 @@ static uint16_t get_ether_type(char * buffer)
 
 static ovs_be32 packet_in_msg_get_in_port_num(struct q_node *qn)
 {
-	ovs_be32 port_num = 0;
-	uint16_t match_length = 0;
-	inverse_memcpy(&match_length, qn->rx_packet + 26, 2);
-	inverse_memcpy(&port_num, qn->rx_packet + 32, 4);
+	ovs_be32 port_num = ntoh_32bit(qn->rx_packet + 32);
+	uint16_t match_length = ntoh_16bit(qn->rx_packet + 26);
+	//inverse_memcpy(&match_length, qn->rx_packet + 26, 2);
+	//inverse_memcpy(&port_num, qn->rx_packet + 32, 4);
 	//printf("Match length is : %d\n", match_length);
 	//printf("In port num is : %d\n", port_num);
 	return port_num;  
@@ -366,8 +366,8 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 		return;
 	}
 	//uint16_t ether_type = (uint16_t)*(buffer + 12) << 8 | *(buffer + 13);
-	uint16_t ether_type;
-	inverse_memcpy(&ether_type, buffer + 12, 2);
+	uint16_t ether_type = ntoh_16bit(buffer + 12);
+	//inverse_memcpy(&ether_type, buffer + 12, 2);
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
@@ -425,8 +425,8 @@ void hello_msg_handler(struct q_node* qn)
 	/*Log behavior leads to race condition when massive switches
 	to connect at the same time*/
 	//mf_write_socket_log("Hello Message received", qn->sw->sockfd);
-	uint32_t xid;
-	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
+	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
+	//inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);
 	if(qn->sw->is_hello_sent == 0)
 	{
@@ -459,8 +459,8 @@ void echo_request_handler(struct q_node* qn)
 		log_warn("qn is NULL");
 		return;
 	}
-	uint32_t xid;
-	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
+	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
+	//inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
 }
@@ -489,11 +489,11 @@ void packet_in_msg_handler(struct q_node* qn)
 		log_warn("qn is NULL");
 		return;
 	}
-	uint32_t xid;
-	inverse_memcpy(&xid, qn->rx_packet + 4, 4);
+	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
+	//inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	//uint16_t total_len =(uint16_t)*(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
-	uint16_t total_len = 0;
-	inverse_memcpy(&total_len, qn->rx_packet + 12, 2);
+	uint16_t total_len = ntoh_16bit(qn->rx_packet + 12);
+	//inverse_memcpy(&total_len, qn->rx_packet + 12, 2);
 	char * data_pointor = qn->rx_packet + qn->packet_length - total_len;
 	parse_ether_type(qn, xid, data_pointor, total_len);
 }
@@ -552,16 +552,17 @@ void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t tot
 
 static uint64_t get_dpid_from_LLDP_packet(char * buffer)
 {
-	uint64_t dpid = 0;
-	inverse_memcpy(&dpid, buffer + 17, 8);	
+	uint64_t dpid = ntoh_64bit(buffer + 17);
+	//uint64_t dpid = 0;
+	//inverse_memcpy(&dpid, buffer + 17, 8);	
 	//printf("dpid is : %ld\n", dpid);
 	return dpid;	
 }
 
 static uint16_t get_outport_from_LLDP_packet(char * buffer)
 {
-	uint16_t outport = 0;
-	inverse_memcpy(&outport, buffer + 28, 2);	
+	uint16_t outport = ntoh_16bit(buffer + 28);
+	//inverse_memcpy(&outport, buffer + 28, 2);	
 	//printf("outport is : %d\n", outport);
 	return outport;	
 }

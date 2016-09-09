@@ -71,8 +71,8 @@ static inline uint8_t parse_msg_type(struct q_node* qn)
 		return 0;
 	}
 	//uint8_t type = (uint8_t)*(qn->rx_packet + 1);
-	uint8_t type = 0;
-	memcpy(&type, qn->rx_packet + 1, 1);
+	uint8_t type = *(qn->rx_packet + 1);
+	//memcpy(&type, qn->rx_packet + 1, 1);
 	return type;
 }
 

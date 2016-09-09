@@ -10,6 +10,12 @@ uint32_t generate_random();
 inline void inverse_memcpy(void* dst, void* src, uint16_t len);
 inline uint32_t swap_32bit(uint32_t);
 inline uint16_t swap_16bit(uint16_t);
+inline uint16_t copy_16bit(char * ptr);
+inline uint32_t copy_32bit(char * ptr);
+inline uint64_t copy_64bit(char * ptr);
+inline uint16_t ntoh_16bit(char * ptr);
+inline uint32_t ntoh_32bit(char * ptr);
+inline uint64_t ntoh_64bit(char * ptr);
 #define PTR_SUB(ptr, x) ((char*)ptr - (x))
 #define PTR_ADD(ptr, x) ((char*)ptr + (x))
 

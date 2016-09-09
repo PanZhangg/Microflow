@@ -34,6 +34,21 @@ inline void inverse_memcpy(void* dst, void* src, uint16_t len)
 		}
 }
 
+inline uint16_t copy_16bit(char * ptr)
+{
+	return *(uint16_t *)ptr;
+}
+
+inline uint32_t copy_32bit(char * ptr)
+{
+	return *(uint32_t *)ptr;
+}
+
+inline uint64_t copy_64bit(char * ptr)
+{
+	return *(uint64_t *)ptr;
+}
+
 inline uint32_t swap_32bit(uint32_t a)
 {
 	uint32_t rst;
@@ -48,6 +63,22 @@ inline uint16_t swap_16bit(uint16_t a)
 	return rst;
 }
 
+inline uint16_t ntoh_16bit(char * ptr)
+{
+	return swap_16bit(copy_16bit(ptr));
+}
+
+inline uint32_t ntoh_32bit(char * ptr)
+{
+ 	return swap_32bit(copy_32bit(ptr));
+}
+
+inline uint64_t ntoh_64bit(char * ptr)
+{
+	uint64_t r = (uint64_t)swap_32bit(copy_32bit(ptr))<< 32;
+	return ( r | swap_32bit(copy_32bit(ptr + 4)));
+}
+  
 
 static UINT8 gn_htonll(UINT8 n)
 {
