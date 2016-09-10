@@ -2,7 +2,7 @@
 #define __MF_TIMER_H__
 
 #include <time.h>
-//#include "mf_switch.h"
+#include <pthread.h>
 #include "Openflow/types.h"
 
 struct mf_switch;

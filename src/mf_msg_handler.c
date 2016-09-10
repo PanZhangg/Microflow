@@ -194,7 +194,7 @@ static void send_switch_features_request(struct q_node* qn)
 	qn->sw->feature_request_xid = xid;
 	struct ofp_header oh = of13_switch_feature_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-	mf_write_socket_log("Feature_request Message sent", qn->sw->sockfd);
+	//mf_write_socket_log("Feature_request Message sent", qn->sw->sockfd);
 }
 
 void send_multipart_port_desc_request(struct q_node* qn)
@@ -431,7 +431,7 @@ void hello_msg_handler(struct q_node* qn)
 	if(qn->sw->is_hello_sent == 0)
 	{
 		send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-		mf_write_socket_log("Hello Message sent", qn->sw->sockfd);
+		//mf_write_socket_log("Hello Message sent", qn->sw->sockfd);
 		qn->sw->is_hello_sent = 1;
 	}
 	if(qn->sw->is_feature_request_sent == 0)
@@ -474,7 +474,7 @@ void feature_reply_handler(struct q_node* qn)
 		return;
 	}
 	log_info("feature_reply message handling");
-	mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
+	//mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
 	inverse_memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
 	inverse_memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
 	memcpy(&qn->sw->n_tables, qn->rx_packet + 20, 1);

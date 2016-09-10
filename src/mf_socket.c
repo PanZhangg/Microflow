@@ -116,9 +116,9 @@ void* handle_connection(void* arg)
 		{
 			if(events[i].data.fd == sock)
 			{
-				log_info("incoming connection");
+				log_info("Incoming connection");
 				connfd = accept(sock, (struct sockaddr*)&switch_addr, &clilen);
-				mf_write_socket_log("Incoming socket connection", connfd);
+				//mf_write_socket_log("Incoming socket connection", connfd);
 				if(connfd < 0)
 				{
 					log_warn("connfd < 0");
@@ -145,14 +145,14 @@ void* handle_connection(void* arg)
 					ev.events = EPOLLIN;
 					epoll_ctl(epfd, EPOLL_CTL_DEL, sockfd, &ev);
 					mf_switch_destory(sw);
-					mf_write_socket_log("socket closed", sockfd);
+					//mf_write_socket_log("socket closed", sockfd);
 					log_info("socket closed");	
 					continue;
 				}
 				if(length < 0)
 				{
 					log_warn("socket error");
-					mf_write_socket_log("socket error", sockfd);
+					//mf_write_socket_log("socket error", sockfd);
 					continue;
 				}
 				else if(likely(length > 0))

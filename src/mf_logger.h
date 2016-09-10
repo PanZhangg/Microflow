@@ -2,13 +2,11 @@
 #define __MF_LOGGER_H__
 
 #include <stdio.h>
-//#include <stdint.h>
-//#include <stdlib.h>
-
+#include <pthread.h>
 
 #define mf_default_log_path "./microflow.log"
-//const char* mf_default_log_path = "microflow.log";
 extern FILE* MF_LOG_FILE;
+pthread_mutex_t log_mutex;
 
 void mf_logger_open(const char* path);
 void mf_write_log(char*);

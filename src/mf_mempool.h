@@ -1,13 +1,10 @@
 #ifndef MF_MEMPOOL_H__
 #define MF_MEMPOOL_H__
 
-#include <sched.h>
 #include "mf_rx_queue.h"
 #include <pthread.h>
 
-//#define MF_QUEUE_NODE_MEMPOOL_SIZE 262140
-//#define MF_QUEUE_NODE_MEMPOOL_SIZE 1024
-#define MF_QUEUE_NODE_MEMPOOL_SIZE 8192
+#define MF_QUEUE_NODE_MEMPOOL_SIZE 8192*4
 
 struct mf_queue_node_mempool
 {
