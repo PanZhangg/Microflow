@@ -14,7 +14,7 @@ HTTP_OBJECTS = analysis.o http.o cgi.o mg_compat.o misc.o request.o wrhash.o wri
 LIBS = httpserver.a
 
 $(TARGET): $(MF_SOURCE) $(LIBS) 
-	cc -Wall -W -Wno-unused -Wno-sign-compare -g -D_POSIX_SOURCE -D_BSD_SOURCE -D_GNU_SOURCE -D__USE_GNU -o $@ $^ -ldl -lpthread 
+	cc -Wall -O3 -W -Wno-unused -Wno-sign-compare -g -D_POSIX_SOURCE -D_BSD_SOURCE -D_GNU_SOURCE -D__USE_GNU -o $@ $^ -ldl -lpthread 
 	rm $(HTTP_OBJECTS)
 httpserver.a : $(HTTP_OBJECTS)
 	ar crv httpserver.a $(HTTP_OBJECTS)

@@ -4,7 +4,7 @@
 #include "mf_rx_queue.h"
 #include <pthread.h>
 
-#define MF_QUEUE_NODE_MEMPOOL_SIZE 8192*4
+#define MF_QUEUE_NODE_MEMPOOL_SIZE 8192
 
 struct mf_queue_node_mempool
 {

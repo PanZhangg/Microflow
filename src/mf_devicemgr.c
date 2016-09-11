@@ -259,7 +259,7 @@ static struct host_hash_value * get_available_value_slot()
 struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
 	uint64_t index = mac_addr_hash(mac_addr);
-	struct host_hash_value * value;
+	struct host_hash_value * value = NULL;
 	if(HOST_HASH_MAP[index] == NULL)
 	{
 		value = hash_value_created(sw, port_num, mac_addr); 
