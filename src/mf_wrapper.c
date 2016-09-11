@@ -17,7 +17,7 @@ void set_CPU_instruction()
 
 	if(cpuid_results[1] &(1 << 16))
 	{
-#define RTE_MACHINE_CPUFLAG_AVX512F //come from  DPDK ^^	
+#define RTE_MACHINE_CPUFLAG_AVX512F //comes from  DPDK ^^	
 		log_info("CPU FLAG:AVX512F");
 		return;
 	}
@@ -39,4 +39,16 @@ void mf_mov16(uint8_t * dst, const uint8_t * src)
 	_mm_storeu_si128((__m128i *)dst, xmm0);
 }
 
+void mf_mov32(uint8_t * dst, const uint8_t *src)
+{
+	mf_mov16((uint8_t *)dst + 0 * 16, (const uint8_t *)src + 0 * 16);
+	mf_mov16((uint8_t *)dst + 1 * 16, (const uint8_t *)src + 1 * 16);
+}
+void mf_mov64(uint8_t * dst, const uint8_t *src)
+{
+	mf_mov16((uint8_t *)dst + 0 * 16, (const uint8_t *)src + 0 * 16);
+	mf_mov16((uint8_t *)dst + 1 * 16, (const uint8_t *)src + 1 * 16);
+	mf_mov16((uint8_t *)dst + 2 * 16, (const uint8_t *)src + 2 * 16);
+	mf_mov16((uint8_t *)dst + 3 * 16, (const uint8_t *)src + 3 * 16);
+}
 //inline void mf_memcpy(void *dst, void *src, unsigned int n) __attribute__((always_inline));
