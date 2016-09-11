@@ -51,4 +51,38 @@ void mf_mov64(uint8_t * dst, const uint8_t *src)
 	mf_mov16((uint8_t *)dst + 2 * 16, (const uint8_t *)src + 2 * 16);
 	mf_mov16((uint8_t *)dst + 3 * 16, (const uint8_t *)src + 3 * 16);
 }
-//inline void mf_memcpy(void *dst, void *src, unsigned int n) __attribute__((always_inline));
+
+inline void mf_memcpy(void *dst, void *src, unsigned int n) 
+{
+	uint8_t * pdst = (uint8_t*)dst;
+	uint8_t * psrc = (uint8_t*)src;
+	while(n >= 8)
+	{
+		*(uint64_t *)pdst = *(uint64_t *)psrc;
+		pdst += 8;
+		psrc += 8;
+		n -= 8;
+	}
+	if(n > 4)
+	{
+		*(uint32_t *)pdst = *(uint32_t *)psrc;
+		pdst += 4;
+		psrc += 4;
+		n -= 4;
+	}
+	if(n > 2)
+	{
+		*(uint16_t *)pdst = *(uint16_t *)psrc;
+		pdst += 2;
+		psrc += 2;
+		n -= 2;
+	}
+	if(n > 1)
+	{
+		*(uint16_t *)pdst = *(uint16_t *)psrc;
+		//pdst += 2;
+		//psrc += 2;
+		//n -= 2;
+	}
+}
+
