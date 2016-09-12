@@ -1,6 +1,7 @@
 #include "mf_topomgr.h"
 #include "mf_switch.h"
 #include "dbg.h"
+#include "mf_utilities.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -30,9 +31,6 @@ void mf_topomgr_create()
 	}
 	memset(LINK_NODE_CACHE_ARRAY, 0 , MF_TOPO_MGR.node_cache_array_size * sizeof(*LINK_NODE_CACHE_ARRAY));
 	int i = 0;
-	/*for(; i< MF_TOPO_MGR.node_cache_array_size; i++)
-		push_to_array(LINK_NODE_CACHE_ARRAY + i, &(MF_TOPO_MGR.available_slot));
-	MF_TOPO_MGR.used_slot = NULL;*/
 	/* Network Node list*/
 	MF_TOPO_MGR.available_list.next = NULL;
 	MF_TOPO_MGR.available_list.mark= 0;
@@ -47,7 +45,6 @@ void mf_topomgr_create()
 		lf_list_insert(&(NETWORK_LINK_CACHE_ARRAY[i].mem_manage_list), &(MF_TOPO_MGR.available_link_list));
 	MF_TOPO_MGR.used_link_list.next= NULL;
 	MF_TOPO_MGR.used_link_list.mark= 0;
-	//MF_TOPO_MGR.next_available_index = 0;
 }
 
 /*static inline void push_to_array(struct link_node * value, struct link_node ** array)
@@ -140,8 +137,6 @@ static void realloc_cache_array()
 	memset(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size, 0, MF_TOPO_MGR.node_cache_array_size * sizeof(struct link_node));
 	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
 	int i;
-	/*for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
-		push_to_array(LINK_NODE_CACHE_ARRAY + MF_TOPO_MGR.node_cache_array_size + i, &(MF_TOPO_MGR.available_slot));*/
 	for(i = MF_TOPO_MGR.node_cache_array_size; i< MF_TOPO_MGR.node_cache_array_size * 2; i++)
 		lf_list_insert(&(LINK_NODE_CACHE_ARRAY[i].mem_manage_list), &(MF_TOPO_MGR.available_list));
 	MF_TOPO_MGR.node_cache_array_size *= 2;
@@ -154,10 +149,9 @@ static struct link_node * get_available_value_slot()
 	struct lf_list* l = lf_list_pop(&MF_TOPO_MGR.available_list);
 	struct link_node * value = container_of(l, struct link_node, mem_manage_list);
 	lf_list_insert(l, &(MF_TOPO_MGR.used_list));
-	/*struct link_node * value = pop_from_array(MF_TOPO_MGR.available_slot, &(MF_TOPO_MGR.available_slot));*/
 	return value;
-	log_warn("No available value slot");
-	return NULL;
+	//log_warn("No available value slot");
+	//return NULL;
 }
 
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)
@@ -168,22 +162,19 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 		return (port->node);
 	}
 	struct link_node * node = get_available_value_slot();
-	if(node == NULL)
+	if(unlikely(node == NULL))
 	{
 		log_warn("Bad value slot");
 		return NULL;
 	}
+	port->node= node;
 	node->sw = sw;
 	node->port = port;
-	port->node= node;
 	node->next = NULL;
 	node->prev = NULL;
 	node->is_occupied = 1;
-	//push_to_array(node, &(MF_TOPO_MGR.used_slot));
 	node->mem_manage_list.mark= 0;//Not necessary actually...But...Keep it as a good hobby..
-	//lf_list_insert(l, &(MF_TOPO_MGR.used_list)); 
 	MF_TOPO_MGR.total_node_number++;
-	//printf("Node number is now: %ld\n", MF_TOPO_MGR.total_node_number);
 	return node;
 }
 
@@ -232,39 +223,27 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst)
 {
-	if(src->port->link == dst->port->link && src->port->link)
+	if(src->port->link == dst->port->link && src->port->link != NULL)//src port's link == dst port's link
 	{
 		log_warn("Network Link already existes");
-		printf("Network link num:%ld\n", MF_TOPO_MGR.total_network_link_number);
 		return NULL;
 	}
-	//uint32_t index = get_next_available_index();
 	struct lf_list * l = lf_list_pop(&(MF_TOPO_MGR.available_link_list));
 	if(l == NULL)
 	{
-		printf("No available slot\n");
+		log_warn("No available slot");
 		return NULL;
 	}
 	struct network_link * link = container_of(l, struct network_link, mem_manage_list);
 	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list)); 
 	MF_TOPO_MGR.total_network_link_number++;
-	/*if(index == MAX_NETWORK_LINK_NUM + 1)
-	  {
-	  printf("No available slot\n");
-	  return NULL;
-	  }*/
 	link->src = src;
+	src->port->link = link;
 	link->dst = dst;
+	dst->port->link = link;
 	link->sw_next.next = NULL;
 	link->sw_next.mark = 0;
 	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list));
-	/*NETWORK_LINK_CACHE_ARRAY[index].src = src;
-	  NETWORK_LINK_CACHE_ARRAY[index].dst = dst;
-	  NETWORK_LINK_CACHE_ARRAY[index].sw_link_next = NULL;
-	  src->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
-	  dst->port->link = & NETWORK_LINK_CACHE_ARRAY[index];
-	  printf(" Network link num :%ld\n", MF_TOPO_MGR.total_network_link_number);
-	  return (& NETWORK_LINK_CACHE_ARRAY[index]);*/
 	return link;
 }
 
@@ -278,9 +257,9 @@ struct path_link_list * path_link_list_create()
 
 uint32_t sw_link_insert(struct sw_link_list * sw_list, struct network_link * link)
 {
-	if(link == NULL)
+	if(unlikely(link == NULL))
 	{
-		printf("return!\n");
+		log_warn("link is NULL");
 		return 0;
 	}
 	if(sw_list->link_num == 0 && sw_list->head == NULL)
@@ -292,7 +271,7 @@ uint32_t sw_link_insert(struct sw_link_list * sw_list, struct network_link * lin
 		link->sw_link_next = sw_list->head;
 		sw_list->head = link;
 	}
-	printf(" link inserted\n");
+	log_info("link inserted");
 	sw_list->link_num++;
 	return 1;
 }

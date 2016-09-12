@@ -33,7 +33,6 @@ static void regist_msg_handler(struct single_msg_handler ** handler_list, struct
 	if(handler == NULL)
 	{
 		log_warn("handler is NULL");
-		//exit(0);
 		return;
 	}
 	struct single_msg_handler ** tmp = handler_list;
@@ -52,14 +51,12 @@ static void unregister_msg_handler(struct single_msg_handler ** handler_list, ms
 	if(handler_list == NULL || func == NULL)
 	{
 		log_warn("Handler list is NULL or Func is NULL");
-		//exit(0);
 		return;
 	}
 	struct single_msg_handler ** tmp = handler_list;
 	if(*handler_list == NULL)
 	{
 		log_warn("handler list is NULL");
-		//exit(0);
 		return;
 	}
 	while(*tmp)
@@ -96,7 +93,6 @@ struct single_msg_handler * single_msg_handler_create(msg_handler_func func)
 	if(func == NULL)
 	{
 		log_warn("func is NULL");
-		//exit(0);
 		return NULL;
 	}
 	struct single_msg_handler * handler = (struct single_msg_handler *) malloc(sizeof(*handler));
@@ -156,7 +152,6 @@ static void msg_handler_exec(struct single_msg_handler * handler_head, struct q_
 		log_warn("handler head is NULL");
 		return;
 	}
-
 	struct single_msg_handler * tmp = handler_head;
 	while(tmp)
 	{
@@ -241,16 +236,14 @@ static void port_desc_reply_handler(struct q_node* qn)
 	uint16_t len = 16; //16 is the length of ofp header and multipart reply header
 	while(len < qn->packet_length)
 	{
-		inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
+		//inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
+		qn->sw->ports[i].port_no= ntoh_32bit(pkt_ptr);
 		inverse_memcpy((void*)&(qn->sw->ports[i].hw_addr), pkt_ptr + 8, 6);
 		i++;
 		len += 64; //64 is the length of the port structure
 		pkt_ptr += 64;
-		//printf("packet_length: %d\n", qn->packet_length);
-		//printf("len: %d\n", len);
 	}
 	qn->sw->port_num = i;
-	//switch_print(qn->sw);
 }
 
 static uint64_t get_src_mac_addr(char* data)
@@ -349,11 +342,6 @@ static uint16_t get_ether_type(char * buffer)
 static ovs_be32 packet_in_msg_get_in_port_num(struct q_node *qn)
 {
 	ovs_be32 port_num = ntoh_32bit(qn->rx_packet + 32);
-	uint16_t match_length = ntoh_16bit(qn->rx_packet + 26);
-	//inverse_memcpy(&match_length, qn->rx_packet + 26, 2);
-	//inverse_memcpy(&port_num, qn->rx_packet + 32, 4);
-	//printf("Match length is : %d\n", match_length);
-	//printf("In port num is : %d\n", port_num);
 	return port_num;  
 }
 
@@ -365,9 +353,7 @@ static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uin
 		log_warn("qn is NULL or buffer is NULL");
 		return;
 	}
-	//uint16_t ether_type = (uint16_t)*(buffer + 12) << 8 | *(buffer + 13);
 	uint16_t ether_type = ntoh_16bit(buffer + 12);
-	//inverse_memcpy(&ether_type, buffer + 12, 2);
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
@@ -426,12 +412,10 @@ void hello_msg_handler(struct q_node* qn)
 	to connect at the same time*/
 	//mf_write_socket_log("Hello Message received", qn->sw->sockfd);
 	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
-	//inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);
 	if(qn->sw->is_hello_sent == 0)
 	{
 		send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-		//mf_write_socket_log("Hello Message sent", qn->sw->sockfd);
 		qn->sw->is_hello_sent = 1;
 	}
 	if(qn->sw->is_feature_request_sent == 0)
@@ -460,7 +444,6 @@ void echo_request_handler(struct q_node* qn)
 		return;
 	}
 	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
-	//inverse_memcpy(&xid, qn->rx_packet + 4, 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
 }
@@ -474,12 +457,11 @@ void feature_reply_handler(struct q_node* qn)
 		return;
 	}
 	log_info("feature_reply message handling");
-	//mf_write_socket_log("feature_reply Message received", qn->sw->sockfd);
-	inverse_memcpy(&qn->sw->datapath_id, qn->rx_packet + 8, 8);
-	inverse_memcpy(&qn->sw->n_buffers, qn->rx_packet + 16, 4);
-	memcpy(&qn->sw->n_tables, qn->rx_packet + 20, 1);
-	memcpy(&qn->sw->auxiliary_id, qn->rx_packet + 21, 1);
-	inverse_memcpy(&qn->sw->capabilities, qn->rx_packet + 24, 4);
+	qn->sw->datapath_id = ntoh_64bit(qn->rx_packet + 8);
+	qn->sw->n_buffers = ntoh_32bit(qn->rx_packet + 16);
+	qn->sw->n_tables = *(char*)(qn->rx_packet + 20);
+	qn->sw->auxiliary_id= *(char*)(qn->rx_packet + 21);
+	qn->sw->capabilities = ntoh_32bit(qn->rx_packet + 24);
 }
 
 void packet_in_msg_handler(struct q_node* qn)
@@ -490,10 +472,7 @@ void packet_in_msg_handler(struct q_node* qn)
 		return;
 	}
 	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
-	//inverse_memcpy(&xid, qn->rx_packet + 4, 4);
-	//uint16_t total_len =(uint16_t)*(qn->rx_packet + 12) << 8 | *(qn->rx_packet + 13);
 	uint16_t total_len = ntoh_16bit(qn->rx_packet + 12);
-	//inverse_memcpy(&total_len, qn->rx_packet + 12, 2);
 	char * data_pointor = qn->rx_packet + qn->packet_length - total_len;
 	parse_ether_type(qn, xid, data_pointor, total_len);
 }
@@ -514,7 +493,8 @@ void port_status_msg_handler(struct q_node* qn)
 		uint16_t len = 16; 
 		while(len < qn->packet_length)
 		{
-			inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
+			//inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
+			qn->sw->ports[i].port_no = ntoh_32bit(pkt_ptr);
 			inverse_memcpy((void*)&(qn->sw->ports[i].hw_addr), pkt_ptr + 8, 6);
 			i++;
 			len += 64; //64 is the length of the port structure
@@ -533,7 +513,7 @@ void multipart_reply_handler(struct q_node* qn)
 		log_warn("qn is NULL");
 		return;
 	}
-	uint16_t type = *(qn->rx_packet + 8) << 8 | *(qn->rx_packet + 9);
+	uint16_t type = ntoh_16bit(qn->rx_packet + 8);
 	if(type == 13)
 		port_desc_reply_handler(qn);
 }
@@ -553,23 +533,17 @@ void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t tot
 static uint64_t get_dpid_from_LLDP_packet(char * buffer)
 {
 	uint64_t dpid = ntoh_64bit(buffer + 17);
-	//uint64_t dpid = 0;
-	//inverse_memcpy(&dpid, buffer + 17, 8);	
-	//printf("dpid is : %ld\n", dpid);
 	return dpid;	
 }
 
 static uint16_t get_outport_from_LLDP_packet(char * buffer)
 {
 	uint16_t outport = ntoh_16bit(buffer + 28);
-	//inverse_memcpy(&outport, buffer + 28, 2);	
-	//printf("outport is : %d\n", outport);
 	return outport;	
 }
 
 void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
-	//printf("lldp msg received\n");
 	ovs_be32 in_port_num = 0;	
 	in_port_num = packet_in_msg_get_in_port_num(qn);
 	struct ofp11_port * port = get_switch_port_by_port_num(qn->sw, in_port_num);
@@ -580,7 +554,7 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	}
 	struct link_node * right_node = link_node_create(qn->sw, port);
 	uint64_t dpid = get_dpid_from_LLDP_packet(qn->rx_packet + qn->packet_length - total_len);
-	struct mf_switch *sw = get_switch_by_dpid(dpid);
+	struct mf_switch *sw = get_switch_by_dpid_from_list(dpid);
 	if(unlikely(sw == NULL))
 	{
 		log_warn("Bad dpid, can Not get switch");
@@ -598,7 +572,7 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	struct network_link * netlink = network_link_create(left_node, right_node);
 	if(netlink != NULL)
 		rst = sw_link_insert(&(qn->sw->link_list), netlink);
-	if(rst == 1)
-		print_switch_link(qn->sw);
-	print_all_switches();
+	//if(rst == 1)
+		//print_switch_link(qn->sw);
+	//print_all_switches();
 }

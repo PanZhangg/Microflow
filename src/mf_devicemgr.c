@@ -1,6 +1,7 @@
 #include "mf_devicemgr.h"
 #include "dbg.h"
 #include "mf_switch.h"
+#include "mf_utilities.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -150,14 +151,13 @@ struct mf_switch * get_switch_by_dpid_from_list(uint64_t dpid)
 struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num)
 {
 	pthread_mutex_lock(&sw->switch_mutex);
-	if(sw == NULL)
+	if(unlikely(sw == NULL))
 	{
 		log_warn("sw is NULL");
 		pthread_mutex_unlock(&sw->switch_mutex);
 		return NULL;
 	}
 	int i = 0;
-	//pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	for(; i < sw->port_num; i++)	  
 	{
 		if(sw->ports[i].port_no == port_num) 
@@ -166,8 +166,8 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 			return &(sw->ports[i]);
 		}
 	}
-	log_warn("No port has the port num");
 	pthread_mutex_unlock(&sw->switch_mutex);
+	log_warn("No port has this port num");
 	return NULL;
 }
 /*

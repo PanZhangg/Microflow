@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include "mf_lf_list.h"
 
+
 struct mf_switch;
 
 #define MAX_MF_SWITCH_NUM 4096
@@ -55,6 +56,7 @@ func()
 */
 
 struct mf_switch * get_switch_by_dpid(uint64_t dpid);
+struct mf_switch * get_switch_by_dpid_from_list(uint64_t);
 struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num);
 
 

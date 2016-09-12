@@ -27,9 +27,9 @@ FIRST_SOCKET_FD	tests/socket_array_test.c	5;"	d	file:
 HELLO_MSG_HANDLER_FUNC	src/mf_msg_handler.h	/^	HELLO_MSG_HANDLER_FUNC,$/;"	e	enum:MSG_HANDLER_TYPE
 HOST_CACHE_ARRAY	src/mf_devicemgr.c	/^static struct host_hash_value HOST_CACHE_ARRAY[MAX_HOST_NUM];$/;"	v	typeref:struct:host_hash_value	file:
 HOST_HASH_MAP	src/mf_devicemgr.c	/^static struct host_hash_value * HOST_HASH_MAP[HOST_HASH_MAP_SIZE];$/;"	v	typeref:struct:host_hash_value	file:
-HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	16;"	d
+HOST_HASH_MAP_SIZE	src/mf_devicemgr.h	17;"	d
 HOST_IMG	webui/odl-webui.js	/^var HOST_IMG = "icons\/host.svg";$/;"	v
-HOST_MUTEX_SLOT_SIZE	src/mf_devicemgr.h	14;"	d
+HOST_MUTEX_SLOT_SIZE	src/mf_devicemgr.h	15;"	d
 HOST_SIZE	webui/odl-webui.js	/^var HOST_SIZE = 40;$/;"	v
 HOST_X	webui/odl-webui.js	/^var HOST_X = -8;$/;"	v
 HOST_Y	webui/odl-webui.js	/^var HOST_Y = -8;$/;"	v
@@ -63,25 +63,26 @@ LONGEST_PATH_LINK_NUM	src/mf_topomgr.h	13;"	d
 MAX	src/httpserver/wrlib/mg_compat.h	84;"	d
 MAXLINE	tests/socket_client.c	9;"	d	file:
 MAX_HEADER_SIZE	src/httpserver/wrlib/http.h	42;"	d
-MAX_HOST_NUM	src/mf_devicemgr.h	12;"	d
+MAX_HOST_NUM	src/mf_devicemgr.h	13;"	d
 MAX_HTTP_HEADERS	src/httpserver/wrlib/http.h	33;"	d
-MAX_MF_SWITCH_NUM	src/mf_devicemgr.h	10;"	d
+MAX_MF_SWITCH_NUM	src/mf_devicemgr.h	11;"	d
 MAX_MF_SWITCH_PORT_NUM	src/mf_switch.h	10;"	d
 MAX_NETWORK_LINK_NUM	src/mf_topomgr.h	11;"	d
 MAX_NETWORK_LINK_NUM_PER_SWITCH	src/mf_topomgr.h	12;"	d
-MAX_PKT	src/mf_utilities.h	42;"	d
+MAX_PKT	src/mf_utilities.h	48;"	d
 MAX_POST_SIZE	src/httpserver/wrlib/http.h	52;"	d
 MF_API_H__	src/mf_api.h	2;"	d
 MF_DEVICE_MGR	src/mf_devicemgr.c	/^struct mf_devicemgr MF_DEVICE_MGR;$/;"	v	typeref:struct:mf_devicemgr
 MF_LF_LIST_H__	src/mf_lf_list.h	2;"	d
 MF_LOG_FILE	src/mf_logger.c	/^FILE* MF_LOG_FILE;$/;"	v
 MF_MEMPOOL_H__	src/mf_mempool.h	2;"	d
-MF_QUEUE_NODE_MEMPOOL_SIZE	src/mf_mempool.h	10;"	d
+MF_QUEUE_NODE_MEMPOOL_SIZE	src/mf_mempool.h	7;"	d
 MF_SOURCE	src/Makefile	/^MF_SOURCE = main.c ..\/src\/mf_socket.c ..\/src\/mf_logger.c \\$/;"	m
 MF_STOPWATCH_LIST	src/mf_timer.c	/^struct stopwatch_list * MF_STOPWATCH_LIST;$/;"	v	typeref:struct:stopwatch_list
 MF_TOPOMGR_H__	src/mf_topomgr.h	2;"	d
 MF_TOPO_MGR	src/mf_topomgr.c	/^static struct mf_topomgr MF_TOPO_MGR;$/;"	v	typeref:struct:mf_topomgr	file:
 MF_UTILITIES_H__	src/mf_utilities.h	2;"	d
+MF_WRAPPER_H__	src/mf_wrapper.h	2;"	d
 MIN	src/httpserver/wrlib/mg_compat.h	80;"	d
 MSG_HANDLERS	src/mf_msg_handler.c	/^struct msg_handlers * MSG_HANDLERS;$/;"	v	typeref:struct:msg_handlers
 MSG_HANDLER_TYPE	src/mf_msg_handler.h	/^enum MSG_HANDLER_TYPE{$/;"	g
@@ -443,13 +444,15 @@ PAGE_SIZE	src/httpserver/wrlib/http.h	36;"	d
 PERMANENT	src/mf_timer.h	/^	PERMANENT$/;"	e	enum:STOPWATCH_TYPE
 PORT	src/httpserver/wrlib/http.h	22;"	d
 PROG	src/httpserver/Makefile	/^PROG=	robin$/;"	m
-PTR_ADD	src/mf_utilities.h	14;"	d
-PTR_SUB	src/mf_utilities.h	13;"	d
+PTR_ADD	src/mf_utilities.h	20;"	d
+PTR_SUB	src/mf_utilities.h	19;"	d
 RESIZE_INDEX	webui/odl-webui.js	/^var RESIZE_INDEX = 1.08;$/;"	v
 ROUTER_IMG	webui/odl-webui.js	/^var ROUTER_IMG = "icons\/router.png";$/;"	v
 ROUTER_SIZE	webui/odl-webui.js	/^var ROUTER_SIZE = 48;$/;"	v
 ROUTER_X	webui/odl-webui.js	/^var ROUTER_X = -8;$/;"	v
 ROUTER_Y	webui/odl-webui.js	/^var ROUTER_Y = -8;$/;"	v
+RTE_MACHINE_CPUFLAG_AVX2	src/mf_wrapper.c	26;"	d	file:
+RTE_MACHINE_CPUFLAG_AVX512F	src/mf_wrapper.c	20;"	d	file:
 RUN_TESTS	src/minunit.h	15;"	d
 RX_BUFFER_SIZE	src/mf_socket.h	11;"	d
 RX_PACKET_SIZE	src/mf_rx_queue.h	8;"	d
@@ -503,6 +506,7 @@ __WRSTRING_H__	src/httpserver/wrlib/wrstring.h	26;"	d
 __WR_HASH_H__	src/httpserver/wrlib/wrhash.h	3;"	d
 __WR_IO_H__	src/httpserver/wrlib/wrio.h	5;"	d
 __WR_MPOOL_H__	src/httpserver/wrlib/wrmpool.h	2;"	d
+__cpuid	src/mf_wrapper.c	/^static void __cpuid(unsigned int where[4], unsigned int leaf)$/;"	f	file:
 __dbg_h__	src/dbg.h	2;"	d
 _minunit_h	src/minunit.h	3;"	d
 _slist	src/httpserver/wrlib/wrhash.h	/^typedef struct _slist{$/;"	s
@@ -569,7 +573,6 @@ byte_count	src/Openflow/openflow-1.2.h	/^    ovs_be64 byte_count;$/;"	m	struct:o
 byte_count	src/Openflow/openflow-common.h	/^    ovs_32aligned_be64 byte_count;   \/* Number of bytes in flows. *\/$/;"	m	struct:ofp_aggregate_stats_reply
 byte_in_count	src/Openflow/openflow-1.3.h	/^    ovs_be64  byte_in_count;     \/* Number of bytes in input. *\/$/;"	m	struct:ofp13_meter_stats
 cacheCheck	src/httpserver/wrlib/analysis.c	/^int cacheCheck(const WrHttp *pHttp)$/;"	f
-cache_padding	src/mf_lf_list.h	/^	uint32_t cache_padding;$/;"	m	struct:lf_list
 callback_arg	src/mf_timer.h	/^	void* callback_arg;$/;"	m	struct:stopwatch
 capabilities	src/Openflow/openflow-1.2.h	/^    ovs_be32  capabilities;    \/* Bitmap of OFPGFC12_* capability supported. *\/$/;"	m	struct:ofp12_group_features_stats
 capabilities	src/Openflow/openflow-1.3.h	/^    ovs_be32   capabilities;  \/* Bitmaps of "ofp13_meter_flags". *\/$/;"	m	struct:ofp13_meter_features
@@ -648,6 +651,10 @@ cookieCheck	src/httpserver/wrlib/analysis.c	/^int cookieCheck(const WrHttp *pHtt
 cookieSet	src/httpserver/wrlib/request.c	/^static int cookieSet(char *buf)$/;"	f	file:
 cookie_mask	src/Openflow/openflow-1.1.h	/^    ovs_be64 cookie_mask;        \/* Mask used to restrict the cookie bits$/;"	m	struct:ofp11_flow_mod
 cookie_mask	src/Openflow/openflow-1.1.h	/^    ovs_be64 cookie_mask;     \/* Mask used to restrict the cookie bits that$/;"	m	struct:ofp11_flow_stats_request
+copy_16	tests/inverse_memcpy_test.c	/^uint16_t copy_16(char* ptr)$/;"	f
+copy_16bit	src/mf_utilities.c	/^inline uint16_t copy_16bit(char * ptr)$/;"	f
+copy_32bit	src/mf_utilities.c	/^inline uint32_t copy_32bit(char * ptr)$/;"	f
+copy_64bit	src/mf_utilities.c	/^inline uint64_t copy_64bit(char * ptr)$/;"	f
 create_lldp_pkt	src/mf_utilities.c	/^void create_lldp_pkt(void *src_addr, UINT8 id, ovs_be32 port, lldp_t *buffer)$/;"	f
 curPos	src/httpserver/wrlib/http.h	/^	char *curPos;$/;"	m	struct:__anon10
 curr	src/Openflow/openflow-1.0.h	/^    ovs_be32 curr;          \/* Current features. *\/$/;"	m	struct:ofp10_phy_port
@@ -784,11 +791,13 @@ get_dpid_from_LLDP_packet	src/mf_msg_handler.c	/^static uint64_t get_dpid_from_L
 get_head_info	src/httpserver/wrlib/analysis.c	/^const char *get_head_info(const WrHttp *pHttp ,const char *key)$/;"	f
 get_mime_type	src/httpserver/wrlib/http.c	/^const char *get_mime_type(const char *path)$/;"	f
 get_next_switch	src/mf_devicemgr.c	/^struct mf_switch * get_next_switch(int* loop_index)$/;"	f
+get_next_switch_from_list	src/mf_devicemgr.c	/^inline static struct mf_switch * get_next_switch_from_list(struct mf_switch * sw)$/;"	f	file:
 get_outport_from_LLDP_packet	src/mf_msg_handler.c	/^static uint16_t get_outport_from_LLDP_packet(char * buffer)$/;"	f	file:
 get_param_info	src/httpserver/wrlib/analysis.c	/^const char *get_param_info(const WrHttp *pHttp ,const char *key)$/;"	f
 get_src_mac_addr	src/mf_msg_handler.c	/^static uint64_t get_src_mac_addr(char* data)$/;"	f	file:
 get_switch	src/mf_devicemgr.c	/^struct mf_switch * get_switch(uint32_t sock)$/;"	f
 get_switch_by_dpid	src/mf_devicemgr.c	/^struct mf_switch * get_switch_by_dpid(uint64_t dpid)$/;"	f
+get_switch_by_dpid_from_list	src/mf_devicemgr.c	/^struct mf_switch * get_switch_by_dpid_from_list(uint64_t dpid)$/;"	f
 get_switch_by_host_mac	src/mf_devicemgr.c	/^struct mf_switch * get_switch_by_host_mac(uint64_t mac_addr)$/;"	f
 get_switch_port_by_port_num	src/mf_devicemgr.c	/^struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 port_num)$/;"	f
 gipaddr	src/mf_utilities.h	/^    UINT4 gipaddr;  \/\/agent ip addr;$/;"	m	struct:st_dhcp
@@ -949,7 +958,7 @@ lf_list_delete	src/mf_lf_list.c	/^struct lf_list * lf_list_delete(struct lf_list
 lf_list_insert	src/mf_lf_list.c	/^void lf_list_insert(struct lf_list* i, struct lf_list* l)$/;"	f
 lf_list_pop	src/mf_lf_list.c	/^struct lf_list * lf_list_pop(struct lf_list *l)$/;"	f
 lf_list_search_node	src/mf_lf_list.c	/^struct lf_list * lf_list_search_node(struct lf_list* l, compare cmp, void* arg)$/;"	f
-likely	src/mf_utilities.h	21;"	d
+likely	src/mf_utilities.h	27;"	d
 link	src/Openflow/openflow-1.1.h	/^	struct network_link * link;$/;"	m	struct:ofp11_port	typeref:struct:ofp11_port::network_link
 link	webui/odl-webui.js	/^var link = svg.selectAll(".link"),$/;"	v
 link_list	src/mf_switch.h	/^	struct sw_link_list link_list;$/;"	m	struct:mf_switch	typeref:struct:mf_switch::sw_link_list
@@ -971,6 +980,7 @@ lo	src/Openflow/types.h	/^        uint32_t hi, lo;$/;"	m	struct:__anon3
 lo	src/Openflow/types.h	/^        uint64_t lo, hi;$/;"	m	struct:__anon4::__anon5
 log_err	src/dbg.h	16;"	d
 log_info	src/dbg.h	20;"	d
+log_mutex	src/mf_logger.h	/^pthread_mutex_t log_mutex;$/;"	v
 log_warn	src/dbg.h	18;"	d
 lookup_count	src/Openflow/openflow-1.0.h	/^    ovs_32aligned_be64 lookup_count;  \/* # of packets looked up in table. *\/$/;"	m	struct:ofp10_table_stats
 lookup_count	src/Openflow/openflow-1.1.h	/^    ovs_be64 lookup_count;   \/* Number of packets looked up in table. *\/$/;"	m	struct:ofp11_table_stats
@@ -991,6 +1001,7 @@ main	tests/socket_client.c	/^int main(int argc, char** argv)$/;"	f
 main	tests/socket_test.c	/^int main(int argc, char** argv){$/;"	f
 main	tests/timer_test.c	/^int main()$/;"	f
 main	tests/topomgr_test.c	/^int main()$/;"	f
+main	tests/wrapper_test.c	/^int main()$/;"	f
 mark	src/mf_lf_list.h	/^	char mark;$/;"	m	struct:lf_list
 mask	src/Openflow/openflow-1.0.h	/^    ovs_be32 mask;          \/* Bitmap of OFPPC_* flags to be changed. *\/$/;"	m	struct:ofp10_port_mod
 mask	src/Openflow/openflow-1.1.h	/^    ovs_be32 mask;          \/* Bitmap of OFPPC_* flags to be changed. *\/$/;"	m	struct:ofp11_port_mod
@@ -1037,12 +1048,16 @@ method	src/httpserver/wrlib/http.h	/^	char * method;$/;"	m	struct:__anon10
 methods	src/httpserver/wrlib/misc.h	/^static const char *methods[3]={"HEAD" ,"GET" ,"POST"};$/;"	v
 mf_controller_init	src/mf_api.h	/^void mf_controller_init()$/;"	f
 mf_controller_run	src/mf_api.h	/^void mf_controller_run()$/;"	f
-mf_default_log_path	src/mf_logger.h	9;"	d
+mf_default_log_path	src/mf_logger.h	7;"	d
 mf_devicemgr	src/mf_devicemgr.h	/^struct mf_devicemgr$/;"	s
 mf_devicemgr_create	src/mf_devicemgr.c	/^void mf_devicemgr_create()$/;"	f
 mf_listen_socket_create	src/mf_socket.c	/^uint32_t mf_listen_socket_create()$/;"	f
 mf_logger_close	src/mf_logger.c	/^void mf_logger_close()$/;"	f
 mf_logger_open	src/mf_logger.c	/^void mf_logger_open(const char* path)$/;"	f
+mf_memcpy	src/mf_wrapper.c	/^inline void mf_memcpy(void *dst, void *src, unsigned int n) $/;"	f
+mf_mov16	src/mf_wrapper.c	/^void mf_mov16(uint8_t * dst, const uint8_t * src)$/;"	f
+mf_mov32	src/mf_wrapper.c	/^void mf_mov32(uint8_t * dst, const uint8_t *src)$/;"	f
+mf_mov64	src/mf_wrapper.c	/^void mf_mov64(uint8_t * dst, const uint8_t *src)$/;"	f
 mf_queue_node_mempool	src/mf_mempool.h	/^struct mf_queue_node_mempool$/;"	s
 mf_queue_node_mempool_create	src/mf_mempool.c	/^struct mf_queue_node_mempool * mf_queue_node_mempool_create()$/;"	f
 mf_rx_queue	src/mf_rx_queue.h	/^struct mf_rx_queue{$/;"	s
@@ -1095,11 +1110,15 @@ next	src/mf_lf_list.h	/^	struct lf_list * next;  $/;"	m	struct:lf_list	typeref:s
 next	src/mf_msg_handler.h	/^	struct single_msg_handler * next;$/;"	m	struct:single_msg_handler	typeref:struct:single_msg_handler::single_msg_handler
 next	src/mf_timer.h	/^	struct stopwatch * next;$/;"	m	struct:stopwatch	typeref:struct:stopwatch::stopwatch
 next	src/mf_topomgr.h	/^	struct link_node * next; \/\/pointers for available\/used slot bi-link list$/;"	m	struct:link_node	typeref:struct:link_node::link_node
+next_switch	src/mf_switch.h	/^	struct lf_list next_switch;$/;"	m	struct:mf_switch	typeref:struct:mf_switch::lf_list
 nfds	src/mf_socket.c	/^uint32_t epfd, nfds;$/;"	v
 node	src/Openflow/openflow-1.1.h	/^	struct link_node * node;$/;"	m	struct:ofp11_port	typeref:struct:ofp11_port::link_node
 node_cache_array_size	src/mf_topomgr.h	/^	uint64_t node_cache_array_size;$/;"	m	struct:mf_topomgr
 node_head	tests/lock_free_list_test.c	/^struct list_node node_head = {888, {NULL, 0}};$/;"	v	typeref:struct:list_node
 node_pool	src/mf_mempool.h	/^	struct q_node node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE];$/;"	m	struct:mf_queue_node_mempool	typeref:struct:mf_queue_node_mempool::q_node
+ntoh_16bit	src/mf_utilities.c	/^inline uint16_t ntoh_16bit(char * ptr)$/;"	f
+ntoh_32bit	src/mf_utilities.c	/^inline uint32_t ntoh_32bit(char * ptr)$/;"	f
+ntoh_64bit	src/mf_utilities.c	/^inline uint64_t ntoh_64bit(char * ptr)$/;"	f
 nw_dst	src/Openflow/openflow-1.0.h	/^    ovs_be32 nw_dst;           \/* IP destination address. *\/$/;"	m	struct:ofp10_match
 nw_dst	src/Openflow/openflow-1.1.h	/^    ovs_be32 nw_dst;           \/* IP destination address. *\/$/;"	m	struct:ofp11_match
 nw_dst_mask	src/Openflow/openflow-1.1.h	/^    ovs_be32 nw_dst_mask;      \/* IP destination address mask. *\/$/;"	m	struct:ofp11_match
@@ -1623,6 +1642,7 @@ sentinel	src/dbg.h	24;"	d
 seq	src/mf_utilities.h	/^    UINT2 seq;$/;"	m	struct:st_imcp
 seq	src/mf_utilities.h	/^    UINT4 seq;$/;"	m	struct:st_tcp
 setCookie	webui/odl-rest.js	/^function setCookie(name, value, expires, path, domain, secure) {$/;"	f
+set_CPU_instruction	src/mf_wrapper.c	/^void set_CPU_instruction()$/;"	f
 set_close_on_exec	src/httpserver/wrlib/mg_compat.c	/^set_close_on_exec(int fd)$/;"	f
 set_nonblocking	src/mf_socket.c	/^static void set_nonblocking(uint32_t sock)$/;"	f	file:
 single_msg_handler	src/mf_msg_handler.h	/^struct single_msg_handler$/;"	s
@@ -1690,6 +1710,7 @@ switch_addr	src/mf_socket.c	/^struct sockaddr_in controller_addr, switch_addr;$/
 switch_list	src/mf_devicemgr.h	/^	struct lf_list switch_list;$/;"	m	struct:host_hash_value	typeref:struct:host_hash_value::lf_list
 switch_mutex	src/mf_switch.h	/^	pthread_mutex_t switch_mutex;$/;"	m	struct:mf_switch
 switch_print	src/mf_switch.c	/^void switch_print(struct mf_switch * sw)$/;"	f
+switches	src/mf_devicemgr.h	/^	struct lf_list switches;$/;"	m	struct:mf_devicemgr	typeref:struct:mf_devicemgr::lf_list
 t802_1q_t	src/mf_utilities.h	/^}t802_1q_t;$/;"	t	typeref:struct:st_t802_1q
 table_id	src/Openflow/openflow-1.0.h	/^    uint8_t table_id;         \/* ID of table flow came from. *\/$/;"	m	struct:ofp10_flow_stats
 table_id	src/Openflow/openflow-1.0.h	/^    uint8_t table_id;         \/* ID of table to read (from ofp_table_stats)$/;"	m	struct:ofp10_flow_stats_request
@@ -1816,7 +1837,7 @@ types	src/Openflow/openflow-1.2.h	/^    ovs_be32  types;           \/* Bitmap of
 u32	src/Openflow/types.h	/^    uint32_t u32[4];$/;"	m	union:__anon4
 u64	src/Openflow/types.h	/^    } u64;$/;"	m	union:__anon4	typeref:struct:__anon4::__anon5
 udp_t	src/mf_utilities.h	/^}udp_t;$/;"	t	typeref:struct:st_udp
-unlikely	src/mf_utilities.h	22;"	d
+unlikely	src/mf_utilities.h	28;"	d
 unregister_msg_handler	src/mf_api.h	/^void unregister_msg_handler(enum MSG_HANDLER_TYPE type, msg_handler_func func)$/;"	f
 unregister_msg_handler	src/mf_msg_handler.c	/^static void unregister_msg_handler(struct single_msg_handler ** handler_list, msg_handler_func func)$/;"	f	file:
 urg	src/mf_utilities.h	/^    UINT2 urg;$/;"	m	struct:st_tcp
