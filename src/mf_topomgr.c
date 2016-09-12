@@ -225,7 +225,7 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 {
 	if(src->port->link == dst->port->link && src->port->link != NULL)//src port's link == dst port's link
 	{
-		log_warn("Network Link already existes");
+		log_warn("Network Link already exists");
 		return NULL;
 	}
 	struct lf_list * l = lf_list_pop(&(MF_TOPO_MGR.available_link_list));
@@ -262,6 +262,7 @@ uint32_t sw_link_insert(struct sw_link_list * sw_list, struct network_link * lin
 		log_warn("link is NULL");
 		return 0;
 	}
+	pthread_mutex_lock(&(link->src->sw->switch_mutex));
 	if(sw_list->link_num == 0 && sw_list->head == NULL)
 	{
 		sw_list->head = link;
@@ -273,6 +274,7 @@ uint32_t sw_link_insert(struct sw_link_list * sw_list, struct network_link * lin
 	}
 	log_info("link inserted");
 	sw_list->link_num++;
+	pthread_mutex_unlock(&(link->src->sw->switch_mutex));
 	return 1;
 }
 
