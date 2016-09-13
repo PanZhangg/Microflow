@@ -44,6 +44,11 @@ void mf_devicemgr_create()
 	MF_DEVICE_MGR.used_slot_num = 0;
 }
 
+void mf_devicemgr_destroy()
+{
+	log_info("Destroy DEVICE manager");
+	pthread_mutex_destroy(&(MF_DEVICE_MGR.devicemgr_mutex));
+}
 /*May return NULL
 Programmer should take care of this*/
 struct mf_switch * get_switch(uint32_t sock)

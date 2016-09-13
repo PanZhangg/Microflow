@@ -18,3 +18,9 @@ void controller_start(uint32_t * sock)
 	pthread_detach(thread_id);
 
 }
+void controller_exit()
+{
+	mf_topomgr_destroy();
+	mf_devicemgr_destroy();
+	log_info("Microflow exit");
+}

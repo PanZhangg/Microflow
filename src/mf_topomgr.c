@@ -47,6 +47,13 @@ void mf_topomgr_create()
 	MF_TOPO_MGR.used_link_list.mark= 0;
 }
 
+void mf_topomgr_destroy()
+{
+	log_info("Destroy TOPO manager");
+	if(LINK_NODE_CACHE_ARRAY)  
+		free(LINK_NODE_CACHE_ARRAY);
+	pthread_mutex_destroy(&(MF_TOPO_MGR.topomgr_mutex));
+}
 /*static inline void push_to_array(struct link_node * value, struct link_node ** array)
 {
 	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);

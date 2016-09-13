@@ -19,13 +19,10 @@ struct mf_topomgr
 	uint64_t total_network_link_number;
 	uint64_t node_cache_array_size;
 	pthread_mutex_t topomgr_mutex;
-	//struct link_node * available_slot;
-	//struct link_node * used_slot;
 	struct lf_list available_list;
 	struct lf_list used_list;
 	struct lf_list available_link_list;
 	struct lf_list used_link_list;
-	//uint32_t next_available_index;
 };
 
 struct link_node
@@ -61,6 +58,7 @@ struct path_link_list
 };
 
 void mf_topomgr_create();
+void mf_topomgr_destroy();
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port);
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst);
 struct path_link_list * path_link_list_create();

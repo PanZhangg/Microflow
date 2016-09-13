@@ -30,6 +30,8 @@ struct mf_devicemgr
 
 void mf_devicemgr_create();
 
+void mf_devicemgr_destroy();
+
 void add_switch(struct mf_switch * );
 
 struct mf_switch * get_switch(uint32_t sock);

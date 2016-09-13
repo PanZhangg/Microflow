@@ -49,5 +49,6 @@ int main(int argc, char** argv)
 			break;
 	}
 	mf_logger_close();
+	controller_exit();
 	return 0;
 }
