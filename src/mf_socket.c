@@ -96,13 +96,13 @@ void* handle_connection(void* arg)
 	socklen_t clilen = sizeof(switch_addr);
 	epoll_init(sock);
 	//log_debug_info("here!");
-	mf_controller_init();
 	static unsigned int seq = 0;
 	//log_debug_info("is here!");
 	for(i = 0; i < WORKER_THREADS_NUM; i++)
 	{
 		MSG_RX_QUEUE[i] = mf_queue_node_mempool_create();
 	}
+	mf_controller_init();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, -1);
