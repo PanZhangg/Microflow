@@ -12,6 +12,11 @@
 struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 {
 	struct mf_queue_node_mempool * mp = (struct mf_queue_node_mempool*)malloc(sizeof(*mp));
+	if(mp == NULL)
+	{
+		log_err("malloc failed");
+		exit(0);
+	}
 	memset(mp, 0, sizeof(*mp));
 	mp->head = &mp->node_pool[0];
 	mp->tail = &mp->node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE - 1];

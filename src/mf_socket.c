@@ -5,6 +5,7 @@
 #include "mf_mempool.h"
 #include "mf_utilities.h"
 #include "mf_api.h"
+//#include "mf_devicemgr.h"
 #include "dbg.h"
 #include <stdio.h>  
 #include <stdlib.h>  
@@ -89,22 +90,15 @@ void mf_socket_bind(uint32_t sock)
 void* handle_connection(void* arg)
 {
 	uint32_t sock = *(uint32_t*)arg;
-	int cpunum = sysconf(_SC_NPROCESSORS_ONLN);
-	if(cpunum >= 4)
-	{
-		int ccpu_id = 0;
-		cpu_set_t my_set;
-		CPU_ZERO(&my_set);
-		CPU_SET(ccpu_id, &my_set);
-		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
-			log_warn("Set CPU affinity failed");
-	}
+	set_cpu_affinity();
 	unsigned int i;
 	int connfd;
-	mf_controller_init();
 	socklen_t clilen = sizeof(switch_addr);
 	epoll_init(sock);
+	//log_debug_info("here!");
+	mf_controller_init();
 	static unsigned int seq = 0;
+	//log_debug_info("is here!");
 	for(i = 0; i < WORKER_THREADS_NUM; i++)
 	{
 		MSG_RX_QUEUE[i] = mf_queue_node_mempool_create();

@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <sched.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#include <pthread.h>
 
 /*==========================
 Generate an uint32_t random number
@@ -79,6 +84,33 @@ inline uint64_t ntoh_64bit(char * ptr)
 	return ( r | swap_32bit(copy_32bit(ptr + 4)));
 }
   
+
+void set_cpu_affinity()
+{
+	int cpunum = sysconf(_SC_NPROCESSORS_ONLN);
+	static char cpu_usage_flag[64];
+	if(cpunum >= 4)
+	{
+		int i = 0;
+		for(; i < cpunum; i++)
+		{
+			if(cpu_usage_flag[i] == 0)
+			{
+				cpu_usage_flag[i] = 1;
+				break;
+			}
+  		}
+		int ccpu_id = i;
+		cpu_set_t my_set;
+		CPU_ZERO(&my_set);
+		CPU_SET(ccpu_id, &my_set);
+		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
+			log_warn("Set CPU affinity failed");
+		log_info("Set CPU Affinity of pthread:[%ld],to Core:[%d]",(long int)syscall(SYS_gettid), ccpu_id);
+	}
+	else
+		log_info("Number of CPU cores is less than 4, Can not set CPU affinity");
+}
 
 static UINT8 gn_htonll(UINT8 n)
 {

@@ -18,18 +18,18 @@ void set_CPU_instruction()
 	if(cpuid_results[1] &(1 << 16))
 	{
 #define RTE_MACHINE_CPUFLAG_AVX512F //comes from  DPDK ^^	
-		log_info("CPU FLAG:AVX512F");
+		log_info("CPU Instruction set:AVX512F");
 		return;
 	}
 	if(cpuid_results[1] & (1 << 5))
 	{
 #define RTE_MACHINE_CPUFLAG_AVX2
-		log_info("CPU FLAG:AVX2");
+		log_info("CPU Instruction set:AVX2");
 		return;
 	}
 	__cpuid(cpuid_results,1);
 	if(cpuid_results[3] & (1 << 25))
-		log_info("CPU FLAG:SSE");
+		log_info("CPU Instruction set:SSE");
 }
 
 void mf_mov16(uint8_t * dst, const uint8_t * src)

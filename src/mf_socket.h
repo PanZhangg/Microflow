@@ -4,11 +4,11 @@
 #include "./Openflow/types.h"
 
 #define DEFAULT_PORT 6633
-#define EPOLL_EVENTS_NUM 1024
+#define EPOLL_EVENTS_NUM 4096 
 
 #define WORKER_THREADS_NUM 2
 
-#define RX_BUFFER_SIZE 65535
+#define RX_BUFFER_SIZE 65536
 
 struct mf_rx_queue;
 

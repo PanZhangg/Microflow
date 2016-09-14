@@ -20,7 +20,7 @@ int queue_index[WORKER_THREADS_NUM];
 
 void * worker_thread(void* arg)
 { 
-	static int cpu_id = 1;
+	/*static int cpu_id = 1;
 	int cpunum = sysconf(_SC_NPROCESSORS_ONLN);
 	if(cpunum >= 4)
 	{
@@ -35,7 +35,8 @@ void * worker_thread(void* arg)
 		//printf("Set CPU affinity: %d\n", ccpu_id);
 		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
 			log_warn("Set CPU affinity failed");
-	}
+	}*/
+	set_cpu_affinity();
 	int index = *(int*)arg;
 	while(1)
 	{

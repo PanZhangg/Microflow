@@ -8,15 +8,7 @@
 #include "mf_timer.h"
 #include "mf_msg_handler.h"
 #include "./httpserver/cgi.h"
-#include "mf_controller.h"
-
-void mf_controller_run()
-{
-	uint32_t listen_sockfd = mf_listen_socket_create();
-	//printf("fd in main is: %d\n",listen_sockfd);
-	mf_socket_bind(listen_sockfd);
-	controller_start(&listen_sockfd);  
-}
+//#include "mf_controller.h"
 
 void mf_controller_init()
 {

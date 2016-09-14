@@ -69,7 +69,7 @@ MAX_MF_SWITCH_NUM	src/mf_devicemgr.h	11;"	d
 MAX_MF_SWITCH_PORT_NUM	src/mf_switch.h	10;"	d
 MAX_NETWORK_LINK_NUM	src/mf_topomgr.h	11;"	d
 MAX_NETWORK_LINK_NUM_PER_SWITCH	src/mf_topomgr.h	12;"	d
-MAX_PKT	src/mf_utilities.h	48;"	d
+MAX_PKT	src/mf_utilities.h	53;"	d
 MAX_POST_SIZE	src/httpserver/wrlib/http.h	52;"	d
 MF_API_H__	src/mf_api.h	2;"	d
 MF_DEVICE_MGR	src/mf_devicemgr.c	/^struct mf_devicemgr MF_DEVICE_MGR;$/;"	v	typeref:struct:mf_devicemgr
@@ -89,7 +89,7 @@ MSG_HANDLER_TYPE	src/mf_msg_handler.h	/^enum MSG_HANDLER_TYPE{$/;"	g
 MSG_RX_QUEUE	src/mf_socket.c	/^struct mf_queue_node_mempool * MSG_RX_QUEUE[WORKER_THREADS_NUM];$/;"	v	typeref:struct:mf_queue_node_mempool
 NDEBUG	src/minunit.h	1;"	d
 NETWORK_LINK_CACHE_ARRAY	src/mf_topomgr.c	/^static struct network_link NETWORK_LINK_CACHE_ARRAY[MAX_NETWORK_LINK_NUM];$/;"	v	typeref:struct:network_link	file:
-NET_RECEIVE_WORKER_NUMBER	src/mf_controller.h	7;"	d
+NET_RECEIVE_WORKER_NUMBER	src/mf_controller.h	8;"	d
 NTR_VENDOR_ID	src/Openflow/openflow-common.h	98;"	d
 NX_VENDOR_ID	src/Openflow/openflow-common.h	99;"	d
 NetEdges	webui/odl-rest.js	/^var NetEdges = [];$/;"	v
@@ -1051,7 +1051,6 @@ meter_id	src/Openflow/openflow-1.3.h	/^    ovs_be32 meter_id;  \/* Meter instanc
 method	src/httpserver/wrlib/http.h	/^	char * method;$/;"	m	struct:__anon10
 methods	src/httpserver/wrlib/misc.h	/^static const char *methods[3]={"HEAD" ,"GET" ,"POST"};$/;"	v
 mf_controller_init	src/mf_api.h	/^void mf_controller_init()$/;"	f
-mf_controller_run	src/mf_api.h	/^void mf_controller_run()$/;"	f
 mf_default_log_path	src/mf_logger.h	7;"	d
 mf_devicemgr	src/mf_devicemgr.h	/^struct mf_devicemgr$/;"	s
 mf_devicemgr_create	src/mf_devicemgr.c	/^void mf_devicemgr_create()$/;"	f
@@ -1650,6 +1649,7 @@ seq	src/mf_utilities.h	/^    UINT4 seq;$/;"	m	struct:st_tcp
 setCookie	webui/odl-rest.js	/^function setCookie(name, value, expires, path, domain, secure) {$/;"	f
 set_CPU_instruction	src/mf_wrapper.c	/^void set_CPU_instruction()$/;"	f
 set_close_on_exec	src/httpserver/wrlib/mg_compat.c	/^set_close_on_exec(int fd)$/;"	f
+set_cpu_affinity	src/mf_utilities.c	/^void set_cpu_affinity()$/;"	f
 set_nonblocking	src/mf_socket.c	/^static void set_nonblocking(uint32_t sock)$/;"	f	file:
 single_msg_handler	src/mf_msg_handler.h	/^struct single_msg_handler$/;"	s
 single_msg_handler_create	src/mf_msg_handler.c	/^struct single_msg_handler * single_msg_handler_create(msg_handler_func func)$/;"	f

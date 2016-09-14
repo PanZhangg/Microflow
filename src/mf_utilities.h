@@ -28,6 +28,11 @@ compiler utilities
 #define unlikely(x) __builtin_expect(!!(x), 0)
 
 /*
+CPU utilities
+*/
+void set_cpu_affinity();
+
+/*
 Network packets utilities
 */
 

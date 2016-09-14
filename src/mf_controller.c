@@ -2,6 +2,7 @@
 #include "mf_socket.h"
 #include "mf_logger.h"
 #include "dbg.h"
+#include "mf_wrapper.h"
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,10 +14,11 @@ extern void* handler_connection(void*);
 
 void controller_start()
 {
+	set_CPU_instruction();
 	mf_logger_open(mf_default_log_path);
 	listen_sockfd = mf_listen_socket_create();
 	mf_socket_bind(listen_sockfd);
-
+	//mf_controller_init();
 	signal(SIGPIPE,SIG_IGN);
 	pthread_t thread_id[NET_RECEIVE_WORKER_NUMBER];
 	int i = 0;
