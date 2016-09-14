@@ -1,7 +1,6 @@
 #ifndef MF_API_H__
 #define MF_API_H__
 
-
 #include "mf_socket.h"
 #include "mf_topomgr.h"
 #include "mf_devicemgr.h"

@@ -67,9 +67,9 @@ void delete_switch_from_map(struct mf_switch * sw)
 {
 	pthread_mutex_lock(&sw->switch_mutex);
 	MF_DEVICE_MGR.mf_switch_map[sw->sockfd] = NULL;
-	lf_list_delete(&(sw->next_switch), &(MF_DEVICE_MGR.switches));
 	MF_DEVICE_MGR.total_switch_number--;
 	pthread_mutex_unlock(&sw->switch_mutex);
+	lf_list_delete(&(sw->next_switch), &(MF_DEVICE_MGR.switches));
 }
 /*The upper limit of agrument loop_index
 is decided by the the outer loop 

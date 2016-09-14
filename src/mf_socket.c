@@ -26,26 +26,27 @@ uint32_t epfd, nfds;
 
 static void set_nonblocking(uint32_t sock)
 {
-    int opts;
-    opts=fcntl(sock,F_GETFL);
-    if(opts<0)
-    {
-        log_err("fcntl(sock,GETFL)");
-        exit(1);
-    }
-    opts = opts|O_NONBLOCK;
-    if(fcntl(sock,F_SETFL,opts)<0)
-    {
-        log_err("fcntl(sock,SETFL,opts)");
-        exit(1);
-    }
+	int opts;
+	opts=fcntl(sock,F_GETFL);
+	if(opts<0)
+	{
+		log_err("fcntl(sock,GETFL)");
+		exit(1);
+	}
+	opts = opts|O_NONBLOCK;
+	if(fcntl(sock,F_SETFL,opts)<0)
+	{
+		log_err("fcntl(sock,SETFL,opts)");
+		exit(1);
+	}
 }
 
 
 uint32_t mf_listen_socket_create()
 {
 	uint32_t sock;
-	if((sock = socket(AF_INET, SOCK_STREAM,0)) == -1){
+	if((sock = socket(AF_INET, SOCK_STREAM,0)) == -1)
+	{
 		log_err("socket created failed");
 		exit(0);
 	}
@@ -88,7 +89,6 @@ void mf_socket_bind(uint32_t sock)
 void* handle_connection(void* arg)
 {
 	uint32_t sock = *(uint32_t*)arg;
-	//printf("fd in connection is: %d\n",sock);
 	int cpunum = sysconf(_SC_NPROCESSORS_ONLN);
 	if(cpunum >= 4)
 	{
@@ -101,6 +101,7 @@ void* handle_connection(void* arg)
 	}
 	unsigned int i;
 	int connfd;
+	mf_controller_init();
 	socklen_t clilen = sizeof(switch_addr);
 	epoll_init(sock);
 	static unsigned int seq = 0;
@@ -108,7 +109,6 @@ void* handle_connection(void* arg)
 	{
 		MSG_RX_QUEUE[i] = mf_queue_node_mempool_create();
 	}
-	mf_controller_init();
 	while(1)
 	{
 		nfds = epoll_wait(epfd, events, EPOLL_EVENTS_NUM, -1);
@@ -118,7 +118,6 @@ void* handle_connection(void* arg)
 			{
 				log_info("Incoming connection");
 				connfd = accept(sock, (struct sockaddr*)&switch_addr, &clilen);
-				//mf_write_socket_log("Incoming socket connection", connfd);
 				if(connfd < 0)
 				{
 					log_warn("connfd < 0");
@@ -145,14 +144,12 @@ void* handle_connection(void* arg)
 					ev.events = EPOLLIN;
 					epoll_ctl(epfd, EPOLL_CTL_DEL, sockfd, &ev);
 					mf_switch_destory(sw);
-					//mf_write_socket_log("socket closed", sockfd);
 					log_info("socket closed");	
 					continue;
 				}
 				if(length < 0)
 				{
 					log_warn("socket error");
-					//mf_write_socket_log("socket error", sockfd);
 					continue;
 				}
 				else if(likely(length > 0))
@@ -165,9 +162,7 @@ void* handle_connection(void* arg)
 					{
 						if(likely((int)*pkt_ptr == 4))// This is a OF1.3 Msg
 						{
-							//uint16_t msg_length = (uint16_t)*(pkt_ptr + 3) << 8 | *(pkt_ptr + 2);
 							uint16_t msg_length = ntoh_16bit(pkt_ptr + 2);
-							//inverse_memcpy(&msg_length, pkt_ptr + 2, 2);
 							if(unlikely(length < msg_length))
 							{
 								log_warn("received length is: %d,current length is: %d,  msg length is %d",received_length, length, msg_length);

@@ -9,39 +9,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-//extern struct mf_switch * mf_switch_map[MAX_MF_SWITCH_NUM];
-
-/*void* handle_rx_msg(void* arg)
-{
-	struct mf_switch * sw = (struct mf_switch*)arg;
-	while(1)
-	{
-		pthread_mutex_lock(&(sw->sw_mutex));
-		if(sw->is_alive == 0)
-		{
-			pthread_mutex_unlock(&(sw->sw_mutex));
-			destory_queue(sw->rxq);
-			mf_switch_destory(sw);
-			pthread_exit(0);
-		}
-		pthread_mutex_unlock(&(sw->sw_mutex));
-		pthread_mutex_lock(&(sw->rxq->q_mutex));
-		if(sw->rxq->queue_length == 0 || sw->rxq->head == NULL)
-		{
-			pthread_mutex_unlock(&(sw->rxq->q_mutex));
-			continue;
-		}
-		else 
-		{
-			print_queue(sw->rxq);
-			pthread_mutex_unlock(&(sw->rxq->q_mutex));
-			struct q_node * qn = pop_q_node(sw->rxq);
-			parse_msg(sw, qn);
-		}
-		
-	}
-}*/
-
 struct mf_switch * mf_switch_create(uint32_t sockfd)
 {
 	struct mf_switch * sw = (struct mf_switch*)malloc(sizeof(struct mf_switch));
@@ -84,7 +51,8 @@ void mf_switch_destory(struct mf_switch * sw)
 	delete_switch_from_map(sw);
 	if(pthread_mutex_destroy(&sw->switch_mutex) < 0)
 		log_warn("mutex destroy error");
-	//free(sw);
+	free(sw);
+	sw = NULL;
 }
 
 

@@ -3,7 +3,10 @@
 #include "mf_socket.h"
 #include "mf_topomgr.h"
 #include "mf_devicemgr.h"
-extern void* handler_connection(void*);
-void controller_start(uint32_t * sock);
+
+#define NET_RECEIVE_WORKER_NUMBER 1
+
+void controller_start();
 void controller_exit();
+
 #endif
