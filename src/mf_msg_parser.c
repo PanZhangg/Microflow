@@ -20,22 +20,6 @@ int queue_index[WORKER_THREADS_NUM];
 
 void * worker_thread(void* arg)
 { 
-	/*static int cpu_id = 1;
-	int cpunum = sysconf(_SC_NPROCESSORS_ONLN);
-	if(cpunum >= 4)
-	{
-		int ccpu_id = 0;
-		cpu_set_t my_set;
-		if(__sync_bool_compare_and_swap(&cpu_id, 1, 2))
-			ccpu_id = 2;
-		else
-			ccpu_id = 1;
-		CPU_ZERO(&my_set);
-		CPU_SET(ccpu_id, &my_set);
-		//printf("Set CPU affinity: %d\n", ccpu_id);
-		if(sched_setaffinity(0, sizeof(cpu_set_t), &my_set) == -1)
-			log_warn("Set CPU affinity failed");
-	}*/
 	set_cpu_affinity();
 	int index = *(int*)arg;
 	while(1)
@@ -66,43 +50,18 @@ void parse_thread_start(uint8_t num)
 
 static inline uint8_t parse_msg_type(struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL when parsing msg type");
-		return 0;
-	}
-	//uint8_t type = (uint8_t)*(qn->rx_packet + 1);
 	uint8_t type = *(qn->rx_packet + 1);
-	//memcpy(&type, qn->rx_packet + 1, 1);
 	return type;
 }
 
 static inline uint8_t parse_msg_version(struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL when parsing version"); 
-		return 0;
-	}
-	uint8_t version;
-	//uint8_t version = (uint8_t)*qn->rx_packet;
-	memcpy(&version, qn->rx_packet, 1);
+	uint8_t version = *(qn->rx_packet);
 	return version;
 }
 
 void parse_msg(struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL when parsing msg");
-		return;
-	}
-	else
-	{
-		uint8_t type = parse_msg_type(qn);
-		//uint8_t version = parse_msg_version(qn);
-		msg_handler(type, 4, qn);
-	}
-
+		msg_handler(*(qn->rx_packet + 1), *(qn->rx_packet), qn);
 }
 

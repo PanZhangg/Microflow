@@ -369,11 +369,6 @@ Msg handler functions
 
 void msg_handler(uint8_t type, uint8_t version, struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL");
-		return;
-	}
 	if(likely(version == 4))
 	{
 		switch(type)
@@ -569,10 +564,10 @@ void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t to
 	}
 	struct link_node * left_node = link_node_create(sw, port_out); 
 	uint32_t rst = 0;
-	struct network_link * netlink = network_link_create(left_node, right_node);
+	struct network_link * netlink = network_link_create(right_node, left_node);
 	if(netlink != NULL)
 		rst = sw_link_insert(&(qn->sw->link_list), netlink);
-	if(rst == 1)
-		print_switch_link(qn->sw);
+	//if(rst == 1)
+		//print_switch_link(qn->sw);
 	//print_all_switches();
 }

@@ -49,88 +49,11 @@ void mf_topomgr_create()
 
 void mf_topomgr_destroy()
 {
-	log_info("Destroy TOPO manager");
 	if(LINK_NODE_CACHE_ARRAY)  
 		free(LINK_NODE_CACHE_ARRAY);
 	pthread_mutex_destroy(&(MF_TOPO_MGR.topomgr_mutex));
+	log_info("TOPO manager destroyed");
 }
-/*static inline void push_to_array(struct link_node * value, struct link_node ** array)
-{
-	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
-	if(*array == NULL)
-	{
-		*array = value;
-		value->prev = NULL;
-		value->next = NULL;
-	}
-	else
-	{
-		(*array)->prev = value;
-		value->next = *array;
-		value->prev = NULL;
-		*array = value;
-	}
-	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-}
-
-static inline struct link_node* pop_from_array(struct link_node * value, struct link_node ** array)
-{
-	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
-	if(array == NULL || *array == NULL)
-	{
-		log_warn("Pop array is NULL");
-		pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-		return NULL;
-	}
-	struct link_node * tmp = * array;
-	while(tmp)
-	{
-		if(tmp == value)
-		{
-			if(tmp->prev == NULL)
-			{	
-				if(tmp->next != NULL)
-				{
-					* array = tmp->next;
-					tmp->next->prev = NULL;
-				}
-				else
-				{
-					* array = NULL;
-				}
-				tmp->next = NULL;
-				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-				return tmp;
-			}
-			if(tmp->next == NULL)
-			{
-				tmp->prev->next = NULL;
-				tmp->prev = NULL;
-				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-				return tmp;
-			}
-			if(tmp->prev && tmp->next)
-			{
-				tmp->prev->next = tmp->next;
-				tmp->next->prev = tmp->prev;
-				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-				return tmp;
-			}
-		}
-		else
-		{
-			if(tmp->next)
-				tmp = tmp->next;
-			else
-			{
-				pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-				return NULL;
-			}
-		}
-	}
-	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-	return NULL;
-}*/
 
 static void realloc_cache_array()
 {
@@ -157,15 +80,13 @@ static struct link_node * get_available_value_slot()
 	struct link_node * value = container_of(l, struct link_node, mem_manage_list);
 	lf_list_insert(l, &(MF_TOPO_MGR.used_list));
 	return value;
-	//log_warn("No available value slot");
-	//return NULL;
 }
 
 struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* port)
 {
 	if(port->node != NULL)
 	{
-		log_warn("Node already exists");
+		//log_warn("Node already exists");
 		return (port->node);
 	}
 	struct link_node * node = get_available_value_slot();
@@ -185,54 +106,12 @@ struct link_node * link_node_create(struct mf_switch* sw, struct ofp11_port* por
 	return node;
 }
 
-/*static uint32_t get_next_available_index()
-{
-	static uint8_t loop_restart;
-	pthread_mutex_lock(&MF_TOPO_MGR.topomgr_mutex);
-	uint32_t index = MF_TOPO_MGR.next_available_index;
-	if(NETWORK_LINK_CACHE_ARRAY[index].is_occupied == 0)
-	{
-		MF_TOPO_MGR.total_network_link_number++;
-		NETWORK_LINK_CACHE_ARRAY[index].is_occupied = 1;
-	}
-	else
-	{
-		if(MF_TOPO_MGR.total_network_link_number == MAX_NETWORK_LINK_NUM)  
-		{
-			log_warn("No available network link slot index");
-			pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-			return MAX_NETWORK_LINK_NUM + 1;
-		}
-	}
-	uint32_t tmp = index;
-	if(tmp + 1 >= MAX_NETWORK_LINK_NUM)
-		tmp = 0;
-	while(NETWORK_LINK_CACHE_ARRAY[tmp].is_occupied == 1)
-	{
-		tmp++;
-		if(tmp + 1 >= MAX_NETWORK_LINK_NUM && loop_restart == 0)
-		{
-			loop_restart = 1;
-			tmp = 0;
-		}
-		else if(tmp+1 >= MAX_NETWORK_LINK_NUM && loop_restart == 1)
-		{
-			log_warn("No available network link slot index");
-			loop_restart = 0;
-			index = MAX_NETWORK_LINK_NUM + 1;
-			break;
-		}
-	}
-	MF_TOPO_MGR.next_available_index = tmp;
-	pthread_mutex_unlock(&MF_TOPO_MGR.topomgr_mutex);
-	return index;
-}*/
 
 struct network_link * network_link_create(struct link_node* src, struct link_node* dst)
 {
-	if(src->port->link == dst->port->link && src->port->link != NULL)//src port's link == dst port's link
+	if(src->port->link != NULL)
 	{
-		log_warn("Network Link already exists");
+		//log_warn("Network Link already exists");
 		return NULL;
 	}
 	struct lf_list * l = lf_list_pop(&(MF_TOPO_MGR.available_link_list));
@@ -247,7 +126,7 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	link->src = src;
 	src->port->link = link;
 	link->dst = dst;
-	dst->port->link = link;
+	//dst->port->link = link;
 	link->sw_next.next = NULL;
 	link->sw_next.mark = 0;
 	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list));
@@ -279,7 +158,7 @@ uint32_t sw_link_insert(struct sw_link_list * sw_list, struct network_link * lin
 		link->sw_link_next = sw_list->head;
 		sw_list->head = link;
 	}
-	log_info("link inserted");
+	log_info("New network link discovered");
 	sw_list->link_num++;
 	pthread_mutex_unlock(&(link->src->sw->switch_mutex));
 	return 1;

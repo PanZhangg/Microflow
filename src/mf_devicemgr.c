@@ -46,8 +46,8 @@ void mf_devicemgr_create()
 
 void mf_devicemgr_destroy()
 {
-	log_info("Destroy DEVICE manager");
 	pthread_mutex_destroy(&(MF_DEVICE_MGR.devicemgr_mutex));
+	log_info("DEVICE manager destroyed");
 }
 /*May return NULL
 Programmer should take care of this*/
@@ -175,91 +175,6 @@ struct ofp11_port * get_switch_port_by_port_num(struct mf_switch* sw, ovs_be32 p
 	log_warn("No port has this port num");
 	return NULL;
 }
-/*
-static inline void push_to_array(struct host_hash_value * value, struct host_hash_value ** array)
-{
-	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
-	if(*array == NULL)
-	{
-		*array = value;
-		value->prev = NULL;
-		value->next = NULL;
-	}
-	else
-	{
-		(*array)->prev = value;
-		value->next = *array;
-		value->prev = NULL;
-		*array = value;
-	}
-	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
-}
-
-static struct host_hash_value* pop_from_array(struct host_hash_value * value, struct host_hash_value ** array)
-{
-	if(array == NULL || *array == NULL)
-	{
-		log_warn("Array is NULL"); 
-		return NULL;
-	}
-	struct host_hash_value * tmp = * array;
-	while(tmp)
-	{
-		if(tmp == value)
-		{
-			if(tmp->prev == NULL)
-			{
-				* array = tmp->next;
-				if(tmp->next != NULL)
-					tmp->next->prev = NULL;
-				tmp->next = NULL;
-				return tmp;
-			}
-			if(tmp->next == NULL)
-			{
-				tmp->prev->next = NULL;
-				tmp->prev = NULL;
-				return tmp;
-			}
-			if(tmp->prev && tmp->next)
-			{
-				tmp->prev->next = tmp->next;
-				tmp->next->prev = tmp->prev;
-				return tmp;
-			}
-		}
-		else
-		{
-			if(tmp->next)
-				tmp = tmp->next;
-			else
-			{
-				return NULL;
-			}
-		}
-	}
-	return NULL;
-}
-
-static struct host_hash_value * get_available_value_slot()
-{
-	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
-	if(MF_DEVICE_MGR.available_slot == NULL)
-	{
-		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
-		return NULL;
-	}
-	if(MF_DEVICE_MGR.available_slot->is_occupied == 0)
-	{
-		struct host_hash_value * value = pop_from_array(MF_DEVICE_MGR.available_slot, &(MF_DEVICE_MGR.available_slot));
-		MF_DEVICE_MGR.available_slot_num--;
-		MF_DEVICE_MGR.used_slot_num++;
-		pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
-		return value;
-	}
-	pthread_mutex_unlock(&MF_DEVICE_MGR.devicemgr_mutex);
-	return NULL;
-}*/
 
 struct host_hash_value* host_hash_value_add(struct mf_switch * sw, uint32_t port_num, uint64_t mac_addr)
 {
@@ -419,6 +334,7 @@ void print_all_switches()
 {
 	pthread_mutex_lock(&MF_DEVICE_MGR.devicemgr_mutex);
 	int i = 0;
+	log_info("-----another one--------");
 	int intr_index = 0;
 	for(i = 0; i < MF_DEVICE_MGR.total_switch_number; i++)
 	{
