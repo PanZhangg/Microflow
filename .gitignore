@@ -35,6 +35,7 @@ src/microflow
 callgrind.*
 cachegrind.*
 core
+perf*
 
 #VIM files
 *.swp
