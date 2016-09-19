@@ -44,7 +44,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 struct q_node * pop_queue_node_from_mempool(struct mf_queue_node_mempool* mp)
 {
 	struct q_node * qn;
-	if(likely(mp->pop == mp->push))
+	if(unlikely(mp->pop == mp->push))
 		return NULL;
 	qn = mp->pop;
 	if(unlikely(mp->pop == mp->tail))

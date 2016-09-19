@@ -95,9 +95,7 @@ void* handle_connection(void* arg)
 	int connfd;
 	socklen_t clilen = sizeof(switch_addr);
 	epoll_init(sock);
-	//log_debug_info("here!");
 	static unsigned int seq = 0;
-	//log_debug_info("is here!");
 	for(i = 0; i < WORKER_THREADS_NUM; i++)
 	{
 		MSG_RX_QUEUE[i] = mf_queue_node_mempool_create();
@@ -152,7 +150,7 @@ void* handle_connection(void* arg)
 					length += sw->epoll_recv_incomplete_length;
 					sw->epoll_recv_incomplete_length = 0;
 					int received_length = length;
-					while(length > 0)
+					while(likely(length > 0))
 					{
 						if(likely((int)*pkt_ptr == 4))// This is a OF1.3 Msg
 						{

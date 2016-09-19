@@ -25,7 +25,7 @@ void * worker_thread(void* arg)
 	while(1)
 	{
 		struct q_node * qn = pop_queue_node_from_mempool(MSG_RX_QUEUE[index]);
-		if(likely(qn == NULL))
+		if(unlikely(qn == NULL))// Maybe most of the time the queue is empty, but still treat the 'real' working branch as the primary branch
 			usleep(1);
 		else
 			parse_msg(qn);		
