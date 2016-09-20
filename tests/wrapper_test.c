@@ -1,9 +1,10 @@
 #include "../src/mf_wrapper.h"
+#include "../src/mf_utilities.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <stdint.h>
-
+#include <sched.h>
 int main()
 {
 	time_t timestart, timeend;

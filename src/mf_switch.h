@@ -1,6 +1,6 @@
 #ifndef __MF_SWITCH_H__
 #define __MF_SWITCH_H__
-//#include "mf_rx_queue.h"
+
 #include "mf_socket.h"
 #include "./Openflow/openflow-1.1.h"
 #include "mf_topomgr.h"

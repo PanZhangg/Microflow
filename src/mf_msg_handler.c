@@ -25,6 +25,7 @@ struct msg_handlers * MSG_HANDLERS;
 extern 
 struct mf_devicemgr MF_DEVICE_MGR;
 
+static unsigned int xid_seq;
 /*=====================================
 Function registers 
 ======================================*/
@@ -180,14 +181,8 @@ void hello_msg_stopwatch_callback(void* arg) //for timer function test
 
 static void send_switch_features_request(struct q_node* qn)
 {
-	uint32_t xid = generate_random();
-	/*
-		TODO:
-			1.hide the xid to msg constructor
-			2.what is the purpose of feature_request_xid in the sw struct?
-	 */
-	qn->sw->feature_request_xid = xid;
-	struct ofp_header oh = of13_switch_feature_msg_constructor(xid);
+	struct ofp_header oh = of13_switch_feature_msg_constructor();
+	qn->sw->feature_request_xid = oh.xid;
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
 }
 
@@ -211,10 +206,13 @@ void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* 
 	mf_send(qn->sw, (void *)&packet_out_buffer, data_length+16+8+sizeof(pkt));
 }
 
-void send_flow_mod(struct mf_switch * sw, void* flow_mod, uint32_t size)
+void send_flow_mod(struct mf_switch * sw, uint32_t size)
 {
 	char flow_mod_buffer[1024];
-	send(sw->sockfd, flow_mod, size, MSG_DONTWAIT);
+	__sync_fetch_and_add(&xid_seq, 1);
+	struct ofp_header oh = ofp13_msg_header_constructor(xid_seq, 13, size);
+	struct ofp11_flow_mod flow_mod = of13_flow_mod_msg_constructor(0,0,0,0,0,0,0);
+	send(sw->sockfd, flow_mod_buffer, size, MSG_DONTWAIT);
 }
 
 static void send_lldp_packet_out_per_port(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)
@@ -237,7 +235,6 @@ static void port_desc_reply_handler(struct q_node* qn)
 	uint16_t len = 16; //16 is the length of ofp header and multipart reply header
 	while(len < qn->packet_length)
 	{
-		//inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
 		qn->sw->ports[i].port_no= ntoh_32bit(pkt_ptr);
 		inverse_memcpy((void*)&(qn->sw->ports[i].hw_addr), pkt_ptr + 8, 6);
 		i++;
@@ -253,14 +250,6 @@ static uint64_t get_src_mac_addr(char* data)
 	inverse_memcpy(&src_mac, data + 6, 6);
 	return src_mac;
 }
-
-/*
-	TODO :
-		1. LLDP packet constructor --Done
-		2. Send LLDP to sw_ports with timer --Done 
-		3. LLDP msg handler -- Done
-		4. Path calculate algorithm
-*/
 
 static void send_LLDP_packet(void * arg)
 {
@@ -404,9 +393,6 @@ void hello_msg_handler(struct q_node* qn)
 		//struct stopwatch * spw = stopwatch_create(1.0, &hello_msg_stopwatch_callback, PERMANENT, (void*)qn);
 		is_timer_added = 1;
 	}
-	/*Log behavior leads to race condition when massive switches
-	to connect at the same time*/
-	//mf_write_socket_log("Hello Message received", qn->sw->sockfd);
 	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
 	struct ofp_header oh = of13_hello_msg_constructor(xid);
 	if(qn->sw->is_hello_sent == 0)
@@ -434,11 +420,6 @@ void hello_msg_handler(struct q_node* qn)
 
 void echo_request_handler(struct q_node* qn)
 {	
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL");
-		return;
-	}
 	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
 	struct ofp_header oh = of13_echo_reply_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
@@ -447,11 +428,6 @@ void echo_request_handler(struct q_node* qn)
 
 void feature_reply_handler(struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL");
-		return;
-	}
 	log_info("feature_reply message handling");
 	qn->sw->datapath_id = ntoh_64bit(qn->rx_packet + 8);
 	qn->sw->n_buffers = ntoh_32bit(qn->rx_packet + 16);
@@ -462,11 +438,6 @@ void feature_reply_handler(struct q_node* qn)
 
 void packet_in_msg_handler(struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL");
-		return;
-	}
 	uint32_t xid = ntoh_32bit(qn->rx_packet + 4);
 	uint16_t total_len = ntoh_16bit(qn->rx_packet + 12);
 	char * data_pointor = qn->rx_packet + qn->packet_length - total_len;
@@ -475,11 +446,6 @@ void packet_in_msg_handler(struct q_node* qn)
 
 void port_status_msg_handler(struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL");
-		return;
-	}
 	uint8_t reason = *(qn->rx_packet + 8);
 	if(reason == 0)
 	{
@@ -489,7 +455,6 @@ void port_status_msg_handler(struct q_node* qn)
 		uint16_t len = 16; 
 		while(len < qn->packet_length)
 		{
-			//inverse_memcpy((void*)&(qn->sw->ports[i].port_no), pkt_ptr, 4);
 			qn->sw->ports[i].port_no = ntoh_32bit(pkt_ptr);
 			inverse_memcpy((void*)&(qn->sw->ports[i].hw_addr), pkt_ptr + 8, 6);
 			i++;
@@ -504,11 +469,6 @@ void port_status_msg_handler(struct q_node* qn)
 
 void multipart_reply_handler(struct q_node* qn)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL");
-		return;
-	}
 	uint16_t type = ntoh_16bit(qn->rx_packet + 8);
 	if(type == 13)
 		port_desc_reply_handler(qn);
@@ -516,11 +476,6 @@ void multipart_reply_handler(struct q_node* qn)
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len)
 {
-	if(unlikely(qn == NULL))
-	{
-		log_warn("qn is NULL");
-		return;
-	}
 	uint64_t mac_addr = get_src_mac_addr(buffer);
 	host_hash_value_add(qn->sw, 5, mac_addr);
 	send_packet_out(qn, xid, 0, buffer, total_len);

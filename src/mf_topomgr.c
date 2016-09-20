@@ -223,15 +223,30 @@ void network_link_free(struct network_link * link)
 /*
 struct path_link_list * find_one_path_between_switches(struct mf_switch * src_sw, struct mf_switch * dst_sw)
 {
-
 	struct path_link_list * path = path_link_list_create();
 	int i = 0;
+	char depth = 0;
+	char search_depth[LONGEST_PATH_LINK_NUM] ;
 	struct network_link * tmp = src_sw->link_list.head;
 	for(;i <= src_sw->link_list.link_num; i++)
 	{
 		if(tmp->dst->sw == dst_sw)
-
-
+		{
+			path->path_link_list[depth] = tmp;
+			return path;
+		}
+		else if(tmp == NULL)
+		{
+			depth--;
+ 			tmp =  
+		}
+		else
+		{
+  			depth++;
+			tmp = 
+		}
 	}
+	log_warn("Can not find a link between switch dpid:%ld and switch dpid:%ld", src_sw->datapath_id, dst_sw->datapath_id);
+	return NULL;
 }
 */

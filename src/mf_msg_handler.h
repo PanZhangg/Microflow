@@ -41,7 +41,7 @@ void feature_reply_handler(struct q_node* qn);
 void packet_in_msg_handler(struct q_node*);
 void multipart_reply_handler(struct q_node* qn);
 void port_status_msg_handler(struct q_node* qn);
-void send_flow_mod(struct mf_switch * sw, void* flow_mod, uint32_t size);
+void send_flow_mod(struct mf_switch * sw, uint32_t size);
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len);
 void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len);
