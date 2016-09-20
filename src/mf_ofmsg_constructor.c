@@ -50,7 +50,6 @@ struct ofp11_packet_out of13_packet_out_msg_constructor(uint32_t buffer_id, uint
 	po.buffer_id = htonl(buffer_id);
 	po.in_port = htonl(0xfffffffd); // OFPP_CONTROLLER
 	po.actions_len = htons(actions_len);
-	//bzero(&po.pad, sizeof(po.pad));
 	return po;
 }
 
@@ -83,6 +82,28 @@ struct ofp_multipart_request of13_multiaprt_request_constructor(uint16_t type, u
 	omr.header = oh;
 	omr.type = htons(type);
 	omr.flags = htons(flags);
-	//bzero(&omr.pad, sizeof(omr.pad));
 	return omr;
+}
+
+struct ofp11_flow_mod of13_flow_mod_msg_constructor(uint8_t table_id,
+						    uint8_t command,
+						    ovs_be16 hard_timeout, 
+						    ovs_be16 idle_timeout, 
+						    ovs_be16 priority,
+						    ovs_be32 buffer_id,
+						    ovs_be16 flags)
+{
+	struct ofp11_flow_mod flow_mod;
+	flow_mod.cookie = 0;
+	flow_mod.cookie_mask = 0;
+	flow_mod.table_id = table_id;
+	flow_mod.command = command;
+	flow_mod.hard_timeout = hard_timeout;
+	flow_mod.idle_timeout = idle_timeout;
+	flow_mod.priority = priority;
+	flow_mod.buffer_id = buffer_id;
+	flow_mod.out_port = 0;
+	flow_mod.out_group = 0;
+	flow_mod.flags = flags;
+	return flow_mod;
 }

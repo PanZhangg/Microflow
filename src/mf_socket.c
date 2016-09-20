@@ -5,7 +5,6 @@
 #include "mf_mempool.h"
 #include "mf_utilities.h"
 #include "mf_api.h"
-//#include "mf_devicemgr.h"
 #include "dbg.h"
 #include <stdio.h>  
 #include <stdlib.h>  

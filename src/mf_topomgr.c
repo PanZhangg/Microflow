@@ -111,7 +111,6 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 {
 	if(src->port->link != NULL)
 	{
-		//log_warn("Network Link already exists");
 		return NULL;
 	}
 	struct lf_list * l = lf_list_pop(&(MF_TOPO_MGR.available_link_list));
@@ -126,7 +125,6 @@ struct network_link * network_link_create(struct link_node* src, struct link_nod
 	link->src = src;
 	src->port->link = link;
 	link->dst = dst;
-	//dst->port->link = link;
 	link->sw_next.next = NULL;
 	link->sw_next.mark = 0;
 	lf_list_insert(l, &(MF_TOPO_MGR.used_link_list));

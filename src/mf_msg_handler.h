@@ -14,8 +14,6 @@ enum MSG_HANDLER_TYPE{
 
 
 typedef void (*msg_handler_func)(struct q_node*);
-
-
 /*Msg handler structure used to register defualt and customlized handler functions
 For each type of msg, a linked list of handler func pointors could be created and the 
 certain type of msg will go through the whole list in order to satisfy certain requirements
@@ -43,10 +41,10 @@ void feature_reply_handler(struct q_node* qn);
 void packet_in_msg_handler(struct q_node*);
 void multipart_reply_handler(struct q_node* qn);
 void port_status_msg_handler(struct q_node* qn);
+void send_flow_mod(struct mf_switch * sw, void* flow_mod, uint32_t size);
 
 void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len);
 void lldp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t total_len);
-/*functions needed to be implemented*/
 
 void msg_handlers_init(); //register default msg hander func to MSG_HANDLERS
 struct single_msg_handler * single_msg_handler_create(msg_handler_func);

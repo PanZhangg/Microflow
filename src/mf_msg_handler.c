@@ -24,6 +24,7 @@ struct msg_handlers * MSG_HANDLERS;
 
 extern 
 struct mf_devicemgr MF_DEVICE_MGR;
+
 /*=====================================
 Function registers 
 ======================================*/
@@ -129,7 +130,6 @@ void msg_handler_func_unregister(enum MSG_HANDLER_TYPE type, msg_handler_func fu
 	{
 		log_warn("func is NULL");
 		return;
-		//exit(0);
 	}
 	switch(type)
 	{
@@ -189,7 +189,6 @@ static void send_switch_features_request(struct q_node* qn)
 	qn->sw->feature_request_xid = xid;
 	struct ofp_header oh = of13_switch_feature_msg_constructor(xid);
 	send(qn->sw->sockfd, &oh, sizeof(oh), MSG_DONTWAIT);
-	//mf_write_socket_log("Feature_request Message sent", qn->sw->sockfd);
 }
 
 void send_multipart_port_desc_request(struct q_node* qn)
@@ -201,19 +200,21 @@ void send_multipart_port_desc_request(struct q_node* qn)
 void send_packet_out(struct q_node* qn, uint32_t xid, uint32_t buffer_id, void* data, uint32_t data_length)
 {
 	char packet_out_buffer[1024];
-	
 	struct ofp11_packet_out pkt = of13_packet_out_msg_constructor(buffer_id, 16);
 	struct ofp_header oh = ofp13_msg_header_constructor(xid, 13, data_length + 16 + 8 + sizeof(pkt));
 	struct ofp_action_output oao = ofp13_action_output_constructor(1);
-	/*TODO:
-		 *quick code for testing purpose 
-		 *need to be improved
-	*/
 	memcpy(packet_out_buffer, &oh, sizeof(oh));
 	memcpy(packet_out_buffer+sizeof(oh), &pkt, sizeof(pkt));
 	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt), &oao, sizeof(oao));
 	memcpy(packet_out_buffer+sizeof(oh)+sizeof(pkt)+sizeof(oao), data, data_length);
-	send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
+	//send(qn->sw->sockfd, &packet_out_buffer, data_length+16+8+sizeof(pkt), MSG_DONTWAIT);
+	mf_send(qn->sw, (void *)&packet_out_buffer, data_length+16+8+sizeof(pkt));
+}
+
+void send_flow_mod(struct mf_switch * sw, void* flow_mod, uint32_t size)
+{
+	char flow_mod_buffer[1024];
+	send(sw->sockfd, flow_mod, size, MSG_DONTWAIT);
 }
 
 static void send_lldp_packet_out_per_port(struct mf_switch *sw, lldp_t * pkt, ovs_be32 port_no)

@@ -2,7 +2,7 @@
 #define MF_UTILITIES_H__
 
 #include "Openflow/types.h"
-
+struct mf_switch;
 /*
 program utilities
 */
@@ -35,6 +35,8 @@ void set_cpu_affinity();
 /*
 Network packets utilities
 */
+
+inline void mf_send(struct mf_switch * sw, void * msg, uint32_t length);
 
 typedef signed   char     BOOL;
 typedef char              INT1;

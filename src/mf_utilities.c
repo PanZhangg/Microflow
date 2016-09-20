@@ -1,4 +1,5 @@
 #include "mf_utilities.h"
+#include "mf_switch.h"
 #include "dbg.h"
 #include <sys/time.h>
 #include <stdlib.h>
@@ -22,6 +23,11 @@ uint32_t generate_random()
 	gettimeofday(&t, NULL);
 	uint32_t r = rand_r((unsigned int *)&(t.tv_usec));
 	return r;
+}
+
+inline void mf_send(struct mf_switch * sw, void * msg, uint32_t length)
+{
+	send(sw->sockfd, msg, length, MSG_DONTWAIT);
 }
 /*==========================
 Copy len byte of data from memory pointed 

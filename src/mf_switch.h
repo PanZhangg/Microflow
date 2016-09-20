@@ -17,7 +17,7 @@ struct mf_switch
 	/*--socket--*/
 	uint32_t sockfd;
 	uint32_t epoll_recv_incomplete_length;
-	/*--rece buffer--*/
+	/*--recv buffer--*/
 	char rx_buffer[RX_BUFFER_SIZE];
 	/*--openflow--*/
 	uint64_t datapath_id;
@@ -43,7 +43,9 @@ struct mf_switch
 
 struct mf_switch * mf_switch_create(uint32_t sockfd);
 void mf_switch_destory(struct mf_switch *);
+
 /*For debug purpose*/
+
 void switch_print(struct mf_switch *);
 
 
