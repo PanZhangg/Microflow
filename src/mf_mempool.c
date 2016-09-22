@@ -9,6 +9,8 @@
 
 #define barrier() __asm__ __volatile__("":::"memory")
 
+static char queue_mem_pool[MF_QUEUE_NODE_MEMPOOL_SIZE][RX_PACKET_SIZE];
+
 struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 {
 	struct mf_queue_node_mempool * mp = (struct mf_queue_node_mempool*)malloc(sizeof(*mp));
@@ -18,6 +20,11 @@ struct mf_queue_node_mempool * mf_queue_node_mempool_create()
 		exit(0);
 	}
 	memset(mp, 0, sizeof(*mp));
+	int i = 0;
+	for( ; i< MF_QUEUE_NODE_MEMPOOL_SIZE; i++)
+	{
+  		mp->node_pool[i].rx_packet = &queue_mem_pool[i][0];
+	}
 	mp->head = &mp->node_pool[0];
 	mp->tail = &mp->node_pool[MF_QUEUE_NODE_MEMPOOL_SIZE - 1];
 	mp->pop = mp->head;

@@ -10,13 +10,10 @@
 struct mf_switch;
 
 struct q_node{
-	char rx_packet[RX_PACKET_SIZE];
 	uint16_t packet_length;
-	uint8_t is_occupied;
-	//uint8_t is_freed;
 	struct mf_switch* sw;
-	//struct q_node* next_node;
-	//struct q_node* previous_node;
+	char * rx_packet;
+	uint8_t is_occupied;
 };
 
 struct mf_rx_queue{
