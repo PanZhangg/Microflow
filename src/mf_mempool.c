@@ -36,7 +36,7 @@ void push_queue_node_to_mempool(char* rx_buffer, uint16_t rx_length, struct mf_s
 {
 	if(unlikely((mp->pop > mp->head && mp->push == mp->pop - 1) || (mp->pop == mp->head && mp->push == mp->tail)))
 	{
-		log_warn("Queue is full");
+		log_warn("Queue is full, drop length:%d", rx_length);
 		return;
 	}
 	memcpy(mp->push->rx_packet,rx_buffer, rx_length);

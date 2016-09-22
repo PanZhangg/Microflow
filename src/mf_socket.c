@@ -161,7 +161,7 @@ void* handle_connection(void* arg)
 								memmove(sw->rx_buffer, pkt_ptr, sw->epoll_recv_incomplete_length);
 								break;	
 							}
-							push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[(seq++) % WORKER_THREADS_NUM]);
+							push_queue_node_to_mempool(pkt_ptr, msg_length, sw, MSG_RX_QUEUE[(seq) % WORKER_THREADS_NUM]);
 							pkt_ptr += msg_length;
 							length -= msg_length;
 						}
@@ -172,6 +172,7 @@ void* handle_connection(void* arg)
 							break;
 						}
 					}
+					seq++;
 				}
 			}
 		}

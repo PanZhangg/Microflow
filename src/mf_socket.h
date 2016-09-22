@@ -8,7 +8,7 @@
 
 #define WORKER_THREADS_NUM 2
 
-#define RX_BUFFER_SIZE 65536
+#define RX_BUFFER_SIZE (16384* 32)
 
 struct mf_rx_queue;
 

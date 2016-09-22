@@ -5,7 +5,7 @@
 #include "./Openflow/types.h"
 #include <pthread.h>
 
-#define RX_PACKET_SIZE 1024
+#define RX_PACKET_SIZE 256 
 
 struct mf_switch;
 

@@ -26,6 +26,8 @@ extern
 struct mf_devicemgr MF_DEVICE_MGR;
 
 static unsigned int xid_seq;
+void tcp_msg_handler(struct q_node * qn, char* buffer,uint16_t total_len);
+
 /*=====================================
 Function registers 
 ======================================*/
@@ -242,6 +244,7 @@ static void port_desc_reply_handler(struct q_node* qn)
 		pkt_ptr += 64;
 	}
 	qn->sw->port_num = i;
+	log_info("port num:%d",i);
 }
 
 static uint64_t get_src_mac_addr(char* data)
@@ -261,10 +264,11 @@ static void send_LLDP_packet(void * arg)
 	{
 		int i = 0;
 		sw = get_next_switch(&k);
-		if(sw == NULL)
+		if(unlikely(sw == NULL))
 			break;
 		for(; i < sw->port_num; i++)
 		{
+			log_info("send LLDP packet port num:%d", i);
 			create_lldp_pkt((void *)&(sw->ports[i].hw_addr), sw->datapath_id, sw->ports[i].port_no, &pkt);
 			send_lldp_packet_out_per_port(sw, &pkt, sw->ports[i].port_no);
 		}
@@ -338,16 +342,12 @@ static ovs_be32 packet_in_msg_get_in_port_num(struct q_node *qn)
 
 static void parse_ether_type(struct q_node* qn, uint32_t xid, char * buffer, uint16_t total_len)
 {
-	if(unlikely(qn == NULL || buffer == NULL))
-	{
-		log_warn("qn is NULL or buffer is NULL");
-		return;
-	}
 	uint16_t ether_type = ntoh_16bit(buffer + 12);
 	switch(ether_type)
 	{
 		case 0x806: arp_msg_handler(qn, xid, buffer, total_len);break;
 		case 0x88cc: lldp_msg_handler(qn, xid, buffer, total_len);break;
+		case 0x800: tcp_msg_handler(qn, buffer, total_len);break;
 		default:log_warn("wrong ether type");log_info("ether type: %x\n", ether_type);break;
 	}
 }
@@ -428,7 +428,6 @@ void echo_request_handler(struct q_node* qn)
 
 void feature_reply_handler(struct q_node* qn)
 {
-	log_info("feature_reply message handling");
 	qn->sw->datapath_id = ntoh_64bit(qn->rx_packet + 8);
 	qn->sw->n_buffers = ntoh_32bit(qn->rx_packet + 16);
 	qn->sw->n_tables = *(char*)(qn->rx_packet + 20);
@@ -453,6 +452,7 @@ void port_status_msg_handler(struct q_node* qn)
 		char* pkt_ptr = qn->rx_packet + 16;
 		uint8_t i = qn->sw->port_num;
 		uint16_t len = 16; 
+		log_info("port status msg length:%d", qn->packet_length);
 		while(len < qn->packet_length)
 		{
 			qn->sw->ports[i].port_no = ntoh_32bit(pkt_ptr);
@@ -463,7 +463,7 @@ void port_status_msg_handler(struct q_node* qn)
 		}
 		qn->sw->port_num = i;
 		pthread_mutex_unlock(&(qn->sw->switch_mutex));
-		switch_print(qn->sw);
+		//switch_print(qn->sw);
 	}
 }
 
@@ -479,6 +479,11 @@ void arp_msg_handler(struct q_node* qn, uint32_t xid, char* buffer, uint16_t tot
 	uint64_t mac_addr = get_src_mac_addr(buffer);
 	host_hash_value_add(qn->sw, 5, mac_addr);
 	send_packet_out(qn, xid, 0, buffer, total_len);
+}
+
+void tcp_msg_handler(struct q_node * qn, char* buffer,uint16_t total_len)
+{
+	send_packet_out(qn, 1111,0, buffer, total_len);
 }
 
 static uint64_t get_dpid_from_LLDP_packet(char * buffer)
