@@ -12,6 +12,16 @@
 uint32_t listen_sockfd;
 extern void* handler_connection(void*);
 
+void controller_init(struct mf_controller * controller, char * name);
+{
+	memcpy(controller->controller_name, name, sizeof(*name));
+	controller->port = 0;
+	controller->configFile = NULL;	
+	controller->logFile = NULL;
+	controller->bindaddr= NULL;
+	controller->sock_fd= 0;
+}
+
 void controller_start()
 {
 	set_CPU_instruction();
